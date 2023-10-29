@@ -1,6 +1,20 @@
 # Ecommerce Project with Next.js and Tailwind CSS
 Welcome to the Ecommerce Project built with Next.js and Tailwind CSS (ShadCn). This project provides a robust foundation for developing a modern, responsive, and scalable ecommerce website.
 
+## Table of Contents
+- [Ecommerce Project with Next.js and Tailwind CSS](#ecommerce-project-with-nextjs-and-tailwind-css)
+  - [Table of Contents](#table-of-contents)
+  - [Built with](#built-with)
+  - [Development](#development)
+    - [Start by cloning the repository:](#start-by-cloning-the-repository)
+    - [Install dependencies](#install-dependencies)
+  - [Documentation](#documentation)
+  - [Project Structure](#project-structure)
+    - [dashboard:](#dashboard)
+    - [web:](#web)
+  - [Commit Convention](#commit-convention)
+  - [Testing](#testing)
+
 ## Built with
 - **Next.js** - A React framework for building server-side rendered and statically generated applications
 - **Tailwind CSS** - A utility-first CSS framework for rapidly building custom designs
@@ -57,15 +71,18 @@ carty-moron/
 │
 ├── dashboard/
 │   ├── src/
-|   |   ├── components/
-│   |   └── app/
+│   │   ├── components/
+│   │   └── app/
+│   └── ...
 │
 ├── web/
 │   ├── src/
-|   |   ├── components/
-│   |   └── app/
+│   │   ├── components/
+│   │   └── app/
+│   └── ...
 │
 └── ...
+
 
 ```
 
