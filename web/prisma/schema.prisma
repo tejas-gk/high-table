@@ -21,18 +21,19 @@ model User {
   location        String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  payments        Payment[]
 }
 
 model Product {
   id          String     @map("_id") @id @default(uuid())
   name        String
   price       String
-  rating      Float
-  reviewCount Int
+  rating      Float     @default(0)
   href        String
   imageSrc    String
   colors      Color[]
   sizes       Size[]
+  payments    Payment[]
 }
 
 model Color {
@@ -50,4 +51,19 @@ model Size {
   inStock   Boolean
   productId String
   product   Product  @relation(fields: [productId], references: [id])
+}
+
+
+model Payment {
+  id            String     @map("_id") @id @default(uuid())
+  amount        Float
+  currency      String
+  paymentMethod String
+  status        String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  productId     String
+  product       Product   @relation(fields: [productId], references: [id])
 }

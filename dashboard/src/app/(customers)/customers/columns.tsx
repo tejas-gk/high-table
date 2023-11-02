@@ -36,6 +36,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Product } from "@/types/productType"
+import { Badge } from "@/components/ui/badge"
 
 
 
@@ -101,6 +102,24 @@ export const columns: ColumnDef<Product>[] = [
             )
         },
         cell: ({ row }) => <div className="lowercase flex gap-4">{row.getValue("username")}</div>,
+    },
+    {
+        accessorKey: "username",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                >
+                    Level
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => <div className="lowercase flex gap-4">
+            <Badge>
+                Pro
+            </Badge>
+        </div>,
     },
     {
         id: "actions",

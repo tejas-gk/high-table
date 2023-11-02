@@ -2,11 +2,13 @@
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import  useCartStore  from '@/store/cart-store'
+import Link from 'next/link'
+import Image from 'next/image'
 
 export default function ProductCard({
   product
-}:any) {
-  // const [addTocart, setAddToCart] = useState(false)
+}: any) {
+  console.log(product,'optimist')
   const { addToCart } = useCartStore()
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,13 +21,19 @@ export default function ProductCard({
   return (
     <>
       <div className='border group pb-4 rounded-md'>
+        <Link href={`/products/category/${product?.id}`} passHref>
         <div className='relative overflow-hidden rounded-t-md aspect-square
       '>
           {/* <div className="absolute inset-0 z-10 bg-zinc-950/70 transition-colors group-hover:bg-zinc-950/75" /> */}
-          <img src={product?.image}
-            alt=''
+          <Image src={product?.imageSrc[0]}
+              alt={product.name}
+              width={300}
+              height={300}
+              onError={(e) => {
+                e.target.src = 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg'; 
+              }}
             className='object-cover w-full h-full transition-all duration-500 ease-in-out transform group-hover:scale-110
-          '
+          '   
           />
         </div>
         <div className='px-2'>
@@ -40,7 +48,8 @@ export default function ProductCard({
           >
             add to cart
           </Button>
-        </div>
+          </div>
+        </Link>
       </div>
     </>
   )

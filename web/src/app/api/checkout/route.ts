@@ -18,34 +18,41 @@ export async function OPTIONS() {
 
 export async function POST(request: Request) {
     const body = await request.json()
-    const  items  = body;
-    console.log(items,'items',body,'body')
+    const items = body;
+    console.log(items, 'items')
     try {
-        // const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
-            line_items: [{
+            billing_address_collection: 'required',
+            shipping_address_collection: {
+                allowed_countries: ['IN'],
+            },
+
+            line_items: items.map((item) => ({
                 price_data: {
                     currency: 'inr',
                     product_data: {
-                        name: 'T-shirt',
+                        name: item.name,
+                        images: [item.image],
+                        description: item.description,
                     },
-                    unit_amount: 2000,
+                    unit_amount: item.price * 100,
                 },
-                quantity: 1,
-            }],
-            success_url: `http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `http://localhost:3000/`,
+                quantity: item.quantity,
+                custom: {
+                    size: item.size,
+                }
+            })),
+            success_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/checkout/success`,
+            cancel_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`,
         })
 
         return NextResponse.json({ url: session.url }, {
             headers: corsHeaders
         });
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ sessionId: session.url }),
-        }
     } catch (error) {
         console.log(error)
         return {

@@ -14,6 +14,7 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import { Progress } from "@/components/ui/progress"
 import {
     Sheet,
     SheetClose,
@@ -31,49 +32,70 @@ import { getSession, signOut } from 'next-auth/react'
 import Cart from './cart'
 import { usePathname, useRouter } from 'next/navigation'
 import Router from 'next/router'
+import Image from 'next/image'
 
-const components: { title: string; href: string; description: string }[] = [
+
+const groceryItems: { title: string; href: string; description: string }[] = [
     {
-        title: "Alert Dialog",
-        href: "/docs/primitives/alert-dialog",
-        description:
-            "A modal dialog that interrupts the user with important content and expects a response.",
+        title: "Bananas",
+        href: "/products/bananas",
+        description: "Fresh and ripe bananas, packed with nutrients.",
     },
     {
-        title: "Hover Card",
-        href: "/docs/primitives/hover-card",
-        description:
-            "For sighted users to preview content available behind a link.",
+        title: "Apples",
+        href: "/products/apples",
+        description: "Crisp and juicy apples, perfect for snacking.",
     },
     {
-        title: "Progress",
-        href: "/docs/primitives/progress",
-        description:
-            "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
+        title: "Milk",
+        href: "/products/milk",
+        description: "Fresh dairy milk, essential for a balanced diet.",
     },
     {
-        title: "Scroll-area",
-        href: "/docs/primitives/scroll-area",
-        description: "Visually or semantically separates content.",
+        title: "Bread",
+        href: "/products/bread",
+        description: "Soft and fluffy bread for your morning toast.",
     },
     {
-        title: "Tabs",
-        href: "/docs/primitives/tabs",
-        description:
-            "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
+        title: "Eggs",
+        href: "/products/eggs",
+        description: "Farm-fresh eggs, a versatile ingredient for cooking.",
+    },
+];
+
+const decorItems = [
+    {
+        title: "Wall Art",
+        href: "/products/wall-art",
+        description: "Beautiful artwork to adorn your walls.",
     },
     {
-        title: "Tooltip",
-        href: "/docs/primitives/tooltip",
-        description:
-            "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+        title: "Candles",
+        href: "/products/candles",
+        description: "Elegant candles for a cozy atmosphere.",
     },
-]
+    {
+        title: "Vases",
+        href: "/products/vases",
+        description: "Decorative vases to display your blooms.",
+    },
+    {
+        title: "Throw Pillows",
+        href: "/products/throw-pillows",
+        description: "Soft and stylish throw pillows for your sofa.",
+    },
+    {
+        title: "Mirrors",
+        href: "/products/mirrors",
+        description: "Reflective mirrors to add depth to your space.",
+    },
+];
+
 
 export default function Navbar() {
     const [info, setInfo] = React.useState(null)
     const router = useRouter()
-    const pathname=usePathname()
+    const pathname = usePathname()
     useEffect(() => {
         const fetchSession = async () => {
             const session = await getSession();
@@ -111,7 +133,7 @@ export default function Navbar() {
                         <SheetHeader>
                             <SheetTitle>Menu</SheetTitle>
                             <SheetDescription>
-                                Shopii
+                                Carty-Moron
                             </SheetDescription>
                         </SheetHeader>
                         <div className="grid gap-4 py-4">
@@ -161,7 +183,7 @@ export default function Navbar() {
                     <NavigationMenu>
                         <Link href="/" passHref>
                             <span className='font-bold dark:text-white pr-4'>
-                                {isNavbarAtTop ? 'Shopii' : 'Logo'}
+                                Carty-Moron
                             </span>
                         </Link>
                         <NavigationMenuItem className='list-none'>
@@ -182,23 +204,22 @@ export default function Navbar() {
                                                     className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                                                     href="/"
                                                 >
-                                                    {/* <Icons.logo className="h-6 w-6" /> */}
                                                     <div className="mb-2 mt-4 text-lg font-medium">
-                                                        shadcn/ui
+                                                        Popular
                                                     </div>
                                                     <p className="text-sm leading-tight text-muted-foreground">
-                                                        Lorem ipsum dolor sit amet.
+                                                        Lorem ipsum dolor sit amet
                                                     </p>
                                                 </a>
                                             </NavigationMenuLink>
                                         </li>
-                                        <ListItem href="/docs" title="Introduction">
+                                        <ListItem href="/products/1/1" title="Static Product">
                                             Lorem ipsum dolor sit amet.
                                         </ListItem>
-                                        <ListItem href="/docs/installation" title="Installation">
+                                        <ListItem href="/" title="Electronics">
                                             Lorem ipsum dolor sit amet.
                                         </ListItem>
-                                        <ListItem href="/docs/primitives/typography" title="Typography">
+                                        <ListItem href="/" title="Clothes">
                                             Lorem ipsum dolor sit amet.
                                         </ListItem>
                                     </ul>
@@ -208,7 +229,7 @@ export default function Navbar() {
                                 <NavigationMenuTrigger>Decor</NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                        {components.map((component) => (
+                                        {decorItems.map((component) => (
                                             <ListItem
                                                 key={component.title}
                                                 title={component.title}
@@ -224,7 +245,7 @@ export default function Navbar() {
                                 <NavigationMenuTrigger>Groceries</NavigationMenuTrigger>
                                 <NavigationMenuContent>
                                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                        {components.map((component) => (
+                                        {groceryItems.map((component) => (
                                             <ListItem
                                                 key={component.title}
                                                 title={component.title}
@@ -245,12 +266,12 @@ export default function Navbar() {
 
 
                 <div className="ml-auto flex items-center space-x-4">
-                    {/* search bar */} 
+                    {/* search bar */}
                     {
-                        (!isNavbarAtTop && pathname!='/') && <Search />
+                        (!isNavbarAtTop && pathname != '/') && <Search />
                     }
                     {/* cart */}
-                    <Cart/>
+                    <Cart />
 
                     <ModeToggle />
 
@@ -284,7 +305,16 @@ export default function Navbar() {
                                         </div>
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
-
+                                    <DropdownMenuLabel className="font-normal">
+                                        <div className="flex flex-col space-y-1">
+                                            <div className="flex justify-between">
+                                            <p className='text-gray-500 text-xs'>Level 1</p>
+                                            <p className='text-gray-500 text-xs'>5/100 Points</p>
+                                            </div>
+                                            <Progress value={33} className='h-1' />
+                                        </div>
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem>
                                             <Link href="/profile">
@@ -310,7 +340,7 @@ export default function Navbar() {
 
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem>
-                                           <p onClick={() => signOut()}>Sign out</p>
+                                            <p onClick={() => signOut()}>Sign out</p>
                                         </DropdownMenuItem>
                                     </DropdownMenuGroup>
                                 </DropdownMenuContent>

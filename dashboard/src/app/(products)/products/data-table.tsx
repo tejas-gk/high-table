@@ -14,7 +14,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { ArrowUpDown, ChevronDown, Download, MoreHorizontal } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -37,11 +36,11 @@ import {
 } from "@/components/ui/table"
 import { columns } from "./columns"
 // import { data } from '@/config/products'
-import AddNewProduct from "./modal/add-new-product"
+import AddNewProduct from "../../../components/modal/add-new-product"
 import { downloadToExcel } from "@/lib/xlsx"
 
 
-export function DataTable({data}:any) {
+export function DataTable({ data }: any) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

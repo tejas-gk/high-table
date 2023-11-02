@@ -27,13 +27,21 @@ model Product {
   id          String     @map("_id") @id @default(uuid())
   name        String
   price       String
-  rating      Float?
+  rating      Float?   @default(0)
   href        String
   imageSrc    String[]
   colors      Color[]
+  sizes       Size[]
 }
 
 model Color {
+  id            String       @map("_id") @id @default(uuid())
+  name          String
+  productId     String
+  product       Product  @relation(fields: [productId], references: [id])
+}
+
+model Size {
   id            String       @map("_id") @id @default(uuid())
   name          String
   productId     String

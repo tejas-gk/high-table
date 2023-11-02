@@ -30,6 +30,18 @@ export default function AddNewProduct() {
     const [images, setImages] = useState([]);
     const [newColor, setNewColor] = useState<string>('');
     const [newSize, setNewSize] = useState<string>('');
+    const [sizes, setSizes] = useState<string[]>([]);
+
+    function handleSizeChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setNewSize(event.target.value);
+    }
+
+    function handleSizeKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
+        if (event.key === 'Enter' && newSize.trim() !== '') {
+            setSizes([...sizes, newSize.trim()]);
+            setNewSize('');
+        }
+    }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setImages([...images, ...e.target.files])
@@ -53,7 +65,7 @@ export default function AddNewProduct() {
         
         const response = await fetch('/api/products', {
             method: 'POST',
-            body: JSON.stringify({ ...form.getValues(), images: imageBlobs, colors }),
+            body: JSON.stringify({ ...form.getValues(), images: imageBlobs, colors ,sizes}),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -210,26 +222,27 @@ export default function AddNewProduct() {
                                     name="size"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Size</FormLabel>
+                                            <FormLabel>Sizes</FormLabel>
                                             <FormControl>
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex flex-wrap gap-3">
-
-                                                        {colors.map((color, index) => (
+                                                        {sizes.map((size, index) => (
                                                             <div
                                                                 key={index}
-                                                                className="w-10 h-10 rounded-full"
-                                                                style={{ background: color }}
-                                                            />
+                                                                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center"
+                                                            >
+                                                                {size}
+                                                            </div>
                                                         ))}
                                                     </div>
-                                                    <Input placeholder="size" {...field} value={newSize}
-                                                        onChange={(event) => {
-                                                            setNewSize(event.target.value);
-                                                        }}
+                                                    <Input
+                                                        placeholder="size"
+                                                        {...field}
+                                                        value={newSize}
+                                                        onChange={handleSizeChange}
+                                                        onKeyPress={handleSizeKeyPress}
                                                     />
                                                 </div>
-
                                             </FormControl>
                                             <FormDescription>
                                                 Enter Size
@@ -238,6 +251,7 @@ export default function AddNewProduct() {
                                         </FormItem>
                                     )}
                                 />
+
 
                                 <Button type="submit">Submit</Button>
                             </form>

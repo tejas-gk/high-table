@@ -1,6 +1,6 @@
-import { DataTable } from '@/components/data-table'
+import { DataTable } from '@/app/(products)/products/data-table'
 import React from 'react'
-import prisma from '@/lib/prismadb' 
+import prisma from '@/lib/prismadb'
 
 const getAllProducts = async () => {
   const products = await prisma.product.findMany();
@@ -9,7 +9,7 @@ const getAllProducts = async () => {
 
 
 export default async function page() {
-  const allProducts =await getAllProducts()
+  const allProducts = await getAllProducts()
   console.log(allProducts)
   return (
     <div className="container py-10 mx-auto">

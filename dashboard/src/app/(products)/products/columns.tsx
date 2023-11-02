@@ -14,7 +14,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import { ArrowUpDown, Bus, ChevronDown, MoreHorizontal, Truck } from "lucide-react"
-
+import { CellAction } from "./cell-action"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -26,23 +26,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
 import { Product } from "@/types/productType"
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion"
 import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
+
 
 
 export const columns: ColumnDef<Product>[] = [
@@ -69,8 +56,9 @@ export const columns: ColumnDef<Product>[] = [
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => (
-            <div className={`capitalize ${row.getValue("status") == 'cancelled' ? 'text-red-500' : row.getValue("status") == 'completed' ? 'text-green-500' : row.getValue("status") == 'processing' ? 'text-yellow-500' : 'text-blue-500'}
-            `}>{row.getValue("status")}</div>
+            <Badge className="bg-green-400">
+                Live
+            </Badge>
         ),
     },
     {
@@ -87,7 +75,7 @@ export const columns: ColumnDef<Product>[] = [
             )
         },
         cell: ({ row }) => <div className="lowercase">
-            <Link href={`/products/${row.getValue("name")}`}>
+            <Link href={`/products/${row.original.id}`}>
                 {row.getValue("name")}
             </Link>
         </div>,
@@ -124,30 +112,6 @@ export const columns: ColumnDef<Product>[] = [
     },
     {
         id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const product = row.original
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(product.id)}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
-                        <DropdownMenuItem>View details</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },  
+        cell: ({ row }) => <CellAction data={row.original} />
+    },
 ]

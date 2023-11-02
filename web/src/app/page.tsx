@@ -1,85 +1,17 @@
-import Image from 'next/image'
 import React from 'react'
-import { getSession } from 'next-auth/react';
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
 import CategoryCard from '@/components/cards/category-card';
 import ProductCard from '@/components/cards/product-card';
 import Hero from '@/components/hero';
 import Promo from '@/components/promo';
 import SubNavbar from '@/components/sub-navbar';
 
+async function getProducts() {
+  const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { next: { revalidate: 3600 } })
+  const data = await products.json()
+  return data
+}
 
-// async function getProducts() {
-//   const res = await fetch('https://dummyjson.com/products')
-//   const data = await res.json()
-//   return data
-// }
 
-// async function getCategory() {
-//   const res = await fetch('https://dummyjson.com/categories')
-//   const data = await res.json()
-//   return data
-// }
-
-export const products = [
-  {
-    image: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-    name: 'Basic Tee',
-    price: '32.00',
-    category: 'Tops',
-  },
-  {
-    image: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-    name: 'Basic Tee',
-    price: '32.00',
-    category: 'Tops',
-  },
-  {
-    image: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-    name: 'Basic Tee',
-    price: '32.00',
-    category: 'Tops',
-  },
-  {
-    image: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-    name: 'Basic Tee',
-    price: '32.00',
-    category: 'Tops',
-  },
-  {
-    image: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-05.jpg',
-    name: 'Basic Tee',
-    price: '32.00',
-    category: 'Tops',
-  },
-  {
-    image: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-06.jpg',
-    name: 'Basic Tee',
-    price: '32.00',
-    category: 'Tops',
-  },
-  {
-    image: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-07.jpg',
-    name: 'Basic Tee',
-    price: '32.00',
-    category: 'Tops',
-  },
-  {
-    image: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-08.jpg',
-    name: 'Basic Tee',
-    price: '32.00',
-    category: 'Tops',
-  },
-]
 
 const categories = [
   {
@@ -106,9 +38,8 @@ const categories = [
 
 
 export default async function Home() {
-  // const products=await getProducts()
-
-  return (
+  const products=await getProducts()
+   return (
     <>
       {/* @ts-ignore */}
       {/* Hello {info?.user?.name} */}
