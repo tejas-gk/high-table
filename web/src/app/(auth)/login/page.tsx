@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Github } from "lucide-react"
+import { signIn } from "next-auth/react"
 
 export default function page() {
     return (
@@ -24,11 +25,19 @@ export default function page() {
             </CardHeader>
             <CardContent className="grid gap-4">
                 <div className="grid grid-cols-2 gap-6">
-                    <Button variant="outline">
+                    <Button variant="outline"
+                        onClick={() => {
+                            signIn('github')
+                        }}
+                    >
                         <Github className="mr-2 h-4 w-4" />
                         Github
                     </Button>
-                    <Button variant="outline">
+                    <Button variant="outline"
+                        onClick={() => {
+                            signIn('google')
+                        }}
+                    >
                         <Github className="mr-2 h-4 w-4" />
                         Google
                     </Button>

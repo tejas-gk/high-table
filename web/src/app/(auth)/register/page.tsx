@@ -133,7 +133,11 @@ export default function Page() {
                                         <Github className="mr-2 h-4 w-4" />
                                         Github
                                     </Button>
-                                    <Button variant="outline">
+                                    <Button variant="outline"
+                                        onClick={() => {
+                                            signIn('google')
+                                        }}
+                                    >
                                         <Github className="mr-2 h-4 w-4" />
                                         Google
                                     </Button>
