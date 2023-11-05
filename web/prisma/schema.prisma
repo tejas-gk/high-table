@@ -19,11 +19,13 @@ model User {
   profileImage   String?
   hashedPassword String?
   location       String?
+  role           String    @default("USER")
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  payments       Payment[]
   accounts       Account[]
   Session        Session[]
+  Cart           Cart[]
+  Order          Order[]
 }
 
 model Account {
@@ -63,15 +65,18 @@ model VerificationToken {
 }
 
 model Product {
-  id       String    @id @default(uuid()) @map("_id")
-  name     String
-  price    String
-  rating   Float     @default(0)
-  href     String
-  imageSrc String
-  colors   Color[]
-  sizes    Size[]
-  payments Payment[]
+  id         String       @id @default(uuid()) @map("_id")
+  name       String
+  price      String
+  rating     Float        @default(0)
+  imageSrc   String
+  inStock    Boolean      @default(true)
+  colors     Color[]
+  sizes      Size[]
+  Category   Category?    @relation(fields: [categoryId], references: [id])
+  categoryId String?
+  Cart       Cart[]
+  OrderItems OrderItems[]
 }
 
 model Color {
@@ -79,6 +84,7 @@ model Color {
   name          String
   class         String
   selectedClass String
+  inStock       Boolean @default(true)
   productId     String
   product       Product @relation(fields: [productId], references: [id])
 }
@@ -86,21 +92,46 @@ model Color {
 model Size {
   id        String  @id @default(uuid()) @map("_id")
   name      String
-  inStock   Boolean
+  inStock   Boolean @default(true)
   productId String
   product   Product @relation(fields: [productId], references: [id])
 }
 
-model Payment {
-  id            String   @id @default(uuid()) @map("_id")
-  amount        Float
-  currency      String
-  paymentMethod String
-  status        String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  userId        String
-  user          User     @relation(fields: [userId], references: [id])
-  productId     String
-  product       Product  @relation(fields: [productId], references: [id])
+model Category {
+  id         String    @id @default(uuid()) @map("_id")
+  title      String
+  subtitle   String
+  imageSrc   String
+  isFeatured Boolean   @default(false)
+  products   Product[]
+}
+
+model Cart {
+  id        String  @id @default(uuid()) @map("_id")
+  userId    String
+  productId String
+  quantity  Int
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id         String       @id @default(uuid()) @map("_id")
+  userId     String
+  user       User         @relation(fields: [userId], references: [id])
+  isPaid     Boolean      @default(false)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  OrderItems OrderItems[]
+}
+
+model OrderItems {
+  id        String   @id @default(uuid()) @map("_id")
+  orderId   String
+  productId String
+  quantity  Int
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

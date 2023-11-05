@@ -38,7 +38,19 @@ const useCartStore = create(persist<CartState>((set, get) => ({
         }
     },
     removeFromCart: (data: Item) => {
-        set({ items: get().items.filter(item => item.id !== data.id) });
+        const currentItems = get().items;
+        const existingItemIndex = currentItems.findIndex(item => item.id === data.id);
+
+        if (existingItemIndex !== -1) {
+            // Item exists, decrement quantity
+            const newItems = [...currentItems];
+            newItems[existingItemIndex].quantity -= 1;
+            if (newItems[existingItemIndex].quantity === 0) {
+                // Remove item from cart
+                newItems.splice(existingItemIndex, 1);
+            }
+            set({ items: newItems });
+        }
     },
     removeAllFromCart: () => {
         set({ items: [] });

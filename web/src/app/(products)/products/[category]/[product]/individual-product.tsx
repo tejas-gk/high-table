@@ -64,7 +64,7 @@ function classNames(...classes: any[]) {
 
 export default function IndividualProduct({
     product
-}:any) {
+}: any) {
     const [selectedColor, setSelectedColor] = useState(product.colors[0].name)
     const [selectedSize, setSelectedSize] = useState(product.sizes[0].name)
 
@@ -100,8 +100,8 @@ export default function IndividualProduct({
         return totalRating / reviews.length;
     }
 
- 
-    const { addToCart, itemAlreadyInCart, items } = useCartStore();
+
+    const { addToCart, itemAlreadyInCart, removeFromCart } = useCartStore()
     const [isLoading, setIsLoading] = useState(false);
 
     const handleAddToCart = (e: any) => {
@@ -109,6 +109,21 @@ export default function IndividualProduct({
         setIsLoading(true)
         addToCart(product)
         setIsLoading(false)
+    }
+
+
+    const handleIncrement = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        addToCart(product);
+        setIsLoading(false);
+    }
+
+    const handleDecrement = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        removeFromCart(product);
+        setIsLoading(false);
     }
 
 
@@ -124,8 +139,7 @@ export default function IndividualProduct({
                             e.target.src = 'https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg';
                         }}
                         src={product.imageSrc[0]} alt={product.imageAlt} className="object-cover object-center"
-                         />
-                    <img src="blob:http://localhost:3001/c1d4113c-3f82-4f66-b5a1-e2a4ea8e2703"/>
+                    />
 
                 </div>
 
@@ -276,12 +290,17 @@ export default function IndividualProduct({
                             <div className='
               flex gap-4 mt-10
               '>
-                                <Button onClick={handleAddToCart}
-                                    className='w-1/2'
-                                // variant={itemAlreadyInCart != 0 ? 'outline' : 'default'}
-                                >
-                                    Add to cart
-                                </Button>
+                                {itemAlreadyInCart(product) ? (
+                                    <Button className="mt-2 flex justify-between w-1/2">
+                                        <span onClick={handleIncrement}>+</span>
+                                        <span>{useCartStore.getState().items.find(item => item.id === product.id)?.quantity}</span>
+                                        <span onClick={handleDecrement}>-</span>
+                                    </Button>
+                                ) : (
+                                    <Button className='mt-4 w-1/2' onClick={handleAddToCart}>
+                                        {isLoading ? 'Adding...' : 'Add to Cart'}
+                                    </Button>
+                                )}
                                 <Button onClick={handleAddToCart}
                                     className='w-1/2'
                                     variant={'outline'}

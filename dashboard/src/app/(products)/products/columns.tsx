@@ -56,7 +56,7 @@ export const columns: ColumnDef<Product>[] = [
         accessorKey: "status",
         header: "Status",
         cell: ({ row }) => (
-            <Badge className="bg-green-400">
+            <Badge className="bg-green-400 text-green-800">
                 Live
             </Badge>
         ),

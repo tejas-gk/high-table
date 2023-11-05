@@ -22,16 +22,45 @@ export async function POST(request: Request) {
     console.log(items, 'items')
     try {
 
+        const userId = '5a30807c-5402-4aa7-ab9f-f1e26b6827ba'
+        
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        })
+        let orderId= ''
+        try {
+            const order = await prisma.order.create({
+                data: {
+                    user: {
+                        connect: {
+                            id: userId
+                        }
+                    },
+                    OrderItems: {
+                        create: items.items.map((item: any) => ({
+                            productId: item.id,
+                            quantity: item.quantity,
+                        }))
+                    }
+                }
+            })
+            console.log(order, 'order')
+            orderId = order.id
+        } catch (err) {
+            console.log(err, 'err')
+        }
+
+
+        
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
             billing_address_collection: 'required',
-            shipping_address_collection: {
-                allowed_countries: ['IN'],
-            },
 
-            line_items: items.map((item) => ({
+            line_items: items.items.map((item:any) => ({
                 price_data: {
                     currency: 'inr',
                     product_data: {
@@ -44,16 +73,19 @@ export async function POST(request: Request) {
                 quantity: item.quantity,
                 custom: {
                     size: item.size,
-                }
+                },
             })),
             success_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/checkout/success`,
             cancel_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`,
+            metadata: {
+               orderId: orderId
+           }
         })
 
         return NextResponse.json({ url: session.url }, {
             headers: corsHeaders
         });
-    } catch (error) {
+    } catch (error:any) {
         console.log(error)
         return {
             statusCode: 500,

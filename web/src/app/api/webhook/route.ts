@@ -37,32 +37,15 @@ export async function POST(req: Request) {
 
 
     if (event.type === "checkout.session.completed") {
-        // const order = await prismadb.order.update({
-        //     where: {
-        //         id: session?.metadata?.orderId,
-        //     },
-        //     data: {
-        //         isPaid: true,
-        //         address: addressString,
-        //         phone: session?.customer_details?.phone || '',
-        //     },
-        //     include: {
-        //         orderItems: true,
-        //     }
-        // });
-
-        // const productIds = order.orderItems.map((orderItem) => orderItem.productId);
-
-        // await prismadb.product.updateMany({
-        //     where: {
-        //         id: {
-        //             in: [...productIds],
-        //         },
-        //     },
-        //     data: {
-        //         isArchived: true
-        //     }
-        // });
+        const order = await prismadb.order.update({
+            where: {
+                id: session?.metadata?.orderId
+            },
+            data: {
+                isPaid: true,
+                // address: addressString
+            }
+        })
     }
 
     return new NextResponse(null, { status: 200 });

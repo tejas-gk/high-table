@@ -25,17 +25,11 @@ import {
 import { Plus } from "lucide-react"
 import { Product } from "@prisma/client"
 import { AiFillCaretDown } from "react-icons/ai"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 
-export default function AddNewProduct() {
+
+
+export default function AddNewCategory() {
     const form = useForm<Product>()
     const [images, setImages] = useState([]);
     const [newColor, setNewColor] = useState<string>('');
@@ -54,6 +48,7 @@ export default function AddNewProduct() {
     }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // @ts-ignore
         setImages([...images, ...e.target.files])
     }
     const [colors, setColors] = useState<string[]>([]);
@@ -63,6 +58,7 @@ export default function AddNewProduct() {
     }
 
     function handleKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
+        // @ts-ignore
         if (event.key === 'Enter' && newColor.trim() !== '') {
             setColors([...colors, newColor.trim()]);
             setNewColor('');

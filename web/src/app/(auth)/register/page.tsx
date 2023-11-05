@@ -103,6 +103,23 @@ export default function Page() {
         }
     }
 
+    const passwordStrength = (password: string) => {
+        let strength = 0;
+        if (password.match(/[a-z]+/)) {
+            strength += 1;
+        }
+        if (password.match(/[A-Z]+/)) {
+            strength += 1;
+        }
+        if (password.match(/[0-9]+/)) {
+            strength += 1;
+        }
+        if (password.match(/[$@#&!]+/)) {
+            strength += 1;
+        }
+        return strength;
+    }
+
     return (
         <div className='
         absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:mt-28
@@ -224,7 +241,9 @@ export default function Page() {
                                             </FormControl>
                                             <FormDescription>
                                                 Enter a strong password.
-                                                <Progress className="" value={33} indicatorClassName='bg-green-400'/>
+                                                <Progress className="" value={
+                                                    passwordStrength(field.value) * 25
+                                                } indicatorClassName='bg-green-400'/>
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>

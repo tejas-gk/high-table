@@ -3,7 +3,6 @@ import prisma from '@/lib/prismadb';
 export const POST = async (request: Request) => {
     const body = await request.json();
     const { name, price, rating, images, colors, sizes } = body;
-    const href = 'hello';
 
     const formattedColors = colors.map((color: any) => ({
         name: color
@@ -17,7 +16,6 @@ export const POST = async (request: Request) => {
         data: {
             name,
             price,
-            href,
             imageSrc: {
                 set: images
             },
@@ -32,7 +30,6 @@ export const POST = async (request: Request) => {
 export const PATCH = async (request: Request) => {
     const body = await request.json();
     const { id, name, price, rating, images, colors, sizes } = body;
-    const href = 'hello';
 
     const formattedColors = colors.map((color: any) => ({
         name: color
@@ -50,7 +47,6 @@ export const PATCH = async (request: Request) => {
             name,
             price,
             rating,
-            href,
             imageSrc: {
                 set: images
             },
@@ -69,6 +65,8 @@ export const GET = async (request: Request) => {
             sizes: true
         }
     });
+
+    console.log(product)
 
     return new Response(JSON.stringify(product), { status: 200 });
 }

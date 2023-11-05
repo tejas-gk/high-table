@@ -23,7 +23,6 @@ import { Search } from "@/components/search"
 import TeamSwitcher from "@/components/team-switcher"
 import { UserNav } from "@/components/user-nav"
 import { ModeToggle } from "@/components/mode-toggle"
-import Api from "./api"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -181,7 +180,6 @@ export default function DashboardPage() {
             </div>
           </TabsContent>
           <TabsContent value="analytics" className="space-y-4">
-            <Api/>
           </TabsContent>
         </Tabs>
       </div>

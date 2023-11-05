@@ -102,6 +102,7 @@ export default function Navbar() {
             console.log('Session:', session);
             // @ts-ignore
             setInfo(session)
+            console.log(info, 'info')
         };
 
         fetchSession();

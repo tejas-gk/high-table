@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Sheet,
     SheetClose,
@@ -14,10 +14,11 @@ import { Button } from './ui/button'
 import CartItem from './cart-item'
 import useCartStore from '@/store/cart-store'
 import { useRouter } from 'next/navigation'
+import { getSession } from 'next-auth/react'
 
 
 
-export default function Cart() {
+export default  function Cart() {
     const { items } = useCartStore()
     const router=useRouter()
 
@@ -28,7 +29,6 @@ export default function Cart() {
         })
         return total
     }
-
   return (
       <Sheet>
           <SheetTrigger asChild>
@@ -65,12 +65,17 @@ export default function Cart() {
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <Button size='lg' className='mt-6 w-full'
                           onClick={async () => {
+                            //   const userId = await session?.user?.name
+                            // console.log(userId,'userid')
                               await fetch('/api/checkout', {
                                   method: 'POST',
                                   headers: {
                                       'Content-Type': 'application/json',
                                     },
-                                    body: JSON.stringify(items),
+                                  body: JSON.stringify({
+                                        items,
+                                        // userId
+                                    })
                               })
                                     .then((res) => res.json())
                                     .then((session) => {

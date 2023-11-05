@@ -36,7 +36,7 @@ export const CellAction = ({
                 description: "You can still view them in soft deletes",
             })
             router.refresh();
-        } catch (error) {
+        } catch (error:any) {
             toast({
                 title: "Something went wrong",
                 description: error.message,
