@@ -6,7 +6,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-
+import { useEdgeStore } from "@/lib/edgestore"
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
@@ -23,23 +23,45 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Plus } from "lucide-react"
-import { Product } from "@prisma/client"
+import { Product, Color, Size } from "@prisma/client"
 import { AiFillCaretDown } from "react-icons/ai"
+import { OurFileRouter } from "@/app/api/uploadthing/core"
+import { UploadButton } from "@/lib/uploadthing"
+import { FileState, MultiFileDropzone } from "@/components/image-upload"
+import {Category} from '@prisma/client'
 
 
 
 
-export default function AddNewCategory() {
-    const form = useForm<Product>()
+export default function AddNewProduct() {
+    const form = useForm<Category>()
     const [images, setImages] = useState([]);
     const [newColor, setNewColor] = useState<string>('');
     const [newSize, setNewSize] = useState<string>('');
     const [sizes, setSizes] = useState<string[]>([]);
 
+
+    const [fileStates, setFileStates] = useState<FileState[]>([]);
+    const [uploading, setUploading] = useState(false);
+
+    function updateFileProgress(key: string, progress: FileState['progress']) {
+        setFileStates((fileStates) => {
+            const newFileStates = structuredClone(fileStates);
+            const fileState = newFileStates.find(
+                (fileState) => fileState.key === key,
+            );
+            if (fileState) {
+                fileState.progress = progress;
+            }
+            return newFileStates;
+        });
+    }
+
+    const { edgestore } = useEdgeStore();
+
     function handleSizeChange(event: React.ChangeEvent<HTMLInputElement>) {
         setNewSize(event.target.value);
     }
-
     function handleSizeKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
         if (event.key === 'Enter' && newSize.trim() !== '') {
             setSizes([...sizes, newSize.trim()]);
@@ -48,7 +70,6 @@ export default function AddNewCategory() {
     }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // @ts-ignore
         setImages([...images, ...e.target.files])
     }
     const [colors, setColors] = useState<string[]>([]);
@@ -58,20 +79,40 @@ export default function AddNewCategory() {
     }
 
     function handleKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
-        // @ts-ignore
         if (event.key === 'Enter' && newColor.trim() !== '') {
             setColors([...colors, newColor.trim()]);
             setNewColor('');
         }
     }
     const { toast } = useToast()
-    const imageInputRef = useRef(null);
+    const [edgeStoreImages, setEdgeStoreImages] = useState()
     async function onSubmit() {
-        const imageBlobs = images.map(image => URL.createObjectURL(image));
 
-        const response = await fetch('/api/products', {
+        setUploading(true);
+        await Promise.all(
+            fileStates.map(async (addedFileState) => {
+                try {
+                    const res = await edgestore.publicFiles.upload({
+                        file: addedFileState.file,
+                        onProgressChange: async (progress) => {
+                            updateFileProgress(addedFileState.key, progress);
+                            if (progress === 100) {
+                                await new Promise((resolve) => setTimeout(resolve, 1000));
+                                updateFileProgress(addedFileState.key, 'COMPLETE');
+                            }
+                        },
+                    });
+                    console.log(res);
+                    setEdgeStoreImages(res)
+                } catch (err) {
+                    updateFileProgress(addedFileState.key, 'ERROR');
+                }
+            })
+        );
+        setUploading(false);
+        const response = await fetch('/api/category', {
             method: 'POST',
-            body: JSON.stringify({ ...form.getValues(), images: imageBlobs, colors, sizes }),
+            body: JSON.stringify({ ...form.getValues(), images: edgeStoreImages.url }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -91,30 +132,33 @@ export default function AddNewCategory() {
         console.log(data)
     }
 
+
+
+
     return (
         <Dialog>
             <DialogTrigger>
                 <Button className="flex gap-2 items-center">
-                    <span>Add Product</span>
+                    <span>Add Category</span>
                 </Button>
             </DialogTrigger>
             <DialogContent className="max-w-3xl overflow-y-auto h-screen">
                 <DialogHeader>
-                    <DialogTitle>Create a new product</DialogTitle>
+                    <DialogTitle>Create a new category</DialogTitle>
                     <DialogDescription>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                                 <FormField
                                     control={form.control}
-                                    name="name"
+                                    name="title"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Name</FormLabel>
+                                            <FormLabel>Title</FormLabel>
                                             <FormControl>
-                                                <Input placeholder="Name" {...field} />
+                                                <Input placeholder="Title" {...field} />
                                             </FormControl>
                                             <FormDescription>
-                                                Enter the product
+                                                Enter the Title
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
@@ -122,69 +166,39 @@ export default function AddNewCategory() {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="description"
+                                    name="subtitle"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Description</FormLabel>
+                                            <FormLabel>Subtitle</FormLabel>
                                             <FormControl>
-                                                <Textarea placeholder="description" {...field} />
+                                                <Textarea placeholder="subtitle" {...field} />
                                             </FormControl>
                                             <FormDescription>
-                                                Enter Description
+                                                Enter Sutitle
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
+                              
+                               
                                 <FormField
                                     control={form.control}
-                                    name="price"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Price</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="price" {...field}
-                                                    type="number"
-                                                />
-                                            </FormControl>
-                                            <FormDescription>
-                                                Enter Price
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="images"
+                                    name="imageSrc"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Images</FormLabel>
                                             <FormControl>
-                                                <div className="flex flex-wrap flex-row gap-3">
-                                                    <div className="
-                                                    h-32 w-32 border-2 border-gray-200 border-dashed rounded-md flex justify-center items-center cursor-pointer
-                                                  "
-                                                        onClick={() => imageInputRef.current.click()}
-                                                    >
-                                                        <Plus size={32} />
-                                                        <Input
-                                                            id="imageInput"
-                                                            ref={imageInputRef}
-                                                            type="file"
-                                                            accept="image/*"
-                                                            multiple
-                                                            style={{ display: 'none' }}
-                                                            onChange={handleImageChange}
-                                                        />
-                                                    </div>
-                                                    {
-                                                        images.map((image, index) => (
-                                                            <div key={index} className="h-32 w-32 border-2 border-gray-200 border-dashed rounded-md flex justify-center items-center cursor-pointer">
-                                                                <img src={URL.createObjectURL(image)} alt="" className="h-full w-full object-contain" />
-                                                            </div>
-                                                        ))
-                                                    }
+                                                <div>
+                                                    <MultiFileDropzone
+                                                        value={fileStates}
+                                                        onChange={(files) => {
+                                                            setFileStates(files);
+                                                        }}
+                                                        onFilesAdded={async (addedFiles) => {
+                                                            setFileStates([...fileStates, ...addedFiles]);
+                                                        }}
+                                                    />
                                                 </div>
                                             </FormControl>
                                             <FormDescription>
@@ -194,71 +208,8 @@ export default function AddNewCategory() {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="color"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Colors</FormLabel>
-                                            <FormControl>
-                                                <div className="flex flex-col gap-6">
-                                                    <div className="flex flex-wrap gap-3">
-
-                                                        {colors.map((color, index) => (
-                                                            <div
-                                                                key={index}
-                                                                className="w-10 h-10 rounded-full"
-                                                                style={{ background: color }}
-                                                            />
-                                                        ))}
-                                                    </div>
-                                                    <Input placeholder="color" {...field} value={newColor}
-                                                        onChange={handleColorChange}
-                                                        onKeyPress={handleKeyPress}
-                                                    />
-                                                </div>
-                                            </FormControl>
-                                            <FormDescription>
-                                                Select a color and click &apos;Add Color&apos;
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="size"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Sizes</FormLabel>
-                                            <FormControl>
-                                                <div className="flex flex-col gap-6">
-                                                    <div className="flex flex-wrap gap-3">
-                                                        {sizes.map((size, index) => (
-                                                            <div
-                                                                key={index}
-                                                                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center"
-                                                            >
-                                                                {size}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                    <Input
-                                                        placeholder="size"
-                                                        {...field}
-                                                        value={newSize}
-                                                        onChange={handleSizeChange}
-                                                        onKeyPress={handleSizeKeyPress}
-                                                    />
-                                                </div>
-                                            </FormControl>
-                                            <FormDescription>
-                                                Enter Size
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
+                               
+                                
 
 
                                 <Button type="submit">Submit</Button>

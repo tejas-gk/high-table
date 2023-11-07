@@ -1,10 +1,13 @@
 # Ecommerce Project with Next.js and Tailwind CSS
+
 Welcome to the Ecommerce Project built with Next.js and Tailwind CSS (ShadCn). This project provides a robust foundation for developing a modern, responsive, and scalable ecommerce website.
 
 ## Table of Contents
+
 - [Ecommerce Project with Next.js and Tailwind CSS](#ecommerce-project-with-nextjs-and-tailwind-css)
   - [Table of Contents](#table-of-contents)
   - [Built with](#built-with)
+  - [Features to Add](#features-to-add)
   - [Development](#development)
     - [Start by cloning the repository:](#start-by-cloning-the-repository)
     - [Install dependencies](#install-dependencies)
@@ -16,14 +19,39 @@ Welcome to the Ecommerce Project built with Next.js and Tailwind CSS (ShadCn). T
   - [Testing](#testing)
 
 ## Built with
+
 - **Next.js** - A React framework for building server-side rendered and statically generated applications
 - **Tailwind CSS** - A utility-first CSS framework for rapidly building custom designs
 - **TypeScript** - A superset of JavaScript that provides optional static typing
 - **React Hook Form** - A library for flexible and extensible forms
 - **Zustand** - A library for state management
 - **Zod** - A TypeScript-first schema declaration library
-- **ShadCn** - Beautifully designed components that you can copy and paste into your apps. 
-  
+- **ShadCn** - Beautifully designed components that you can copy and paste into your apps.
+
+## Features to Add
+
+- [ ] edit product (dashboard)
+- [ ] fix payment (web)
+- [ ] add reviews (web)
+- [ ] add to wishlist (web)
+- [ ] crud categories (dashboard)
+- [ ] display analytics (dashboard)
+- [ ] add search (web)
+- [ ] add skeleton loading (web)
+- [ ] add pagination (web)
+- [ ] add authentication (dashboard)
+- [ ] add more stores (dashboard)
+- [ ] add profile page (web)
+- [ ] add order history (web)
+- [ ] make settings functional (web)
+- [ ] show docs (dashboard)
+- [ ] add tests (dashboard)
+- [ ] add tests (web)
+- [ ] add tests (shared)
+- [ ] add middleware (web)
+- [ ] add middleware (dashboard)
+- [ ] fix oAuth (web)
+- [ ] add category page (web)
 
 ## Development
 
@@ -40,30 +68,30 @@ cd carty-moron
 npm i
 ```
 
-
 ## Documentation
-
 
 ```bash
 # Start the dashboard server
 cd dashboard
 npm run dev
 ```
-  
-  ```bash
+
+```bash
 # Start the web server
 cd web
 npm run dev
 ```
 
-
-
 ## Project Structure
+
 The project is organized into two main directories:
 
-### dashboard: 
+### dashboard:
+
 Contains the backend interface for managing products, orders, and other administrative tasks.
-### web: 
+
+### web:
+
 Houses the frontend for customers to browse and purchase products.
 
 ```bash
@@ -85,7 +113,6 @@ carty-moron/
 
 
 ```
-
 
 ## Commit Convention
 
@@ -114,12 +141,9 @@ the following categories:
 
   e.g. `feat(components): add new prop to the avatar component`
 
-
 If you are interested in the detailed specification you can visit
 https://www.conventionalcommits.org/ or check out the
 [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines).
-
-
 
 ## Testing
 

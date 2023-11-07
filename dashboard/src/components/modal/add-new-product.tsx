@@ -6,7 +6,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-
+import { useEdgeStore } from "@/lib/edgestore"
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
@@ -23,29 +23,52 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Plus } from "lucide-react"
-import { Product } from "@prisma/client"
+import { Product, Color, Size } from "@prisma/client"
 import { AiFillCaretDown } from "react-icons/ai"
+import { OurFileRouter } from "@/app/api/uploadthing/core"
+import { UploadButton } from "@/lib/uploadthing"
+import { FileState, MultiFileDropzone } from "@/components/image-upload"
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
+
+type FormType = Product & Color & Size
 
 
 export default function AddNewProduct() {
-    const form = useForm<Product>()
+    const form = useForm<FormType>()
     const [images, setImages] = useState([]);
     const [newColor, setNewColor] = useState<string>('');
     const [newSize, setNewSize] = useState<string>('');
     const [sizes, setSizes] = useState<string[]>([]);
 
+
+    const [fileStates, setFileStates] = useState<FileState[]>([]);
+    const [uploading, setUploading] = useState(false);
+
+    function updateFileProgress(key: string, progress: FileState['progress']) {
+        setFileStates((fileStates) => {
+            const newFileStates = structuredClone(fileStates);
+            const fileState = newFileStates.find(
+                (fileState) => fileState.key === key,
+            );
+            if (fileState) {
+                fileState.progress = progress;
+            }
+            return newFileStates;
+        });
+    }
+
+    const { edgestore } = useEdgeStore();
+
     function handleSizeChange(event: React.ChangeEvent<HTMLInputElement>) {
         setNewSize(event.target.value);
     }
-
     function handleSizeKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
         if (event.key === 'Enter' && newSize.trim() !== '') {
             setSizes([...sizes, newSize.trim()]);
@@ -69,13 +92,37 @@ export default function AddNewProduct() {
         }
     }
     const { toast } = useToast()
-    const imageInputRef = useRef(null);
-    async function onSubmit() {
-        const imageBlobs = images.map(image => URL.createObjectURL(image));
+  
 
+    async function onSubmit() {
+        setUploading(true);
+        let imageArray = []
+        const uploadedImages=await Promise.all(
+            fileStates.map(async (addedFileState) => {
+                try {
+                    const res = await edgestore.publicFiles.upload({
+                        file: addedFileState.file,
+                        onProgressChange: async (progress) => {
+                            updateFileProgress(addedFileState.key, progress);
+                            if (progress === 100) {
+                                await new Promise((resolve) => setTimeout(resolve, 1000));
+                                updateFileProgress(addedFileState.key, 'COMPLETE');
+                            }
+                        },
+                    })
+                    console.log(res, 'unpaid')
+                    imageArray.push(res.url)
+                    return res
+                } catch (err) {
+                    updateFileProgress(addedFileState.key, 'ERROR');
+                }
+            })
+        );
+        setUploading(false);
+        console.log(imageArray)
         const response = await fetch('/api/products', {
             method: 'POST',
-            body: JSON.stringify({ ...form.getValues(), images: imageBlobs, colors, sizes }),
+            body: JSON.stringify({ ...form.getValues(), images: imageArray, colors, sizes }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -94,6 +141,9 @@ export default function AddNewProduct() {
         }
         console.log(data)
     }
+
+
+
 
     return (
         <Dialog>
@@ -160,35 +210,53 @@ export default function AddNewProduct() {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="images"
+                                    name="category"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Category</FormLabel>
+                                            <FormControl>
+                                                <Select>
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="Category" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="light">Clothes</SelectItem>
+                                                        <SelectItem value="dark">Decor</SelectItem>
+                                                        <SelectItem value="system">Kitchen</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+
+                                            </FormControl>
+                                            <FormDescription>
+                                                Enter Category
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="imageSrc"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Images</FormLabel>
                                             <FormControl>
-                                                <div className="flex flex-wrap flex-row gap-3">
-                                                    <div className="
-                                                    h-32 w-32 border-2 border-gray-200 border-dashed rounded-md flex justify-center items-center cursor-pointer
-                                                  "
-                                                        onClick={() => imageInputRef.current.click()}
+                                                <div>
+                                                    <MultiFileDropzone
+                                                        value={fileStates}
+                                                        onChange={(files) => {
+                                                            setFileStates(files);
+                                                        }}
+                                                        onFilesAdded={async (addedFiles) => {
+                                                            setFileStates([...fileStates, ...addedFiles]);
+                                                        }}
+                                                    />
+                                                    {/* <button
+                                                        onClick={handleUploadClick}
+                                                        disabled={uploading || fileStates.length === 0}
                                                     >
-                                                        <Plus size={32} />
-                                                        <Input
-                                                            id="imageInput"
-                                                            ref={imageInputRef}
-                                                            type="file"
-                                                            accept="image/*"
-                                                            multiple
-                                                            style={{ display: 'none' }}
-                                                            onChange={handleImageChange}
-                                                        />
-                                                    </div>
-                                                    {
-                                                        images.map((image, index) => (
-                                                            <div key={index} className="h-32 w-32 border-2 border-gray-200 border-dashed rounded-md flex justify-center items-center cursor-pointer">
-                                                                <img src={URL.createObjectURL(image)} alt="" className="h-full w-full object-contain" />
-                                                            </div>
-                                                        ))
-                                                    }
+                                                        Upload Files
+                                                    </button> */}
                                                 </div>
                                             </FormControl>
                                             <FormDescription>

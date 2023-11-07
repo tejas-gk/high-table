@@ -6,7 +6,7 @@ import Promo from '@/components/promo';
 import SubNavbar from '@/components/sub-navbar';
 
 async function getProducts() {
-  const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { next: { revalidate: 3600 } })
+  const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { cache: 'no-store' })
   const data = await products.json()
   return data
 }

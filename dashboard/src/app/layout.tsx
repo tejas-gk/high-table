@@ -9,6 +9,10 @@ import { ModeToggle } from '@/components/mode-toggle'
 import Image from 'next/image'
 import { UserNav } from '@/components/user-nav'
 import { Toaster } from "@/components/ui/toaster"
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from './api/uploadthing/core'
+import { EdgeStoreProvider } from '../lib/edgestore';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -30,39 +34,50 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Toaster />
-          <div className="md:hidden">
-            <Image
-              src="/examples/dashboard-light.png"
-              width={1280}
-              height={866}
-              alt="Dashboard"
-              className="block dark:hidden"
-            />
-            <Image
-              src="/examples/dashboard-dark.png"
-              width={1280}
-              height={866}
-              alt="Dashboard"
-              className="hidden dark:block"
-            />
-          </div>
-          <div className="hidden flex-col md:flex">
-            <div className="border-b">
-              <div className="flex h-16 items-center px-4">
-                <TeamSwitcher />
-                <MainNav className="mx-6" />
-                <div className="ml-auto flex items-center space-x-4">
-                  <Search />
-                  <ModeToggle />
-                  <UserNav />
+          <NextSSRPlugin
+            /**
+             * The `extractRouterConfig` will extract **only** the route configs
+             * from the router to prevent additional information from being
+             * leaked to the client. The data passed to the client is the same
+             * as if you were to fetch `/api/uploadthing` directly.
+             */
+            routerConfig={extractRouterConfig(ourFileRouter)}
+          />
+          <EdgeStoreProvider>
+            <Toaster />
+            <div className="md:hidden">
+              <Image
+                src="/examples/dashboard-light.png"
+                width={1280}
+                height={866}
+                alt="Dashboard"
+                className="block dark:hidden"
+              />
+              <Image
+                src="/examples/dashboard-dark.png"
+                width={1280}
+                height={866}
+                alt="Dashboard"
+                className="hidden dark:block"
+              />
+            </div>
+            <div className="hidden flex-col md:flex">
+              <div className="border-b">
+                <div className="flex h-16 items-center px-4">
+                  <TeamSwitcher />
+                  <MainNav className="mx-6" />
+                  <div className="ml-auto flex items-center space-x-4">
+                    <Search />
+                    <ModeToggle />
+                    <UserNav />
+                  </div>
                 </div>
               </div>
+              {children}
             </div>
-          {children}
-            </div>
-      </ThemeProvider>
-    </body>
+          </EdgeStoreProvider>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

@@ -20,7 +20,10 @@ import { usePathname, useRouter, useParams } from 'next/navigation'
 import 'keen-slider/keen-slider.min.css'
 import KeenSlider from 'keen-slider'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-
+import MoreInfo from './more-info'
+import { toast } from '@/components/ui/toast'
+import { Textarea } from '@/components/ui/textarea'
+import { Input } from '@/components/ui/input'
 
 const product = {
     id: '1',
@@ -62,11 +65,38 @@ function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function IndividualProduct({
-    product
-}: any) {
+interface Product {
+    id: string;
+    name: string;
+    description: string;
+    price: string;
+    rating: number;
+    reviewCount: number;
+    href: string;
+    imageSrc: string;
+    imageAlt: string;
+    colors: Array<{ name: string; class: string; selectedClass: string }>;
+    sizes: Array<{ name: string; inStock: boolean }>;
+}
+
+interface Review {
+    id: number;
+    name: string;
+    rating: number;
+    comment: string;
+}
+
+interface IndividualProductProps {
+    product: Product;
+}
+const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
     const [selectedColor, setSelectedColor] = useState(product.colors[0].name)
     const [selectedSize, setSelectedSize] = useState(product.sizes[0].name)
+
+    const [reviewText, setReviewText] = useState('');
+    const [reviewBody, setReviewBody] = useState('');
+    const [stars, setStars] = useState(0);
+    const [hoveredStars, setHoveredStars] = useState(0);
 
     const [reviews, setReviews] = useState([
         {
@@ -101,27 +131,139 @@ export default function IndividualProduct({
     }
 
 
+    const handleEditClick = (reviewId: String) => {
+        const review = reviews.find(review => review._id === reviewId);
+
+    };
+
+    const handleCancelEdit = () => {
+        setReviewText('');
+        setReviewBody('');
+        setStars(0);
+    };
+
+    const handleUpdateReview = async (reviewId: String) => {
+        try {
+            const response = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: reviewText,
+                    content: reviewBody,
+                    rating: stars,
+                })
+            });
+
+            if (response.ok) {
+                console.log('Review updated successfully');
+                setReviewText('');
+                setReviewBody('');
+                setStars(0);
+                toast({
+                    title: 'Review updated successfully',
+                    description: 'Your review has been updated successfully',
+                })
+                setReviews(reviews.map(review => {
+                    if (review._id === reviewId) {
+                        return {
+                            ...review,
+                            title: reviewText,
+                            content: reviewBody,
+                            rating: stars
+                        };
+                    }
+                    return review;
+                }
+                ));
+
+            } else {
+                console.error('Error updating review:', response.statusText);
+                toast({
+                    title: 'Error',
+                    description: 'Error updating review',
+                    variant: 'destructive'
+                })
+            }
+        } catch (error) {
+            console.error('Error updating review:', error);
+            toast({
+                title: 'Error',
+                description: 'Error updating review',
+                variant: 'destructive'
+            })
+        }
+    };
+
+    const handleDeleteReview = async (reviewId:String) => {
+        try {
+            const response = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                console.log('Review deleted successfully');
+                const updatedReviews = reviews.filter(review => review._id !== reviewId);
+                setReviews(updatedReviews);
+                toast({
+                    title: 'Review deleted successfully',
+                    description: 'Your review has been deleted successfully',
+                })
+            } else {
+                console.error('Error deleting review:', response.statusText);
+                toast({
+                    title: 'Error',
+                    description: 'Error deleting review',
+                    variant: 'destructive'
+                })
+            }
+        } catch (error) {
+            console.error('Error deleting review:', error);
+            toast({
+                title: 'Error',
+                description: 'Error deleting review',
+                variant: 'destructive'
+            })
+        }
+    };
+
+    const handleStarClick = (star: String) => {
+        // @ts-ignore
+        setStars(star);
+    };
+    const handleStarHover = (star: String) => {
+        // @ts-ignore
+        setHoveredStars(star);
+    };
+
+
+
     const { addToCart, itemAlreadyInCart, removeFromCart } = useCartStore()
     const [isLoading, setIsLoading] = useState(false);
 
     const handleAddToCart = (e: any) => {
         e.preventDefault()
         setIsLoading(true)
+        // @ts-ignore
         addToCart(product)
         setIsLoading(false)
     }
 
 
-    const handleIncrement = (e) => {
+    const handleIncrement = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setIsLoading(true);
+        // @ts-ignore
+
         addToCart(product);
         setIsLoading(false);
     }
 
-    const handleDecrement = (e) => {
+    const handleDecrement = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setIsLoading(true);
+        // @ts-ignore
         removeFromCart(product);
         setIsLoading(false);
     }
@@ -136,9 +278,10 @@ export default function IndividualProduct({
                         width={500}
                         height={500}
                         onError={(e) => {
+                            // @ts-ignore
                             e.target.src = 'https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg';
                         }}
-                        src={product.imageSrc[0]} alt={product.imageAlt} className="object-cover object-center"
+                        src={product.imageSrc[0]} alt={product.imageAlt} className="object-cover object-center w-full h-full"
                     />
 
                 </div>
@@ -209,7 +352,7 @@ export default function IndividualProduct({
                                                 key={color.name}
                                                 onClick={() => setSelectedColor(color.name)}
                                                 className={classNames(
-                                                    color.selectedClass,
+                                                    color.name,
                                                     'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
                                                 )}
                                             >
@@ -313,54 +456,45 @@ export default function IndividualProduct({
                     </section>
                 </div>
                 {/* more info */}
-                <div className='
-        col-span-12
-        '>
-                    <div className="bg-white">
-                        <div className="mx-auto grid max-w-2xl grid-cols-1 items-center gap-x-8 gap-y-16 px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
-                            <div>
-                                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Technical Specifications</h2>
-                                <p className="mt-4 text-gray-500">
-                                    The walnut wood card tray is precision milled to perfectly fit a stack of Focus cards. The powder coated
-                                    steel divider separates active cards from new ones, or can be used to archive important task lists.
-                                </p>
-
-                                <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
-                                    {features.map((feature) => (
-                                        <div key={feature.name} className="border-t border-gray-200 pt-4">
-                                            <dt className="font-medium text-gray-900">{feature.name}</dt>
-                                            <dd className="mt-2 text-sm text-gray-500">{feature.description}</dd>
-                                        </div>
-                                    ))}
-                                </dl>
-                            </div>
-                            <div className="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
-                                <img
-                                    src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-01.jpg"
-                                    alt="Walnut card tray with white powder coated steel divider and 3 punchout holes."
-                                    className="rounded-lg bg-gray-100"
-                                />
-                                <img
-                                    src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-02.jpg"
-                                    alt="Top down view of walnut card tray with embedded magnets and card groove."
-                                    className="rounded-lg bg-gray-100"
-                                />
-                                <img
-                                    src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-03.jpg"
-                                    alt="Side of walnut card tray with card groove and recessed card area."
-                                    className="rounded-lg bg-gray-100"
-                                />
-                                <img
-                                    src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-04.jpg"
-                                    alt="Walnut card tray filled with cards and card angled in dedicated groove."
-                                    className="rounded-lg bg-gray-100"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <MoreInfo data={features} />
 
                 {/* review */}
+                {
+                    true && (
+                        <>
+                            <div className='
+                col-span-12 flex flex-col gap-4
+                            '>
+                                <div className='flex gap-2'>
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <button
+                                            key={star}
+                                            onMouseEnter={() => handleStarHover(star)}
+                                            onMouseLeave={() => handleStarHover(0)}
+                                            onClick={() => handleStarClick(star)}
+                                            className={`text-2xl ${(hoveredStars >= star || stars >= star) ? 'text-yellow-400' : 'text-gray-300'
+                                                } cursor-pointer`}
+                                        >
+                                            &#9733;
+                                        </button>
+                                    ))}
+                                </div>
+                                <Input placeholder='Enter your review'
+                                    value={reviewText}
+                                    onChange={(e) => setReviewText(e.target.value)}
+                                />
+                                <Textarea placeholder='Enter your review'
+                                    value={reviewBody}
+                                    onChange={(e) => setReviewBody(e.target.value)}
+                                />
+                                <Button
+                                // onClick={handleReviewSubmit}
+                                >
+                                    Submit Review
+                                </Button>
+                            </div>
+                        </>
+                    )}
                 <div className="p-4 rounded  col-span-12">
                     <h2 className="text-2xl font-semibold mb-4">Customer Reviews</h2>
 
@@ -402,3 +536,4 @@ export default function IndividualProduct({
 
 
 
+export default IndividualProduct

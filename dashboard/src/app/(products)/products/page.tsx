@@ -3,8 +3,10 @@ import React from 'react'
 import prisma from '@/lib/prismadb'
 
 const getAllProducts = async () => {
-  const products = await prisma.product.findMany();
-  return products
+  console.log('mikasa')
+  const category = await prisma.product.findMany();
+  console.log(category)
+  return category
 }
 
 
