@@ -269,7 +269,7 @@ export default function Navbar() {
                 <div className="ml-auto flex items-center space-x-4">
                     {/* search bar */}
                     {
-                        (!isNavbarAtTop && pathname != '/') && <Search />
+                        (!isNavbarAtTop) && <Search />
                     }
                     {/* cart */}
                     <Cart />

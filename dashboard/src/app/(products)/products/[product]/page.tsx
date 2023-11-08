@@ -4,9 +4,7 @@ import IndividualProduct from './individual-product'
 const getProduct = async (productId: String) => {
   'use server'
   try {
-    const response = await fetch(`http://localhost:3001/api/products/${productId}`, {
-      method: 'GET',
-    })
+    const response = await fetch(`http://localhost:3001/api/products/${productId}`, { next: { revalidate: 10 } })
     return response.json()
   } catch (err) {
     console.log(err)

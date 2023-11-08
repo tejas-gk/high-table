@@ -21,8 +21,7 @@ import {
     CommandShortcut,
 } from "@/components/ui/command"
 import { Input } from "./ui/input"
-import { set } from "date-fns"
-
+import { searchProducts } from "@/actions/product"
 const categories = [
     {
         image: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
@@ -49,6 +48,7 @@ const categories = [
 export function Search() {
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState("")
+    const [results, setResults] = React.useState([])
 
     React.useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -61,6 +61,22 @@ export function Search() {
         document.addEventListener("keydown", down)
         return () => document.removeEventListener("keydown", down)
     }, [])
+
+    React.useEffect(() => {
+        const searchResult = async () => {
+            try {
+                const result = await searchProducts(query)
+                console.log(result, 'rick and morty',query)
+                setResults(result)
+
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        searchResult()
+    }, [query])
+
+
 
     return (
         <>
@@ -78,13 +94,13 @@ export function Search() {
                     <CommandEmpty>No results found.</CommandEmpty>
                     <CommandGroup heading="Suggestions">
                         {
-                            categories.map((category,i) => (
+                            results.map((category, i) => (
                                 <CommandItem key={i}>
-                                    <img src={category.image} className="mr-2 h-4 w-4" alt=""/>
+                                    <img src={category.image} className="mr-2 h-4 w-4" alt="" />
                                     <span>{category.name}</span>
                                 </CommandItem>
                             ))
-                       }
+                        }
                     </CommandGroup>
                     <CommandSeparator />
                     <CommandGroup heading="Settings">

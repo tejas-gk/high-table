@@ -23,10 +23,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Plus } from "lucide-react"
-import { Product, Color, Size } from "@prisma/client"
 import { AiFillCaretDown } from "react-icons/ai"
-import { OurFileRouter } from "@/app/api/uploadthing/core"
-import { UploadButton } from "@/lib/uploadthing"
 import { FileState, MultiFileDropzone } from "@/components/image-upload"
 import {
     Select,
@@ -35,17 +32,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Product } from "@/types/productType"
 
-
-type FormType = Product & Color & Size
 
 
 export default function AddNewProduct() {
-    const form = useForm<FormType>()
+    const form = useForm<Product>()
     const [images, setImages] = useState([]);
     const [newColor, setNewColor] = useState<string>('');
     const [newSize, setNewSize] = useState<string>('');
     const [sizes, setSizes] = useState<string[]>([]);
+    const [colors,setColors]=useState('')
 
 
     const [fileStates, setFileStates] = useState<FileState[]>([]);
@@ -66,27 +63,20 @@ export default function AddNewProduct() {
 
     const { edgestore } = useEdgeStore();
 
-    function handleSizeChange(event: React.ChangeEvent<HTMLInputElement>) {
-        setNewSize(event.target.value);
-    }
-    function handleSizeKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
+    function handleSizeKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key === 'Enter' && newSize.trim() !== '') {
             setSizes([...sizes, newSize.trim()]);
             setNewSize('');
         }
     }
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setImages([...images, ...e.target.files])
-    }
-    const [colors, setColors] = useState<string[]>([]);
-
     function handleColorChange(event: React.ChangeEvent<HTMLInputElement>) {
         setNewColor(event.target.value);
     }
 
-    function handleKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
+    function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key === 'Enter' && newColor.trim() !== '') {
+            // @ts-ignore
             setColors([...colors, newColor.trim()]);
             setNewColor('');
         }
@@ -96,7 +86,7 @@ export default function AddNewProduct() {
 
     async function onSubmit() {
         setUploading(true);
-        let imageArray = []
+        let imageArray: string[] = []
         const uploadedImages=await Promise.all(
             fileStates.map(async (addedFileState) => {
                 try {
@@ -143,7 +133,9 @@ export default function AddNewProduct() {
     }
 
 
-
+    function handleSizeChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setNewSize(event.target.value);
+    }
 
     return (
         <Dialog>
@@ -268,7 +260,7 @@ export default function AddNewProduct() {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="color"
+                                    name="colors"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Colors</FormLabel>
@@ -276,7 +268,7 @@ export default function AddNewProduct() {
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex flex-wrap gap-3">
 
-                                                        {colors.map((color, index) => (
+                                                        {Array.isArray(colors) && colors.map((color:string, index:number) => (
                                                             <div
                                                                 key={index}
                                                                 className="w-10 h-10 rounded-full"
@@ -299,7 +291,7 @@ export default function AddNewProduct() {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="size"
+                                    name="sizes"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Sizes</FormLabel>

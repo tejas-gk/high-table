@@ -69,24 +69,22 @@ model Product {
   name       String
   price      String
   rating     Float        @default(0)
-  imageSrc   String
+  imageSrc   String[]
   inStock    Boolean      @default(true)
   colors     Color[]
   sizes      Size[]
   Category   Category?    @relation(fields: [categoryId], references: [id])
   categoryId String?
   Cart       Cart[]
-  OrderItems OrderItems[]
+  OrderItems OrderItem[]
 }
 
 model Color {
-  id            String  @id @default(uuid()) @map("_id")
-  name          String
-  class         String
-  selectedClass String
-  inStock       Boolean @default(true)
-  productId     String
-  product       Product @relation(fields: [productId], references: [id])
+  id        String  @id @default(uuid()) @map("_id")
+  name      String
+  inStock   Boolean @default(true)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model Size {
@@ -116,16 +114,15 @@ model Cart {
 }
 
 model Order {
-  id         String       @id @default(uuid()) @map("_id")
+  id         String      @id @default(uuid()) @map("_id")
   userId     String
-  user       User         @relation(fields: [userId], references: [id])
-  isPaid     Boolean      @default(false)
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  OrderItems OrderItems[]
+  user       User        @relation(fields: [userId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  OrderItems OrderItem[]
 }
 
-model OrderItems {
+model OrderItem {
   id        String   @id @default(uuid()) @map("_id")
   orderId   String
   productId String

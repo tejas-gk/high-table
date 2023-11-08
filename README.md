@@ -15,8 +15,10 @@ Welcome to the Ecommerce Project built with Next.js and Tailwind CSS (ShadCn). T
   - [Project Structure](#project-structure)
     - [dashboard:](#dashboard)
     - [web:](#web)
+      - [The web directory is further organized into the following directories:](#the-web-directory-is-further-organized-into-the-following-directories)
   - [Commit Convention](#commit-convention)
   - [Testing](#testing)
+  - [References and Inspirations](#references-and-inspirations)
 
 ## Built with
 
@@ -27,13 +29,14 @@ Welcome to the Ecommerce Project built with Next.js and Tailwind CSS (ShadCn). T
 - **Zustand** - A library for state management
 - **Zod** - A TypeScript-first schema declaration library
 - **ShadCn** - Beautifully designed components that you can copy and paste into your apps.
+- **Edge Store** - Store Images in cloud
 
 ## Features to Add
 
 - [ ] edit product (dashboard)
 - [ ] fix payment (web)
 - [ ] add reviews (web)
-- [ ] add to wishlist (web)
+- [ ] add to Wishlist (web)
 - [ ] crud categories (dashboard)
 - [ ] display analytics (dashboard)
 - [ ] add search (web)
@@ -52,6 +55,12 @@ Welcome to the Ecommerce Project built with Next.js and Tailwind CSS (ShadCn). T
 - [ ] add middleware (dashboard)
 - [ ] fix oAuth (web)
 - [ ] add category page (web)
+- [ ] fix register page select (web)
+- [ ] fix register page backend for 2nd page (web)
+- [ ] add points to users (web)
+- [ ] fix add product bug
+- [ ] add category (dashboard)
+- [ ] show category (web)
 
 ## Development
 
@@ -93,6 +102,8 @@ Contains the backend interface for managing products, orders, and other administ
 ### web:
 
 Houses the frontend for customers to browse and purchase products.
+
+#### The web directory is further organized into the following directories:
 
 ```bash
 carty-moron/
@@ -148,3 +159,9 @@ https://www.conventionalcommits.org/ or check out the
 ## Testing
 
 Tests are written using [Vitest](https://vitest.dev). You can run all the tests from the root of the repository.
+
+## References and Inspirations
+
+- [Coding with Antonio](https://www.youtube.com/@codewithantonio)
+- [Shadcn](https://ui.shadcn.com/)
+- [TailwindComponents](https://tailwindui.com/components)

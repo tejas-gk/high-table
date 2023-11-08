@@ -5,6 +5,7 @@ export type Product = {
     price: string;
     rating: number;
     reviewCount: number;
+    category?: string;
     href: string;
     imageSrc: string;
     imageAlt: string;
