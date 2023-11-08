@@ -1,7 +1,8 @@
 'use server'
 import prisma from '@/lib/prismadb'
 
-export const searchProducts = async (query:string) => {
+export const searchProducts = async (query: string) => {
+    console.log(query,'whyyyy')
     const searchResults = await prisma.product.findMany({
         where: {
             name: {
@@ -13,5 +14,6 @@ export const searchProducts = async (query:string) => {
             id:true
         }
     })
+    console.log(searchResults,query)
     return searchResults
 }

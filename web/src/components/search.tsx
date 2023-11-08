@@ -94,10 +94,10 @@ export function Search() {
                     <CommandEmpty>No results found.</CommandEmpty>
                     <CommandGroup heading="Suggestions">
                         {
-                            results.map((category, i) => (
+                            results.map((res, i) => (
                                 <CommandItem key={i}>
-                                    <img src={category.image} className="mr-2 h-4 w-4" alt="" />
-                                    <span>{category.name}</span>
+                                    <img src={res.imageSrc[0]} className="mr-2 h-4 w-4" alt="" />
+                                    <span>{res.name}</span>
                                 </CommandItem>
                             ))
                         }
