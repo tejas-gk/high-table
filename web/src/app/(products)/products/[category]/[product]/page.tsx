@@ -15,7 +15,6 @@ const getProduct = async (productId:String) => {
 export default async function Page({ params }: any) {
   console.log(params.product,'hehhehehe')
   const product = await getProduct(params.product)
-  // console.log(product.imageSrc)
   return (
     <div>
       <IndividualProduct product={product} />

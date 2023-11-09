@@ -3,10 +3,9 @@ import { DataTable } from './data-table'
 
 
 const getCategory = async () => {
-  const res = await fetch('http://localhost:3001/api/category', { next: { revalidate: 3600 } })
+  const res = await fetch('http://localhost:3001/api/category', { cache: 'no-cache'})
   console.log(res)
   return res.json()
-  // http://localhost:3001/category
 }
 export default async function page() {
   const data = await getCategory()

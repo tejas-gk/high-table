@@ -54,7 +54,7 @@ export default  function Cart() {
               </div>
 
               
-              <SheetFooter className='absolute bottom-1 bg-white pr-4'>
+              <SheetFooter className='absolute bottom-1 pr-4 z-50'>
                   <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-6 sm:px-6">
                       <div className="flex justify-between text-base font-medium text-gray-900">
                           <p>Subtotal</p>

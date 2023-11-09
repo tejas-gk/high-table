@@ -96,7 +96,7 @@ export function Search() {
                         {
                             results.map((res, i) => (
                                 <CommandItem key={i}>
-                                    <img src={res.imageSrc[0]} className="mr-2 h-4 w-4" alt="" />
+                                    <img src={res.imageSrc} className="mr-2 h-4 w-4" alt="" />
                                     <span>{res.name}</span>
                                 </CommandItem>
                             ))

@@ -3,9 +3,15 @@ import React from 'react'
 import prisma from '@/lib/prismadb'
 
 const getAllProducts = async () => {
-  const category = await prisma.product.findMany();
-  console.log(category)
-  return category
+  const products = await prisma.product.findMany();
+  return products
+}
+
+
+const getCategory = async () => {
+  const res = await fetch('http://localhost:3001/api/category', { cache: 'no-cache' })
+  console.log(res)
+  return res.json()
 }
 
 

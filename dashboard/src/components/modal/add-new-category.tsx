@@ -7,7 +7,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { useEdgeStore } from "@/lib/edgestore"
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { Textarea } from "../ui/textarea"
@@ -22,18 +22,14 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
-import { Plus } from "lucide-react"
-import { Product, Color, Size } from "@prisma/client"
-import { AiFillCaretDown } from "react-icons/ai"
-import { OurFileRouter } from "@/app/api/uploadthing/core"
-import { UploadButton } from "@/lib/uploadthing"
 import { FileState, MultiFileDropzone } from "@/components/image-upload"
 import {Category} from '@prisma/client'
+import { Switch } from "@/components/ui/switch"
 
 
 
 
-export default function AddNewProduct() {
+export default async function AddNewProduct() {
     const form = useForm<Category>()
     const [images, setImages] = useState([]);
     const [newColor, setNewColor] = useState<string>('');
@@ -62,14 +58,15 @@ export default function AddNewProduct() {
     function handleSizeChange(event: React.ChangeEvent<HTMLInputElement>) {
         setNewSize(event.target.value);
     }
-    function handleSizeKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
+    function handleSizeKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key === 'Enter' && newSize.trim() !== '') {
             setSizes([...sizes, newSize.trim()]);
             setNewSize('');
         }
     }
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // @ts-ignore
         setImages([...images, ...e.target.files])
     }
     const [colors, setColors] = useState<string[]>([]);
@@ -78,18 +75,18 @@ export default function AddNewProduct() {
         setNewColor(event.target.value);
     }
 
-    function handleKeyPress(event: React.ChangeEvent<HTMLInputElement>) {
+    function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key === 'Enter' && newColor.trim() !== '') {
             setColors([...colors, newColor.trim()]);
             setNewColor('');
         }
     }
     const { toast } = useToast()
-    const [edgeStoreImages, setEdgeStoreImages] = useState()
+   
     async function onSubmit() {
-
         setUploading(true);
-        await Promise.all(
+        let imageArray: string[] = []
+        const uploadedImages = await Promise.all(
             fileStates.map(async (addedFileState) => {
                 try {
                     const res = await edgestore.publicFiles.upload({
@@ -101,18 +98,20 @@ export default function AddNewProduct() {
                                 updateFileProgress(addedFileState.key, 'COMPLETE');
                             }
                         },
-                    });
-                    console.log(res);
-                    setEdgeStoreImages(res)
+                    })
+                    console.log(res, 'unpaid')
+                    imageArray.push(res.url)
+                    return res
                 } catch (err) {
                     updateFileProgress(addedFileState.key, 'ERROR');
                 }
             })
         );
         setUploading(false);
+        console.log(imageArray)
         const response = await fetch('/api/category', {
             method: 'POST',
-            body: JSON.stringify({ ...form.getValues(), images: edgeStoreImages.url }),
+            body: JSON.stringify({ ...form.getValues(), images: imageArray }),
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -175,6 +174,22 @@ export default function AddNewProduct() {
                                             </FormControl>
                                             <FormDescription>
                                                 Enter Sutitle
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="isFeatured"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Is Features</FormLabel>
+                                            <FormControl>
+                                                <Switch id="is-featured"/>
+                                            </FormControl>
+                                            <FormDescription>
+                                                Is the product featured
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>

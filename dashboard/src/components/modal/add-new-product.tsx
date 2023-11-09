@@ -33,8 +33,17 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Product } from "@/types/productType"
+import { z } from 'zod';
 
-
+const productSchema = z.object({
+    name: z.string().min(2, 'Name must be at least 2 characters long'),
+    description: z.string().min(5, 'Description must be at least 5 characters long'),
+    price: z.number().positive('Price must be a positive number'),
+    category: z.string().nonempty('Category is required'),
+    imageSrc: z.array(z.string()).min(1, 'At least one image is required'),
+    colors: z.array(z.string()).min(1, 'At least one color is required'),
+    sizes: z.array(z.string()).min(1, 'At least one size is required'),
+});
 
 export default function AddNewProduct() {
     const form = useForm<Product>()
@@ -42,7 +51,21 @@ export default function AddNewProduct() {
     const [newColor, setNewColor] = useState<string>('');
     const [newSize, setNewSize] = useState<string>('');
     const [sizes, setSizes] = useState<string[]>([]);
-    const [colors,setColors]=useState('')
+    const [colors, setColors] = useState('')
+    const [categories, setCategories] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState('')
+
+
+    useEffect(() => {
+        const getCategory = async () => {
+            const res = await fetch('http://localhost:3001/api/category', { cache: 'no-cache' })
+            console.log(res)
+            Promise.all([res.json()]).then((values) => {
+                setCategories(values[0])
+            })
+        }
+        getCategory()
+    }, [])
 
 
     const [fileStates, setFileStates] = useState<FileState[]>([]);
@@ -82,54 +105,59 @@ export default function AddNewProduct() {
         }
     }
     const { toast } = useToast()
-  
+    const [formErrors, setFormErrors] = useState({});
+
 
     async function onSubmit() {
-        setUploading(true);
-        let imageArray: string[] = []
-        const uploadedImages=await Promise.all(
-            fileStates.map(async (addedFileState) => {
-                try {
-                    const res = await edgestore.publicFiles.upload({
-                        file: addedFileState.file,
-                        onProgressChange: async (progress) => {
-                            updateFileProgress(addedFileState.key, progress);
-                            if (progress === 100) {
-                                await new Promise((resolve) => setTimeout(resolve, 1000));
-                                updateFileProgress(addedFileState.key, 'COMPLETE');
-                            }
-                        },
-                    })
-                    console.log(res, 'unpaid')
-                    imageArray.push(res.url)
-                    return res
-                } catch (err) {
-                    updateFileProgress(addedFileState.key, 'ERROR');
+        try {
+            // productSchema.parse(form.getValues())
+            setUploading(true);
+            let imageArray: string[] = []
+            const uploadedImages = await Promise.all(
+                fileStates.map(async (addedFileState) => {
+                    try {
+                        const res = await edgestore.publicFiles.upload({
+                            file: addedFileState.file,
+                            onProgressChange: async (progress) => {
+                                updateFileProgress(addedFileState.key, progress);
+                                if (progress === 100) {
+                                    await new Promise((resolve) => setTimeout(resolve, 1000));
+                                    updateFileProgress(addedFileState.key, 'COMPLETE');
+                                }
+                            },
+                        })
+                        console.log(res, 'unpaid')
+                        imageArray.push(res.url)
+                        return res
+                    } catch (err) {
+                        updateFileProgress(addedFileState.key, 'ERROR');
+                    }
+                })
+            );
+            setUploading(false);
+            const response = await fetch('/api/products', {
+                method: 'POST',
+                body: JSON.stringify({ ...form.getValues(), images: imageArray, colors, sizes, category:selectedCategory }),
+                headers: {
+                    'Content-Type': 'application/json'
                 }
             })
-        );
-        setUploading(false);
-        console.log(imageArray)
-        const response = await fetch('/api/products', {
-            method: 'POST',
-            body: JSON.stringify({ ...form.getValues(), images: imageArray, colors, sizes }),
-            headers: {
-                'Content-Type': 'application/json'
+            const data = await response.json()
+            if (response.ok)
+                toast({
+                    title: "Product added successfully",
+                })
+            else {
+                toast({
+                    title: "Something went wrong",
+                    description: data.message,
+                    variant: "destructive"
+                })
             }
-        })
-        const data = await response.json()
-        if (response.ok)
-            toast({
-                title: "Product added successfully",
-            })
-        else {
-            toast({
-                title: "Something went wrong",
-                description: data.message,
-                variant: "destructive"
-            })
+        } catch (err: any) {
+            setFormErrors(err.errors)
+            console.log(err.errors)
         }
-        console.log(data)
     }
 
 
@@ -207,14 +235,22 @@ export default function AddNewProduct() {
                                         <FormItem>
                                             <FormLabel>Category</FormLabel>
                                             <FormControl>
-                                                <Select>
+                                                <Select {...field}>
                                                     <SelectTrigger className="w-full">
                                                         <SelectValue placeholder="Category" />
                                                     </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="light">Clothes</SelectItem>
-                                                        <SelectItem value="dark">Decor</SelectItem>
-                                                        <SelectItem value="system">Kitchen</SelectItem>
+                                                    <SelectContent >
+                                                        {
+                                                            categories.map((category: any) => (
+                                                                <SelectItem value={category.title} 
+                                                                    key={category._id} >
+                                                                    {category.title}
+                                                                </SelectItem>
+                                                            ))
+                                                        }
+                                                        <SelectItem value="light">Light</SelectItem>
+                                                        <SelectItem value="dark">Dark</SelectItem>
+                                                        <SelectItem value="system">System</SelectItem>
                                                     </SelectContent>
                                                 </Select>
 
@@ -243,12 +279,6 @@ export default function AddNewProduct() {
                                                             setFileStates([...fileStates, ...addedFiles]);
                                                         }}
                                                     />
-                                                    {/* <button
-                                                        onClick={handleUploadClick}
-                                                        disabled={uploading || fileStates.length === 0}
-                                                    >
-                                                        Upload Files
-                                                    </button> */}
                                                 </div>
                                             </FormControl>
                                             <FormDescription>
@@ -268,7 +298,7 @@ export default function AddNewProduct() {
                                                 <div className="flex flex-col gap-6">
                                                     <div className="flex flex-wrap gap-3">
 
-                                                        {Array.isArray(colors) && colors.map((color:string, index:number) => (
+                                                        {Array.isArray(colors) && colors.map((color: string, index: number) => (
                                                             <div
                                                                 key={index}
                                                                 className="w-10 h-10 rounded-full"

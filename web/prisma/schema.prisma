@@ -8,24 +8,25 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(uuid()) @map("_id")
+  id             String     @id @default(uuid()) @map("_id")
   name           String?
-  username       String?   @unique
+  username       String?    @unique
   bio            String?
-  email          String?   @unique
+  email          String?    @unique
   emailVerified  DateTime?
   image          String?
   coverImage     String?
   profileImage   String?
   hashedPassword String?
   location       String?
-  role           String    @default("USER")
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  role           String     @default("USER")
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
   accounts       Account[]
   Session        Session[]
   Cart           Cart[]
   Order          Order[]
+  Wishlist       Wishlist[]
 }
 
 model Account {
@@ -65,18 +66,20 @@ model VerificationToken {
 }
 
 model Product {
-  id         String       @id @default(uuid()) @map("_id")
+  id         String      @id @default(uuid()) @map("_id")
   name       String
   price      String
-  rating     Float        @default(0)
+  description String?
+  rating     Float       @default(0)
   imageSrc   String[]
-  inStock    Boolean      @default(true)
+  inStock    Boolean     @default(true)
   colors     Color[]
   sizes      Size[]
-  Category   Category?    @relation(fields: [categoryId], references: [id])
+  Category   Category?   @relation(fields: [categoryId], references: [id])
   categoryId String?
   Cart       Cart[]
   OrderItems OrderItem[]
+  Wishlist   Wishlist[]
 }
 
 model Color {
@@ -131,4 +134,12 @@ model OrderItem {
   product   Product  @relation(fields: [productId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Wishlist {
+  id        String  @id @default(uuid()) @map("_id")
+  userId    String
+  productId String
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
 }

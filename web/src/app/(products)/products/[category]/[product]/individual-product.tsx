@@ -21,36 +21,12 @@ import 'keen-slider/keen-slider.min.css'
 import KeenSlider from 'keen-slider'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import MoreInfo from './more-info'
-import { toast } from '@/components/ui/toast'
+import { Toast } from '@/components/ui/toast'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/use-toast'
+import { getSession } from 'next-auth/react'
 
-const product = {
-    id: '1',
-    name: 'Basic Tee 6-Pack ',
-    description: 'These low-profile sneakers are your perfect casual wear companion. Featuring a durable rubber outer sole, they’ll withstand everything the weather can offer.',
-    price: '192',
-    rating: 3.9,
-    reviewCount: 117,
-    href: '#',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg',
-    imageAlt: 'Two each of gray, white, and black shirts arranged on table.',
-    colors: [
-        { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
-        { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
-        { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
-    ],
-    sizes: [
-        { name: 'XXS', inStock: true },
-        { name: 'XS', inStock: true },
-        { name: 'S', inStock: true },
-        { name: 'M', inStock: true },
-        { name: 'L', inStock: true },
-        { name: 'XL', inStock: true },
-        { name: 'XXL', inStock: true },
-        { name: 'XXXL', inStock: false },
-    ],
-}
 const features = [
     { name: 'Origin', description: 'Designed by Good Goods, Inc.' },
     { name: 'Material', description: 'Solid walnut base with rare earth magnets and powder coated steel card cover' },
@@ -92,6 +68,8 @@ interface IndividualProductProps {
 const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
     const [selectedColor, setSelectedColor] = useState(product.colors[0].name)
     const [selectedSize, setSelectedSize] = useState(product.sizes[0].name)
+
+    const toast=useToast()
 
     const [reviewText, setReviewText] = useState('');
     const [reviewBody, setReviewBody] = useState('');
@@ -237,6 +215,22 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
         setHoveredStars(star);
     };
 
+    const handleAddToWish = async (e) => {
+        e.preventDefault()
+        const session = await getSession();
+        console.log(session)
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/wish`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                productId: product.id,
+                userId: session?.user?.email
+            })
+        });
+    }
+
 
 
     const { addToCart, itemAlreadyInCart, removeFromCart } = useCartStore()
@@ -360,8 +354,9 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
                                                     <div id={`color-${color.name}`} />
                                                     <span
                                                         aria-hidden="true"
+                                                        style={{ background: color.name }}
                                                         className={classNames(
-                                                            color.class,
+                                                            color.name || `bg-${color.name}-400`,
                                                             'h-8 w-8 rounded-full border border-black border-opacity-10',
                                                             selectedColor === color.name ? 'ring ring-offset-1' : '',
                                                         )}
@@ -431,7 +426,7 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
                             </div>
 
                             <div className='
-              flex gap-4 mt-10
+              flex gap-4 mt-10 items-center
               '>
                                 {itemAlreadyInCart(product) ? (
                                     <Button className="mt-2 flex justify-between w-1/2">
@@ -440,12 +435,12 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
                                         <span onClick={handleDecrement}>-</span>
                                     </Button>
                                 ) : (
-                                    <Button className='mt-4 w-1/2' onClick={handleAddToCart}>
+                                    <Button className='mt-2 w-1/2' onClick={handleAddToCart}>
                                         {isLoading ? 'Adding...' : 'Add to Cart'}
                                     </Button>
                                 )}
-                                <Button onClick={handleAddToCart}
-                                    className='w-1/2'
+                                <Button onClick={handleAddToWish}
+                                    className='w-1/2 mt-2'
                                     variant={'outline'}
                                 >
                                     <AiFillHeart className='mr-2' />

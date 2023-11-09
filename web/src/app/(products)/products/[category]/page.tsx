@@ -1,5 +1,4 @@
 "use client"
-import { products } from '@/app/page'
 import ProductCard from '@/components/cards/product-card'
 import React from 'react'
 import { Button } from "@/components/ui/button"
@@ -18,14 +17,14 @@ import {
 import Filter from '@/components/filter'
 import { Separator } from '@/components/ui/separator'
 
-export default function page() {
+export default function page({ params }: { params: { category: string } }) {  
   return (
     <div>
-      <div className='h-screen mt-6'>
-        <h1 className='text-5xl font-bold'>Accesories</h1>
+      <div className='h-screen mt-10'>
+        <h1 className='text-5xl font-bold first-letter:capitalize'>{params.category}</h1>
         <Sheet>
           <SheetTrigger>
-            <Button variant='ghost' className='mt-4'>
+            <Button variant='secondary' className='mt-4'>
               Filter
             </Button>
           </SheetTrigger>
@@ -41,11 +40,11 @@ export default function page() {
         </Sheet>
 
         <div className='grid grid-cols-4 gap-6 my-6 '>
-          {
+          {/* {
             products?.map((product: any) => (
               <ProductCard key={product.id} product={product} />
             ))
-          }
+          } */}
         </div>
       </div>
     </div>

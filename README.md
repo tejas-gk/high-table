@@ -143,7 +143,7 @@ the following categories:
   usage of a lib or cli usage)
 - `build`: all changes regarding the build of the software, changes to
   dependencies or the addition of new dependencies
-- `test`: all changes regarding tests (adding new tests or changing existing
+- `test`: all changes r egarding tests (adding new tests or changing existing
   ones)
 - `ci`: all changes regarding the configuration of continuous integration (i.e.
   github actions, ci system)

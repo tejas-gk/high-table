@@ -111,6 +111,21 @@ export const columns: ColumnDef<Product>[] = [
         cell: ({ row }) => <div className="lowercase flex gap-4">{row.getValue("rating")}</div>,
     },
     {
+        accessorKey: "createdAt",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    createdAt
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => <div className="lowercase flex gap-4">{row.getValue("createdAt")}</div>,
+    },
+    {
         id: "actions",
         cell: ({ row }) => <CellAction data={row.original} />
     },

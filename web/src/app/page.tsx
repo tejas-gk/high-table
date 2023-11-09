@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import CategoryCard from '@/components/cards/category-card';
 import ProductCard from '@/components/cards/product-card';
 import Hero from '@/components/hero';
@@ -8,6 +8,7 @@ import SubNavbar from '@/components/sub-navbar';
 async function getProducts() {
   const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { cache: 'no-store' })
   const data = await products.json()
+  await new Promise(resolve => setTimeout(resolve, 20000))
   return data
 }
 
@@ -38,11 +39,9 @@ const categories = [
 
 
 export default async function Home() {
-  const products=await getProducts()
-   return (
+  const products = await getProducts()
+  return (
     <>
-      {/* @ts-ignore */}
-      {/* Hello {info?.user?.name} */}
       <SubNavbar />
       <Hero />
 

@@ -2,7 +2,7 @@ import prisma from '@/lib/prismadb';
 
 export const POST = async (request: Request) => {
     const body = await request.json();
-    const { title, subtitle, images } = body;
+    const { title, subtitle, images,isFeatured } = body;
     console.log(body, 'sdsa');
 
     const category = await prisma.category.create({
@@ -10,6 +10,7 @@ export const POST = async (request: Request) => {
             title,
             subtitle,
             imageSrc: images[0],
+            isFeatured
         }
     });
     console.log(category, 'sdsa');
