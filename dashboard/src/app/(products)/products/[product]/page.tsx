@@ -15,10 +15,10 @@ export default async function Page({
   params
 }:any) {
   const product = await getProduct(params.product)
-  console.log(product,params.product)
+  console.log(product)
   return (
     <div>
-      <IndividualProduct />
+      <IndividualProduct product={product} />
     </div>
   )
 }

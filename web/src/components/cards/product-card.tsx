@@ -58,10 +58,10 @@ export default function ProductCard({
                 ₹ {product?.price}
               </p>
               {itemAlreadyInCart(product) ? (
-                <Button className="mt-2 flex justify-between w-full">
-                  <span onClick={handleIncrement}>+</span>
-                  <span>{useCartStore.getState().items.find(item => item.id === product.id)?.quantity}</span>
+                <Button className="mt-2 flex justify-between w-full" variant='secondary'>
                   <span onClick={handleDecrement}>-</span>
+                  <span>{useCartStore.getState().items.find(item => item.id === product.id)?.quantity}</span>
+                  <span onClick={handleIncrement}>+</span>
                 </Button>
               ) : (
                 <Button className='mt-4 w-full' onClick={handleAddToCart}>

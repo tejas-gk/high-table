@@ -1,7 +1,7 @@
 import prisma from '@/lib/prismadb'
 
 export const GET = async (request: Request) => {
-    const order = await prisma.orderItems.findMany({
+    const order = await prisma.orderItem.findMany({
         include: {
             product: true
         }
