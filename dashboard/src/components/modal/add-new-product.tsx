@@ -235,22 +235,19 @@ export default function AddNewProduct() {
                                         <FormItem>
                                             <FormLabel>Category</FormLabel>
                                             <FormControl>
-                                                <Select {...field}>
+                                                <Select>
                                                     <SelectTrigger className="w-full">
                                                         <SelectValue placeholder="Category" />
                                                     </SelectTrigger>
-                                                    <SelectContent >
+                                                    <SelectContent  {...field}>
                                                         {
                                                             categories.map((category: any) => (
-                                                                <SelectItem value={category.title} 
+                                                                <SelectItem value={category._id} 
                                                                     key={category._id} >
                                                                     {category.title}
                                                                 </SelectItem>
                                                             ))
                                                         }
-                                                        <SelectItem value="light">Light</SelectItem>
-                                                        <SelectItem value="dark">Dark</SelectItem>
-                                                        <SelectItem value="system">System</SelectItem>
                                                     </SelectContent>
                                                 </Select>
 

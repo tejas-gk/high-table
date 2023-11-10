@@ -2,7 +2,7 @@ import { DataTable } from "./data-table"
 import prisma from '@/lib/prismadb';
 
 const getOrders = async () => {
-  const orders = await prisma.orderItems.findMany({
+  const orders = await prisma.orderItem.findMany({
     include: {
       product: {
         select: {

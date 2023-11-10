@@ -22,6 +22,10 @@ function classNames(...classes: any[]) {
 export default function IndividualProduct({ product }: { product: any }) {
     const [selectedColor, setSelectedColor] = useState('')
     const [selectedSize, setSelectedSize] = useState('')
+    const onSubmit = (data) => {
+        console.log(data);
+        // Add logic to update the data or perform other actions
+    };
     return (
         <div className='px-8'>
             <Card>

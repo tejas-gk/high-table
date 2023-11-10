@@ -316,10 +316,10 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
               flex gap-4 mt-10 items-center
               '>
                                 {itemAlreadyInCart(product as any) ? (
-                                    <Button className="mt-2 flex justify-between w-1/2">
-                                        <span onClick={handleIncrement}>+</span>
-                                        <span>{useCartStore.getState().items.find(item => item.id === product.id)?.quantity}</span>
+                                    <Button className="mt-2 flex justify-between w-1/2" variant='secondary'>
                                         <span onClick={handleDecrement}>-</span>
+                                        <span>{useCartStore.getState().items.find(item => item.id === product.id)?.quantity}</span>
+                                        <span onClick={handleIncrement}>+</span>
                                     </Button>
                                 ) : (
                                     <Button className='mt-2 w-1/2' onClick={handleAddToCart}>
