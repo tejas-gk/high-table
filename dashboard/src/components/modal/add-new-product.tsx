@@ -137,7 +137,7 @@ export default function AddNewProduct() {
             setUploading(false);
             const response = await fetch('/api/products', {
                 method: 'POST',
-                body: JSON.stringify({ ...form.getValues(), images: imageArray, colors, sizes, category:selectedCategory }),
+                body: JSON.stringify({ ...form.getValues(), images: imageArray, colors, sizes }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -237,20 +237,16 @@ export default function AddNewProduct() {
                                             <FormControl>
                                                 <Select>
                                                     <SelectTrigger className="w-full">
-                                                        <SelectValue placeholder="Category" />
+                                                        <SelectValue>{field.value ? field.value : 'Category'}</SelectValue>
                                                     </SelectTrigger>
-                                                    <SelectContent  {...field}>
-                                                        {
-                                                            categories.map((category: any) => (
-                                                                <SelectItem value={category._id} 
-                                                                    key={category._id} >
-                                                                    {category.title}
-                                                                </SelectItem>
-                                                            ))
-                                                        }
+                                                    <SelectContent {...field}>
+                                                        {categories.map((category: any) => (
+                                                            <SelectItem key={category._id} value={category._id}>
+                                                                {category.title}
+                                                            </SelectItem>
+                                                        ))}
                                                     </SelectContent>
                                                 </Select>
-
                                             </FormControl>
                                             <FormDescription>
                                                 Enter Category

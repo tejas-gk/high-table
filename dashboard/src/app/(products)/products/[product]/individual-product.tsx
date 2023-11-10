@@ -12,17 +12,16 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Button } from '@/components/ui/button';
+import { Switch } from "@/components/ui/switch"
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
 }
 
-
-
 export default function IndividualProduct({ product }: { product: any }) {
     const [selectedColor, setSelectedColor] = useState('')
     const [selectedSize, setSelectedSize] = useState('')
-    const onSubmit = (data) => {
+    const onSubmit = (data: any) => {
         console.log(data);
         // Add logic to update the data or perform other actions
     };
@@ -52,21 +51,42 @@ export default function IndividualProduct({ product }: { product: any }) {
                         </div>
                     </CardDescription>
                 </CardHeader>
-
-                <div className="flex items-center justify-between">
-
-                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
                     <div className='flex flex-col gap-8'>
                         <CardContent>
-
-                            <div className="flex items-start gap-x-2 flex-col">
+                            <div className="
+                                grid grid-cols-1 md:grid-cols-2 gap-6
+                            ">
                                 <TitleForm
                                     initialData={product.price}
                                     productId={'1'}
                                     label='Price'
                                     onUpdate={(data, id) => console.log(data, id)}
                                 />
+                                <TitleForm
+                                    initialData={'0'}
+                                    productId={'2'}
+                                    label='Discount'
+                                    onUpdate={(data, id) => console.log(data, id)}
+                                />
+                                <TitleForm
+                                    initialData={product.quantity}
+                                    productId={'3'}
+                                    label='Quantity'
+                                    onUpdate={(data, id) => console.log(data, id)}
+                                />
+                                <TitleForm
+                                    initialData={product.categoryId}
+                                    productId={'3'}
+                                    label='Category'
+                                    onUpdate={(data, id) => console.log(data, id)}
+                                />
+                                <div className='flex flex-col gap-2'>
+                                    <Label htmlFor='in-stock'>In Stock</Label>
+                                    <Switch
+                                        checked={product.inStock}
+                                    />
+                                </div>
                             </div>
                         </CardContent>
                     </div>
@@ -124,7 +144,7 @@ export default function IndividualProduct({ product }: { product: any }) {
 
                             <div className='grid grid-cols-4 gap-4 mt-4'>
                                 {
-                                    product.sizes.map((size:any) => (
+                                    product.sizes.map((size: any) => (
                                         <div key={size.name}
                                             onClick={() => setSelectedSize(size.name)}
                                             className={classNames(

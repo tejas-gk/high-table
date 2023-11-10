@@ -2,7 +2,7 @@ import prisma from '@/lib/prismadb';
 
 export const POST = async (request: Request) => {
     const body = await request.json();
-    const { name, price, images, colors, sizes,description } = body;
+    const { name, price, images, colors, sizes, description, category } = body;
 
     const formattedColors = colors.map((color: any) => ({
         name: color
@@ -17,7 +17,7 @@ export const POST = async (request: Request) => {
             name,
             price,
             description,
-            categoryId:'dfce2491-dad1-4ac3-b3fa-6bafa233222b',
+            categoryId: category,
             imageSrc: {
                 set: images
             },
@@ -25,7 +25,7 @@ export const POST = async (request: Request) => {
             sizes: { createMany: { data: formattedSizes } },
         }
     });
-    console.log(product,'sdsa');
+    console.log(product, 'sdsa');
     return new Response(JSON.stringify(product), { status: 200 });
 }
 
