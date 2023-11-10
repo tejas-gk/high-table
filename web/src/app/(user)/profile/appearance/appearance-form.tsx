@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { toast } from "@/components/ui/use-toast"
+import { useTheme } from "next-themes"
 
 const appearanceFormSchema = z.object({
     theme: z.enum(["light", "dark"], {
@@ -37,6 +38,7 @@ const defaultValues: Partial<AppearanceFormValues> = {
 }
 
 export function AppearanceForm() {
+    const { setTheme } = useTheme()
     const form = useForm<AppearanceFormValues>({
         resolver: zodResolver(appearanceFormSchema),
         defaultValues,
@@ -102,7 +104,7 @@ export function AppearanceForm() {
                             >
                                 <FormItem>
                                     <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
-                                        <FormControl>
+                                        <FormControl onClick={() => setTheme("light")}>
                                             <RadioGroupItem value="light" className="sr-only" />
                                         </FormControl>
                                         <div className="items-center rounded-md border-2 border-muted p-1 hover:border-accent">
@@ -128,7 +130,7 @@ export function AppearanceForm() {
                                 </FormItem>
                                 <FormItem>
                                     <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
-                                        <FormControl>
+                                        <FormControl onClick={()=>setTheme('dark')}>
                                             <RadioGroupItem value="dark" className="sr-only" />
                                         </FormControl>
                                         <div className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground">

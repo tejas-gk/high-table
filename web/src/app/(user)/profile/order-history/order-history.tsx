@@ -57,7 +57,7 @@ const orders = [
 
 export default function OrderHistory() {
     return (
-        <div className="bg-white">
+        <div className="bg-white dark:bg-[#09090b]">
             <div className="sm:py-24">
                 <div className="mx-auto max-w-7xl sm:px-2 lg:px-8">
                     <div className="mx-auto max-w-2xl px-4 lg:max-w-4xl lg:px-0">
@@ -75,7 +75,7 @@ export default function OrderHistory() {
                             {orders.map((order) => (
                                 <div
                                     key={order.number}
-                                    className="border-t border-b border-gray-200 bg-white shadow-sm sm:rounded-lg sm:border"
+                                    className="border-t border-b border-gray-200 bg-white dark:bg-[#09090b] shadow-sm sm:rounded-lg sm:border"
                                 >
                                     <h3 className="sr-only">
                                         Order placed on <time dateTime={order.createdDatetime}>{order.createdDate}</time>
@@ -105,14 +105,14 @@ export default function OrderHistory() {
                                         <div className="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
                                             <a
                                                 href={order.href}
-                                                className="flex items-center justify-center rounded-md border border-gray-300 bg-white py-2 px-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                className="flex items-center justify-center rounded-md border border-gray-300 bg-white dark:bg-[#09090b] py-2 px-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                             >
                                                 <span>View Order</span>
                                                 <span className="sr-only">{order.number}</span>
                                             </a>
                                             <a
                                                 href={order.invoiceHref}
-                                                className="flex items-center justify-center rounded-md border border-gray-300 bg-white py-2 px-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                className="flex items-center justify-center rounded-md border border-gray-300 bg-white dark:bg-[#09090b] py-2 px-2.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                             >
                                                 <span>View Invoice</span>
                                                 <span className="sr-only">for order {order.number}</span>

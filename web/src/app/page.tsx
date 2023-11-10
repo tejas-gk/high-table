@@ -4,11 +4,11 @@ import ProductCard from '@/components/cards/product-card';
 import Hero from '@/components/hero';
 import Promo from '@/components/promo';
 import SubNavbar from '@/components/sub-navbar';
-
+import ShiftingCountdown from '@/components/countdowns/countdown-hero';
+import ProductCardLoading from '@/components/loading/product-card-loading';
 async function getProducts() {
   const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { cache: 'no-store' })
   const data = await products.json()
-  await new Promise(resolve => setTimeout(resolve, 20000))
   return data
 }
 
@@ -59,13 +59,17 @@ export default async function Home() {
 
       <Promo />
 
+      <ShiftingCountdown />
+
       {/* popular */}
       <div className='h-screen mt-6'>
         <h1 className='text-5xl font-bold'>Popular</h1>
         <div className='grid grid-cols-4 gap-6 my-6 '>
           {
             products?.map((product: any) => (
-              <ProductCard key={product.id} product={product} />
+              <Suspense fallback={<p>Loading feed...</p>} key={product.id} >
+                <ProductCard product={product} />
+              </Suspense>
             ))
           }
         </div>

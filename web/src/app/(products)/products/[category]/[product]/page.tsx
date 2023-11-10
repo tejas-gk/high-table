@@ -2,14 +2,10 @@ import IndividualProduct from './individual-product'
 
 const getProduct = async (productId:String) => {
   'use server'
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${productId}`, {
-      method: 'GET',
-    })
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${productId}`, { cache: 'no-store' })
+  await new Promise(resolve => setTimeout(resolve, 2000))
     return response.json()
-  }catch(err){
-    console.log(err)
-  }
+
 }
 
 export default async function Page({ params }: any) {

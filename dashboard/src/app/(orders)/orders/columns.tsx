@@ -88,6 +88,7 @@ export const columns: ColumnDef<Product>[] = [
             )
         },
         cell: ({ row }) => <div className="lowercase">
+            {/* @ts-ignore */}
             {row.original.order.user.email}
             </div>,
     },

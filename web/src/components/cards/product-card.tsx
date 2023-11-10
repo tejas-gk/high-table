@@ -37,7 +37,6 @@ export default function ProductCard({
     <>
       <div className='border group pb-4 rounded-md'>
         <Link href={`/products/category/${product?.id}`} passHref>
-          <Suspense fallback={<div>Loading</div>}>
             <div className='relative overflow-hidden rounded-t-md aspect-square'>
               <Image src={product?.imageSrc[0]}
                 alt={product.name}
@@ -70,7 +69,6 @@ export default function ProductCard({
                 </Button>
               )}
             </div>
-          </Suspense>
         </Link >
       </div >
     </>

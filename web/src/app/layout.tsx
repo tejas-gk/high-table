@@ -10,6 +10,7 @@ import Navbar from '@/components/navbar'
 import Footer from '@/components/footer'
 import OfferBanner from '@/components/banners/offer-banner'
 import RegisterBanner from '@/components/banners/register-banner'
+import usePageVisibility from '@/hooks/use-page-active'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,26 +18,33 @@ export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
-}) {
+})
+{
+  const isVisible = usePageVisibility();
   return (
     <html lang="en">
+      <head>
+        <title>
+           {isVisible ? 'Carty Moron' : 'This Tab is all alone :('}
+        </title>
+      </head>
       <body className={`${inter.className}`}>
         <SessionProvider>
           {/* <OfferBanner /> */}
           <RegisterBanner />
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Navbar />
-          <div className="px-10">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            <div className="px-10">
               <Toaster />
               {children}
-          </div>
-              {/* <Footer /> */}
-            </ThemeProvider>
+            </div>
+            {/* <Footer /> */}
+          </ThemeProvider>
         </SessionProvider>
       </body>
     </html>

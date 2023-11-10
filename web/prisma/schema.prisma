@@ -19,6 +19,7 @@ model User {
   profileImage   String?
   hashedPassword String?
   location       String?
+  points         Int        @default(0)
   role           String     @default("USER")
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
@@ -27,6 +28,7 @@ model User {
   Cart           Cart[]
   Order          Order[]
   Wishlist       Wishlist[]
+  Review         Review[]
 }
 
 model Account {
@@ -66,20 +68,21 @@ model VerificationToken {
 }
 
 model Product {
-  id         String      @id @default(uuid()) @map("_id")
-  name       String
-  price      String
+  id          String      @id @default(uuid()) @map("_id")
+  name        String
+  price       String
   description String?
-  rating     Float       @default(0)
-  imageSrc   String[]
-  inStock    Boolean     @default(true)
-  colors     Color[]
-  sizes      Size[]
-  Category   Category?   @relation(fields: [categoryId], references: [id])
-  categoryId String?
-  Cart       Cart[]
-  OrderItems OrderItem[]
-  Wishlist   Wishlist[]
+  rating      Float       @default(0)
+  imageSrc    String[]
+  inStock     Boolean     @default(true)
+  colors      Color[]
+  sizes       Size[]
+  Category    Category?   @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  Cart        Cart[]
+  OrderItems  OrderItem[]
+  Wishlist    Wishlist[]
+  Review      Review[]
 }
 
 model Color {
@@ -130,6 +133,7 @@ model OrderItem {
   orderId   String
   productId String
   quantity  Int
+  amount    Float
   order     Order    @relation(fields: [orderId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
   createdAt DateTime @default(now())
@@ -142,4 +146,17 @@ model Wishlist {
   productId String
   user      User    @relation(fields: [userId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(uuid()) @map("_id")
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  rating    Float
+  comment   String?
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
