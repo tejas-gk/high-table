@@ -29,6 +29,12 @@ import {
 import { Product } from "@/types/productType"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card"
+import Image from "next/image"
 
 
 
@@ -75,9 +81,19 @@ export const columns: ColumnDef<Product>[] = [
             )
         },
         cell: ({ row }) => <div className="lowercase">
-            <Link href={`/products/${row.original.id}`}>
-                {row.getValue("name")}
-            </Link>
+                <HoverCard>
+                    <HoverCardTrigger>
+                        {row.getValue("name")}
+                    </HoverCardTrigger>
+                    <HoverCardContent>
+                        <Image
+                            height={500}
+                            width={500}
+                            src={row.original.imageSrc[0]}
+                            alt={row.original.name}
+                        />
+                    </HoverCardContent>
+                </HoverCard>
         </div>,
     },
     {

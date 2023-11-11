@@ -11,6 +11,7 @@ export function downloadToExcel() {
                 { label: "Price", value: "price" },
                 { label: "rating", value: "rating" },
             ],
+            // @ts-ignore
             content: data,
         },
     ];

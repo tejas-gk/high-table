@@ -26,6 +26,10 @@ const navItems = [
         name: "Documentation",
         href: "/documentation",
     },
+    {
+        name:"Marketing",
+        href:"/marketing"
+    }
 ]
 export function MainNav({
     className,

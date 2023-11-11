@@ -38,6 +38,7 @@ import { columns } from "./columns"
 // import { data } from '@/config/products'
 import AddNewProduct from "../../../components/modal/add-new-product"
 import { downloadToExcel } from "@/lib/xlsx"
+import Link from "next/link"
 
 
 export function DataTable({ data }: any) {
@@ -110,8 +111,11 @@ export function DataTable({ data }: any) {
         >
           Download CSV <Download className="ml-2 h-4 w-4" />
         </Button>
-        {/* modal */}
-        <AddNewProduct />
+        <Button className="flex gap-2 items-center">
+          <Link href="/products/new">
+            Add Product
+          </Link>
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>
@@ -142,10 +146,12 @@ export function DataTable({ data }: any) {
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      <Link href={`/products/${row.original.id}`}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Link>
                     </TableCell>
                   ))}
                 </TableRow>
