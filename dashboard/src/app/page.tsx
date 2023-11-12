@@ -23,7 +23,7 @@ import { Search } from "@/components/search"
 import TeamSwitcher from "@/components/team-switcher"
 import { UserNav } from "@/components/user-nav"
 import { ModeToggle } from "@/components/mode-toggle"
-import HoverDevCards from "./hover-card"
+import HoverDevCards from "./(overview)/overview/hover-card"
 
 export const metadata: Metadata = {
   title: "Dashboard",
