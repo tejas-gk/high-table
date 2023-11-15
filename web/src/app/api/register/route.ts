@@ -2,6 +2,11 @@ import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/prismadb';
 import { z } from 'zod';
+import { Resend } from 'resend';
+import { EmailTemplate } from '@/components/emails/welcome-email';
+import { NextResponse } from 'next/server';
+
+const resend = new Resend(process.env.RESEND_EMAIL_API_KEY);
 
 export async function POST(request: Request) {
     const body = await request.json()
@@ -15,7 +20,15 @@ export async function POST(request: Request) {
             hashedPassword,
         },
     });
-    return new Response(JSON.stringify(user), {
+    const sendWelcomeEmail = await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: ['tejasgk250@gmail.com'],
+        subject: 'Hello world',
+        react: EmailTemplate({ firstName: 'John' }),
+        text: 'hello',
+    });
+
+    return new Response(JSON.stringify({user,sendWelcomeEmail}), {
         headers: { 'Content-Type': 'application/json' },
     });
 }

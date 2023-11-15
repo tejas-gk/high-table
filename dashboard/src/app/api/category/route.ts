@@ -50,7 +50,5 @@ export const PATCH = async (request: Request) => {
 
 export const GET = async (request: Request) => {
     const category = await prisma.category.findMany();
-
-
     return new Response(JSON.stringify(category), { status: 200 });
 }

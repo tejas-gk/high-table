@@ -65,13 +65,15 @@ export default async function Home() {
       <div className='h-screen mt-6'>
         <h1 className='text-5xl font-bold'>Popular</h1>
         <div className='grid grid-cols-4 gap-6 my-6 '>
+          <Suspense fallback={Array.from({ length: 8 }).map((_, i) => (
+            <ProductCardLoading key={i} />
+          ))}>
           {
             products?.map((product: any) => (
-              <Suspense fallback={<p>Loading feed...</p>} key={product.id} >
-                <ProductCard product={product} />
-              </Suspense>
-            ))
-          }
+              <ProductCard product={product} key={product.id} />
+                ))
+              }
+          </Suspense>
         </div>
       </div>
     </>

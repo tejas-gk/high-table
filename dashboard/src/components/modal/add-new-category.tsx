@@ -1,3 +1,4 @@
+'use client'
 import {
     Dialog,
     DialogContent,
@@ -29,7 +30,7 @@ import { Switch } from "@/components/ui/switch"
 
 
 
-export default async function AddNewProduct() {
+export default  function AddNewCategory() {
     const form = useForm<Category>()
     const [images, setImages] = useState([]);
     const [newColor, setNewColor] = useState<string>('');
@@ -137,9 +138,7 @@ export default async function AddNewProduct() {
     return (
         <Dialog>
             <DialogTrigger>
-                <Button className="flex gap-2 items-center">
-                    <span>Add Category</span>
-                </Button>
+                Add Category
             </DialogTrigger>
             <DialogContent className="max-w-3xl overflow-y-auto h-screen">
                 <DialogHeader>

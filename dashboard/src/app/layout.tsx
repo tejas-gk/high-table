@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { EdgeStoreProvider } from '../lib/edgestore';
+import { appConfig } from '@/config/app'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -26,6 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>{appConfig.name}</title>
+        <meta name="description" content="" /> 
+      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"

@@ -3,8 +3,12 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 const navItems = [
     {
-        name: "Overview",
+        name: "Home",
         href: "/",
+    },
+    {
+        name: "Overview",
+        href: "/overview",
     },
     {
         name: "Customers",
@@ -13,10 +17,6 @@ const navItems = [
     {
         name: "Products",
         href: "/products",
-    },
-    {
-        name: "Category",
-        href: "/category",
     },
     {
         name: "Orders",

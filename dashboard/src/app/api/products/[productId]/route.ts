@@ -9,7 +9,8 @@ export const GET = async (request: Request) => {
             },
             include: {
                 colors: true,
-                sizes: true
+                sizes: true,
+                Category: true,
             }
         });
         console.log(product,'blah blah blah');

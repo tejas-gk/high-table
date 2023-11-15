@@ -11,6 +11,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 
 interface AlertModalProps {
     isOpen: boolean;
@@ -36,23 +48,23 @@ export const AlertModal: React.FC<AlertModalProps> = ({
     }
 
     return (
-        <Dialog open={isOpen}>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Are you Sure?</DialogTitle>
-                    <DialogDescription>
-                        This action cannot be undone.
-                    </DialogDescription>
-                </DialogHeader>
-                <div>
-                    <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                        <Button disabled={loading} variant="outline" onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button disabled={loading} variant="destructive" onClick={onConfirm}>Continue</Button>
-                    </div>
-                </div>
-            </DialogContent>
-        </Dialog>
+        <AlertDialog open={isOpen}>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your account
+                        and remove your data from our servers.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction disabled={loading}
+                        className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+                        onClick={onConfirm}>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+
     );
 };

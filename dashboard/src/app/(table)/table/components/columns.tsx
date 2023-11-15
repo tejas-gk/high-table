@@ -1,22 +1,29 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
-
 import { labels, priorities, statuses } from "../data/data"
-import { Task } from "../data/schema"
+import { Product } from "../data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
+import Image from 'next/image'
+import useSelectedIdsStore from "@/store/use-selected-ids-store"
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<Product>[] = [
     {
         id: "select",
         header: ({ table }) => (
             <Checkbox
                 checked={table.getIsAllPageRowsSelected()}
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                onCheckedChange={(value) => {
+                    table.toggleAllPageRowsSelected(!!value)
+                }}
                 aria-label="Select all"
                 className="translate-y-[2px]"
             />
@@ -24,7 +31,13 @@ export const columns: ColumnDef<Task>[] = [
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                onCheckedChange={(value) => {
+                    row.toggleSelected(!!value)
+                    console.log(row.id)
+                    const selectedIdsStore = useSelectedIdsStore();
+                    selectedIdsStore.toggleSelectedId(row.id)
+                    console.log(selectedIdsStore.selectedIds)
+                }}
                 aria-label="Select row"
                 className="translate-y-[2px]"
             />
@@ -42,18 +55,77 @@ export const columns: ColumnDef<Task>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "title",
+        accessorKey: "name",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Title" />
+            <DataTableColumnHeader column={column} title="Name" />
         ),
         cell: ({ row }) => {
-            const label = labels.find((label) => label.value === row.original.label)
-
+            const label = labels.find((label) => label.value === row.original.name)
+            console.log(row.original)
             return (
                 <div className="flex space-x-2">
-                    {label && <Badge variant="outline">{label.label}</Badge>}
+                    <Badge variant="outline">
+                        {row?.original?.Category?.title}
+                    </Badge>
+                    <span className="max-w-[500px] truncate font-medium cursor-pointer">
+                        <HoverCard>
+                            <HoverCardTrigger>
+                                {row.getValue("name")}
+                            </HoverCardTrigger>
+                            <HoverCardContent>
+                                <Image
+                                    height={500}
+                                    width={500}
+                                    src={row.original.imageSrc[0]}
+                                    alt={row.original.name}
+                                />
+                            </HoverCardContent>
+                        </HoverCard>
+                    </span>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "price",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Price" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex space-x-2">
                     <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("title")}
+                        {row.getValue("price")}
+                    </span>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "rating",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Rating" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex space-x-2">
+                    <span className="max-w-[500px] truncate font-medium">
+                        {row.getValue("rating")}
+                    </span>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "inStock",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="In stock" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex space-x-2">
+                    <span className="max-w-[500px] truncate font-medium">
+                        {row.getValue("inStock") ? "Yes" : "No"}
                     </span>
                 </div>
             )

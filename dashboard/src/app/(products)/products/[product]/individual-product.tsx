@@ -25,6 +25,14 @@ import {
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 
 function classNames(...classes: any[]) {
@@ -43,7 +51,7 @@ export default function IndividualProduct({ product }: { product: any }) {
     const [selectedColor, setSelectedColor] = useState('')
     const [selectedSize, setSelectedSize] = useState('')
     const form = useForm<z.infer<typeof productSchema>>({
-        resolver: zodResolver(productSchema),
+        // resolver: zodResolver(productSchema),
         defaultValues: {
             name: product.name,
             description: product.description,
@@ -55,8 +63,20 @@ export default function IndividualProduct({ product }: { product: any }) {
         },
     })
     
-    function onSubmit(values: z.infer<typeof productSchema>) {
+   async  function onSubmit(values: z.infer<typeof productSchema>) {
         console.log(values)
+       const updateProducts = await fetch(`/api/products`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+           body: JSON.stringify({
+               values,
+                id: product.id
+           }),
+        })
+       console.log(updateProducts)
+       
     }
     return (
         <div className='px-8'>
@@ -87,9 +107,21 @@ export default function IndividualProduct({ product }: { product: any }) {
                         </CardTitle>
                         <CardDescription>
                             <div className="flex items-start gap-x-2 flex-col">
-                                <TitleForm
-                                    initialData={product.description || 'enter a description'}
-                                />
+                                    <FormField
+                                        control={form.control}
+                                        name="description"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                        <TitleForm
+                                                            initialData={product.description}
+                                                            {...field}
+                                                        />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                             </div>
                         </CardDescription>
                     </CardHeader>
@@ -99,18 +131,72 @@ export default function IndividualProduct({ product }: { product: any }) {
                                 <div className="
                                 grid grid-cols-1 md:grid-cols-2 gap-6
                             ">
-                                    <TitleForm
-                                        initialData={product.price}
-                                    />
+                                        <FormField
+                                            control={form.control}
+                                            name="price"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Price</FormLabel>
+                                                    <FormControl>
+                                                            <TitleForm
+                                                                initialData={product.price}
+                                                                {...field}
+                                                            />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="price"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Quantity</FormLabel>
+                                                    <FormControl>
+                                                            <TitleForm
+                                                                initialData={product.quantity}
+                                                                {...field}
+                                                            />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                     <TitleForm
                                         initialData={'0'}
                                     />
                                     <TitleForm
-                                        initialData={product.quantity}
-                                    />
-                                    <TitleForm
-                                        initialData={product.categoryId}
-                                    />
+                                        initialData={product.Category.title}
+                                        />
+                                        <FormField
+                                            control={form.control}
+                                            name="category"
+                                            render={({ field }) => (
+                                                <FormItem className="w-full">
+                                                    <FormLabel>Subcategory</FormLabel>
+                                                    <FormControl>
+                                                        <Select
+                                                            value={field.value?.toString()}
+                                                            onValueChange={field.onChange}
+                                                        >
+                                                            <SelectTrigger className="capitalize">
+                                                                <SelectValue placeholder={field.value} />
+                                                            </SelectTrigger>
+                                                            <SelectContent>
+                                                                <SelectGroup>
+                                                                    <SelectItem value="1">Tops</SelectItem>
+                                                                    <SelectItem value="2">Shirts</SelectItem>
+                                                                    <SelectItem value="3">Pants</SelectItem>
+                                                                    <SelectItem value="4">Traditional</SelectItem>
+                                                                </SelectGroup>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                     <div className='flex flex-col gap-2'>
                                         <Label htmlFor='in-stock'>In Stock</Label>
                                         <Switch

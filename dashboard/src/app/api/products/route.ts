@@ -11,35 +11,34 @@ export const POST = async (request: Request) => {
     const formattedSizes = sizes.map((size: any) => ({
         name: size
     }));
-
+    const productCode = `${name.substr(0, 3).toUpperCase()}_${Date.now()}`;
     const product = await prisma.product.create({
         data: {
             name,
             price,
             description,
             categoryId: category,
+            // Category: { connect: { id: category } },
             imageSrc: {
                 set: images
             },
             colors: { createMany: { data: formattedColors } },
             sizes: { createMany: { data: formattedSizes } },
+            // productCode
         }
     });
     console.log(product, 'sdsa');
     return new Response(JSON.stringify(product), { status: 200 });
 }
 
-export const PATCH = async (request: Request) => {
+export const PUT = async (request: Request) => {
     const body = await request.json();
-    const { id, name, price, rating, images, colors, sizes, description } = body;
+    const { name, price, rating, imageSrc, colors, sizes, description } = body.values;
+    const { id } = body;
+    console.log(body, 'body')
+    const formattedColors = colors ? colors.map((color: any) => ({ name: color })) : [];
+    const formattedSizes = sizes ? sizes.map((size: any) => ({ name: size })) : [];
 
-    const formattedColors = colors.map((color: any) => ({
-        name: color
-    }));
-
-    const formattedSizes = sizes.map((size: any) => ({
-        name: size
-    }));
 
     const product = await prisma.product.update({
         where: {
@@ -50,14 +49,12 @@ export const PATCH = async (request: Request) => {
             price,
             description,
             rating,
-            imageSrc: {
-                set: images
-            },
-            colors: { createMany: { data: formattedColors } },
-            sizes: { createMany: { data: formattedSizes } },
+            // imageSrc,
+            // colors: { createMany: { data: formattedColors } },
+            // sizes: { createMany: { data: formattedSizes } },
         }
     });
-
+    console.log(product, 'sdsa');
     return new Response(JSON.stringify(product), { status: 200 });
 }
 
@@ -65,7 +62,8 @@ export const GET = async (request: Request) => {
     const product = await prisma.product.findMany({
         include: {
             colors: true,
-            sizes: true
+            sizes: true,
+            Category: true,
         }
     });
 

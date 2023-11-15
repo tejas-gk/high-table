@@ -54,12 +54,6 @@ import {
 } from "@/components/ui/popover"
 import { Progress } from '@/components/ui/progress'
 
-// const FormSchema = z.object({
-//     dob: z.date({
-//         required_error: "A date of birth is required.",
-//     }),
-// })
-
 type Input = z.infer<typeof registerSchema>
 export default function Page() {
     const [formStep, setFormStep] = useState(0)

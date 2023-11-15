@@ -3,20 +3,28 @@ import path from "path"
 import { Metadata } from "next"
 import Image from "next/image"
 import { z } from "zod"
-
+import prisma from "@/lib/prismadb"
 import { columns } from "./components/columns"
 import { DataTable } from "./components/data-table"
-// import { UserNav } from "./components/user-nav"
-import { taskSchema } from "./data/schema"
-import {tasks} from './data/tasks'
 export const metadata: Metadata = {
-    title: "Tasks",
-    description: "A task and issue tracker build using Tanstack Table.",
+    title: "Products",
+    description: "Manage your prodcuts.",
+}
+
+const getAllProducts = async () => {
+    const products = await prisma.product.findMany({
+        include: {
+            colors: true,
+            sizes: true,
+            Category: true,
+        }
+    });
+    return products
 }
 
 export default async function TaskPage() {
-    // const tasks = await getTasks()
-
+    const tasks = await getAllProducts()
+    console.log(tasks)
     return (
         <>
             <div className="md:hidden">
@@ -40,7 +48,7 @@ export default async function TaskPage() {
                     <div>
                         <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
                         <p className="text-muted-foreground">
-                            Here&apos;s a list of your tasks for this month!
+                            Here&apos;s a list of your Products
                         </p>
                     </div>
                     <div className="flex items-center space-x-2">

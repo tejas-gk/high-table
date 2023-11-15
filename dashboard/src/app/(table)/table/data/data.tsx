@@ -26,27 +26,27 @@ export const labels = [
 
 export const statuses = [
     {
-        value: "backlog",
-        label: "Backlog",
+        value: "SHIPPED",
+        label: "shipped",
         icon: QuestionMarkCircledIcon,
     },
     {
-        value: "todo",
-        label: "Todo",
+        value: "NOT_SHIPPED",
+        label: "not shipped",
         icon: CircleIcon,
     },
     {
-        value: "in progress",
-        label: "In Progress",
+        value: "CANCELLED",
+        label: "cancelled",
         icon: StopwatchIcon,
     },
     {
-        value: "done",
-        label: "Done",
+        value: "DELIVERED",
+        label: "delivered",
         icon: CheckCircledIcon,
     },
     {
-        value: "canceled",
+        value: "CANELLED",
         label: "Canceled",
         icon: CrossCircledIcon,
     },
@@ -55,17 +55,17 @@ export const statuses = [
 export const priorities = [
     {
         label: "Low",
-        value: "low",
+        value: "LOW",
         icon: ArrowDownIcon,
     },
     {
         label: "Medium",
-        value: "medium",
+        value: "MEDIUM",
         icon: ArrowRightIcon,
     },
     {
         label: "High",
-        value: "high",
+        value: "HIGH",
         icon: ArrowUpIcon,
     },
 ]
