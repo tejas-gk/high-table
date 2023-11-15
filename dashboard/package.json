@@ -6,7 +6,8 @@
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prebuild": "npx prisma generate"
   },
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
