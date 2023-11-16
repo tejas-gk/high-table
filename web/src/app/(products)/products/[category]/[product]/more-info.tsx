@@ -1,6 +1,15 @@
 import React from 'react'
 
-export default function MoreInfo({data}) {
+interface Feature {
+  name: string;
+  description: string;
+}
+
+interface MoreInfoProps {
+  data: Feature[];
+}
+
+export default function MoreInfo({ data }: MoreInfoProps) {
     return (
         <div className='
         col-span-12

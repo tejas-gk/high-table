@@ -6,6 +6,7 @@ import Promo from '@/components/promo';
 import SubNavbar from '@/components/sub-navbar';
 import ShiftingCountdown from '@/components/countdowns/countdown-hero';
 import ProductCardLoading from '@/components/loading/product-card-loading';
+import { Category } from '@prisma/client';
 async function getProducts() {
   const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { cache: 'no-store' })
   const data = await products.json()
@@ -39,7 +40,7 @@ const categories = [
 
 
 export default async function Home() {
-  const products = await getProducts()
+  // const products = await getProducts()
   return (
     <>
       <SubNavbar />
@@ -50,7 +51,7 @@ export default async function Home() {
         <h1 className='text-5xl font-bold'>Categories</h1>
         <div className='grid grid-cols-4 gap-4 mt-4 '>
           {
-            categories?.map((category: any) => (
+            categories?.map((category: Category) => (
               <CategoryCard key={category.id} category={category} />
             ))
           }
@@ -68,13 +69,25 @@ export default async function Home() {
           <Suspense fallback={Array.from({ length: 8 }).map((_, i) => (
             <ProductCardLoading key={i} />
           ))}>
-          {
-            products?.map((product: any) => (
-              <ProductCard product={product} key={product.id} />
-                ))
-              }
+            <ProductFeed />
           </Suspense>
         </div>
+      </div>
+    </>
+  )
+}
+
+async function ProductFeed() {
+  const products = await getProducts()
+  console.log(products)
+  return (
+    <>
+      <div className='grid grid-cols-4 gap-6 my-6 '>
+        {
+          products?.map((product: any) => (
+            <ProductCard product={product} key={product.id} />
+          ))
+        }
       </div>
     </>
   )

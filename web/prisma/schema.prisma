@@ -67,18 +67,34 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+enum OrderStatus {
+  SHIPPED
+  NOT_SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum ProductPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 model Product {
-  id          String      @id @default(uuid()) @map("_id")
+  id          String          @id @default(uuid()) @map("_id")
   name        String
+  productCode String?         @unique
   price       String
   description String?
-  rating      Float       @default(0)
+  rating      Float           @default(0)
   imageSrc    String[]
-  inStock     Boolean     @default(true)
+  inStock     Boolean         @default(true)
   colors      Color[]
   sizes       Size[]
-  Category    Category?   @relation(fields: [categoryId], references: [id])
+  Category    Category?       @relation(fields: [categoryId], references: [id])
   categoryId  String?
+  status      OrderStatus     @default(NOT_SHIPPED)
+  priority    ProductPriority @default(LOW)
   Cart        Cart[]
   OrderItems  OrderItem[]
   Wishlist    Wishlist[]

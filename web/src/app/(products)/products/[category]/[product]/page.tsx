@@ -8,8 +8,7 @@ const getProduct = async (productId:String) => {
 
 }
 
-export default async function Page({ params }: any) {
-  console.log(params.product,'hehhehehe')
+export default async function Page({ params }: { params: { product: string } }) {
   const product = await getProduct(params.product)
   return (
     <div>

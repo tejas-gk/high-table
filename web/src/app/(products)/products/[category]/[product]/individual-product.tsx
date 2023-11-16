@@ -13,7 +13,6 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import { Button } from '@/components/ui/button'
-import Breadcrumbs from '@/components/bread-crumbz'
 import useCartStore from '@/store/cart-store'
 import Spinner from '@/components/spinner'
 import { usePathname, useRouter, useParams } from 'next/navigation'
@@ -26,8 +25,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import { getSession } from 'next-auth/react'
-import { Review } from '@prisma/client'
 import Reviews from '@/components/reviews'
+import { Product } from '@/types/products'
 const features = [
     { name: 'Origin', description: 'Designed by Good Goods, Inc.' },
     { name: 'Material', description: 'Solid walnut base with rare earth magnets and powder coated steel card cover' },
@@ -38,25 +37,9 @@ const features = [
 ]
 
 
-function classNames(...classes: any[]) {
+function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
 }
-
-interface Product {
-    id: string;
-    name: string;
-    description: string;
-    price: string;
-    rating: number;
-    reviewCount: number;
-    href: string;
-    imageSrc: string;
-    imageAlt: string;
-    colors: Array<{ name: string; class: string; selectedClass: string }>;
-    sizes: Array<{ name: string; inStock: boolean }>;
-}
-
-
 interface IndividualProductProps {
     product: Product;
 }
@@ -99,7 +82,7 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
 
 
 
-    const handleAddToWish = async (e) => {
+    const handleAddToWish = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         const session = await getSession();
         console.log(session)
@@ -121,7 +104,7 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
     const { addToCart, itemAlreadyInCart, removeFromCart } = useCartStore()
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleAddToCart = (e: any) => {
+    const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         setIsLoading(true)
         // @ts-ignore
@@ -158,10 +141,9 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
                             width={500}
                             height={500}
                             onError={(e) => {
-                                // @ts-ignore
-                                e.target.src = 'https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg';
+                                e.target.src = {'https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg' || ''}
                             }}
-                            src={product.imageSrc[0]} alt={product.imageAlt} className="object-cover object-center w-full h-full"
+                            src={product.imageSrc[0] || ''} alt={product.imageAlt} className="object-cover object-center w-full h-full"
                         />
 
                     </div>
@@ -315,7 +297,7 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
                             <div className='
               flex gap-4 mt-10 items-center
               '>
-                                {itemAlreadyInCart(product as any) ? (
+                                {itemAlreadyInCart(product as Product) ? (
                                     <Button className="mt-2 flex justify-between w-1/2" variant='secondary'>
                                         <span onClick={handleDecrement}>-</span>
                                         <span>{useCartStore.getState().items.find(item => item.id === product.id)?.quantity}</span>

@@ -7,11 +7,11 @@ import Image from 'next/image'
 
 export default function ProductCard({
   product
-}: any) {
+}: ) {
   const { addToCart, itemAlreadyInCart, removeFromCart } = useCartStore()
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleAddToCart = (e: any) => {
+  const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     setIsLoading(true)
     addToCart(product)
@@ -19,14 +19,14 @@ export default function ProductCard({
   }
 
 
-  const handleIncrement = (e) => {
+  const handleIncrement = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsLoading(true);
     addToCart(product);
     setIsLoading(false);
   }
 
-  const handleDecrement = (e) => {
+  const handleDecrement = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsLoading(true);
     removeFromCart(product);

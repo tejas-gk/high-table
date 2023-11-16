@@ -1,10 +1,10 @@
 import { Footprints } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
-
+import { Category } from '@prisma/client'
 export default function CategoryCard({
   category
-}:any) {
+}) {
   return (
     <div className='relative overflow-hidden rounded-md border group aspect-video'>
       <div className="absolute inset-0 z-10 bg-zinc-950/70 transition-colors group-hover:bg-zinc-950/75" />

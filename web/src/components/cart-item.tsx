@@ -2,7 +2,7 @@ import React from 'react'
 import useCartItems from '@/store/cart-store'
 export default function CartItem({
     product
-}: any) {
+}) {
     const {removeFromCart} = useCartItems()
   return (
       <li className="flex py-6">
