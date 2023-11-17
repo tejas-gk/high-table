@@ -2,7 +2,7 @@ import { DataTable } from './data-table'
 
 
 const getCategory = async () => {
-  const res = await fetch('/api/category', { cache: 'no-cache'})
+  const res = await fetch('http://localhost:3001/api/category', { cache: 'no-cache'})
   console.log(res)
   return res.json()
 }

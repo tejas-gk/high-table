@@ -28,7 +28,6 @@ const getAllProducts = async () => {
 
 export default async function TaskPage() {
     const tasks = await getAllProducts()
-    console.log(tasks)
     return (
         <>
             <div className="md:hidden">

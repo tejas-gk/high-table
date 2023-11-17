@@ -15,6 +15,7 @@ import Link from "next/link"
 import { Download, PlusIcon, Trash } from "lucide-react"
 import { downloadToExcel } from "@/lib/xlsx"
 import { DataTableCategory } from "./data-table-category"
+import { getAllCategories } from "@/actions/products"
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
 }
@@ -23,6 +24,8 @@ export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0;
+    const cat = getAllCategories()
+    const [categories, setCategories] = React.useState([])
     return (
         <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center space-x-2">

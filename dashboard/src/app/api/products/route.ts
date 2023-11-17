@@ -58,7 +58,7 @@ export const PUT = async (request: Request) => {
     return new Response(JSON.stringify(product), { status: 200 });
 }
 
-export const GET = async (request: Request) => {
+export const GET = async () => {
     const product = await prisma.product.findMany({
         include: {
             colors: true,

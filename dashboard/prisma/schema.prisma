@@ -7,115 +7,172 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id             String     @id @default(uuid()) @map("_id")
+  name           String?
+  username       String?    @unique
+  bio            String?
+  email          String?    @unique
+  emailVerified  DateTime?
+  image          String?
+  coverImage     String?
+  profileImage   String?
+  hashedPassword String?
+  location       String?
+  points         Int        @default(0)
+  role           String     @default("USER")
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  accounts       Account[]
+  Session        Session[]
+  Cart           Cart[]
+  Order          Order[]
+  Wishlist       Wishlist[]
+  Review         Review[]
+}
+
 model Account {
-  id                String @id @default(auto()) @map("_id") @db.ObjectId
-  /// Field referred in an index, but found no data to define the type.
-  provider          Json?
-  /// Field referred in an index, but found no data to define the type.
-  providerAccountId Json?
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
-model Cart {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-}
-
-model Category {
-  id         String  @id @map("_id")
-  imageSrc   String
-  isFeatured Boolean
-  subtitle   String
-  title      String
-}
-
-model Color {
-  id        String  @id @map("_id")
-  inStock   Boolean
-  name      String
-  productId String
-}
-
-model Order {
-  id        String   @id @map("_id")
-  createdAt DateTime @db.Date
-  isPaid    Boolean
-  updatedAt DateTime @db.Date
-  userId    String
-}
-
-model OrderItem {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-}
-
-model OrderItems {
-  id        String   @id @map("_id")
-  createdAt DateTime @db.Date
-  orderId   String
-  productId String
-  quantity  BigInt
-  updatedAt DateTime @db.Date
-}
-
-model Product {
-  id          String   @id @map("_id")
-  categoryId  String?
-  description String
-  imageSrc    String[]
-  inStock     Boolean
-  name        String
-  price       String
-  priority    String
-  rating      Float
-  status      String
-}
-
-model Review {
-  id        String   @id @map("_id")
-  comment   String
-  createdAt DateTime @db.Date
-  productId String
-  rating    Float
-  title     String
-  updatedAt DateTime @db.Date
-  userId    String
-}
-
 model Session {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  /// Field referred in an index, but found no data to define the type.
-  sessionToken Json?  @unique
-}
-
-model Size {
-  id        String  @id @map("_id")
-  inStock   Boolean
-  name      String
-  productId String
-}
-
-model User {
-  id             String   @id @map("_id")
-  createdAt      DateTime @db.Date
-  email          String   @unique
-  hashedPassword String
-  name           String
-  points         BigInt?
-  role           String
-  updatedAt      DateTime @db.Date
-  username       String   @unique
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  /// Field referred in an index, but found no data to define the type.
-  identifier Json?
-  /// Field referred in an index, but found no data to define the type.
-  token      Json?  @unique
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
   @@unique([identifier, token])
 }
 
+enum OrderStatus {
+  SHIPPED
+  NOT_SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum ProductPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model Product {
+  id          String          @id @default(uuid()) @map("_id")
+  name        String
+  productCode String?         @unique
+  price       String
+  description String?
+  rating      Float           @default(0)
+  imageSrc    String[]
+  inStock     Boolean         @default(true)
+  colors      Color[]
+  sizes       Size[]
+  Category    Category?       @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  status      OrderStatus     @default(NOT_SHIPPED)
+  priority    ProductPriority @default(LOW)
+  Cart        Cart[]
+  OrderItems  OrderItem[]
+  Wishlist    Wishlist[]
+  Review      Review[]
+}
+
+model Color {
+  id        String  @id @default(uuid()) @map("_id")
+  name      String
+  inStock   Boolean @default(true)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Size {
+  id        String  @id @default(uuid()) @map("_id")
+  name      String
+  inStock   Boolean @default(true)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Category {
+  id         String    @id @default(uuid()) @map("_id")
+  title      String
+  subtitle   String
+  imageSrc   String
+  isFeatured Boolean   @default(false)
+  products   Product[]
+}
+
+model Cart {
+  id        String  @id @default(uuid()) @map("_id")
+  userId    String
+  productId String
+  quantity  Int
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Order {
+  id         String      @id @default(uuid()) @map("_id")
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  OrderItems OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(uuid()) @map("_id")
+  orderId   String
+  productId String
+  quantity  Int
+  amount    Float
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Wishlist {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String  @id @default(uuid()) @map("_id")
+  userId    String
+  productId String
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(uuid()) @map("_id")
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  rating    Float
+  comment   String?
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

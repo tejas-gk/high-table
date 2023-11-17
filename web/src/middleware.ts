@@ -1,5 +1,8 @@
-export {default} from 'next-auth/middleware'
+export { default } from 'next-auth/middleware'
 
 export const config = {
-    matcher:['/success']
+    matcher: ['/success'],
+    api: {
+        bodyParser: false,
+    },
 }
