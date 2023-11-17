@@ -58,6 +58,7 @@ export default async function TaskPage() {
                         {/* <UserNav /> */}
                     </div>
                 </div>
+                {/* @ts-ignore */}
                 <DataTable data={tasks} columns={columns} />
             </div>
         </>
