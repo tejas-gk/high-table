@@ -166,4 +166,5 @@ Tests are written using [Vitest](https://vitest.dev). You can run all the tests 
 - [Shadcn](https://ui.shadcn.com/)
 - [TailwindComponents](https://tailwindui.com/components)
 - [Hover.dev](https://www.hover.dev/)
+- [Next js](https://nextjs.org/)
 - [Skateshop](https://skateshop.sadmn.com/)

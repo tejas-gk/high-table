@@ -12,14 +12,18 @@ export const metadata: Metadata = {
 }
 
 const getAllProducts = async () => {
-    const products = await prisma.product.findMany({
-        include: {
-            colors: true,
-            sizes: true,
-            Category: true,
-        }
-    });
-    return products
+    try {
+        const products = await prisma.product.findMany({
+            include: {
+                colors: true,
+                sizes: true,
+                Category: true,
+            }
+        });
+        return products
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 export default async function TaskPage() {

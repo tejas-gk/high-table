@@ -1,8 +1,7 @@
 "use client"
-
+import { motion } from "framer-motion";
 import { useRouter, useSelectedLayoutSegment } from "next/navigation"
 import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs"
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
@@ -38,10 +37,6 @@ export function StoreTabs({ storeId }: StoreTabsProps) {
         },
     ]
 
-    const [activeTabIndex, setActiveTabIndex] = useState(
-        tabs.findIndex((tab) => tab.isActive)
-    );
-
     return (
         <Tabs
             defaultValue={tabs.find((tab) => tab.isActive)?.href ?? tabs[0]?.href}
@@ -58,22 +53,27 @@ export function StoreTabs({ storeId }: StoreTabsProps) {
                             tab.isActive && "border-foreground"
                         )}
                     >
-                        <TabsTrigger
-                            value={tab.href}
-                            className={cn(
-                                "inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium text-muted-foreground ring-offset-background transition-all hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
-                                tab.isActive && "text-foreground"
-                            )}
+                        <motion.div
+                            layoutId="underline"
+                            transition={{ type: "spring", duration: 0.5 }} 
                         >
-                            {tab.title}
-                            {tab.isActive && (
-                                <motion.div
-                                    layoutId="underline"
-                                    transition={{ type: "spring", duration: 1 }}
-                                />
-                            )}
+                            <TabsTrigger
+                                value={tab.href}
+                                className={cn(
+                                    "inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium text-muted-foreground ring-offset-background transition-all hover:bg-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+                                    tab.isActive && "text-foreground"
+                                )}
+                            >
+                                {tab.title}
+                                {tab.isActive && (
+                                    <motion.div
+                                        layoutId="underline"
+                                        transition={{ type: "spring", duration: 1 }}
+                                    />
+                                )}
 
-                        </TabsTrigger>
+                            </TabsTrigger>
+                        </motion.div>
                     </div>
                 ))}
             </TabsList>

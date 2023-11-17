@@ -9,7 +9,9 @@ import ProductCardLoading from '@/components/loading/product-card-loading';
 import { Category } from '@prisma/client';
 async function getProducts() {
   const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { cache: 'no-store' })
+  console.log(products)
   const data = await products.json()
+  console.log(data)
   return data
 }
 
@@ -17,30 +19,38 @@ async function getProducts() {
 
 const categories = [
   {
-    image: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    name: 'Tops',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+    title: 'Tops',
     products: 50,
   },
   {
-    image: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg',
-    name: 'Shirts',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg',
+    title: 'Shirts',
     products: 50,
   },
   {
-    image: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg',
-    name: 'Pants',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg',
+    title: 'Pants',
     products: 50,
   },
   {
-    image: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg',
-    name: 'Traditional',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg',
+    title: 'Traditional',
     products: 50,
   },
 ]
 
 
+// type CategoryType = {
+//   title: string;
+//   imageSrc: string;
+//   products: number;
+// }
+
+type CategoryType=Pick<Category, 'id' | 'title' | 'imageSrc'>
+
+
 export default async function Home() {
-  // const products = await getProducts()
   return (
     <>
       <SubNavbar />
@@ -51,8 +61,8 @@ export default async function Home() {
         <h1 className='text-5xl font-bold'>Categories</h1>
         <div className='grid grid-cols-4 gap-4 mt-4 '>
           {
-            categories?.map((category: Category) => (
-              <CategoryCard key={category.id} category={category} />
+            categories.map((category: CategoryType,index:number) => (
+              <CategoryCard key={index} category={category} />
             ))
           }
         </div>
@@ -82,13 +92,11 @@ async function ProductFeed() {
   console.log(products)
   return (
     <>
-      <div className='grid grid-cols-4 gap-6 my-6 '>
         {
           products?.map((product: any) => (
             <ProductCard product={product} key={product.id} />
           ))
         }
-      </div>
     </>
   )
 }

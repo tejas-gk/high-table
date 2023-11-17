@@ -36,6 +36,10 @@ import {
 import { Product } from "@/types/productType"
 import { z } from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod"
+import Step from "@/components/multi-step";
+import { motion } from 'framer-motion'
+import { cn } from "@/lib/utils"
+
 const productSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters long'),
     description: z.string().min(5, 'Description must be at least 5 characters long'),
@@ -67,6 +71,7 @@ export default function Page() {
     const [sizes, setSizes] = useState<string[]>([]);
     const [colors, setColors] = useState('')
     const [categories, setCategories] = useState([])
+    const [formStep, setFormStep] = useState(0)
 
 
     useEffect(() => {
@@ -182,7 +187,13 @@ export default function Page() {
         setNewSize(event.target.value);
     }
     return (
-        <div className='px-64 mt-4'>
+        <div className='lg:px-64 mt-4'>
+            <div className="flex justify-between rounded p-8">
+                <Step step={0} currentStep={formStep} />
+                <Step step={1} currentStep={formStep} />
+                <Step step={2} currentStep={formStep} />
+                <Step step={3} currentStep={formStep} />
+            </div>
             <Card>
                 <CardHeader>
                     <CardTitle>Add Product</CardTitle>
@@ -191,180 +202,257 @@ export default function Page() {
                 <CardContent>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Name</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Name" {...field} />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Enter the product
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Description</FormLabel>
-                                        <FormControl>
-                                            <Textarea placeholder="description" {...field} />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Enter Description
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="price"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Price</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="price" {...field}
-                                                type="number"
-                                            />
-                                        </FormControl>
-                                        <FormDescription>
-                                            Enter Price
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="category"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Category</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                value={field.value.id}
-                                                onValueChange={(value: any) => field.onChange(value.id)}
-                                            >
-                                                <SelectTrigger className="w-full">
-                                                    <SelectValue placeholder="Category" />
-                                                </SelectTrigger>
-                                                <SelectContent {...field}>
-                                                    {categories.map((category: any) => (
-                                                        <SelectItem key={category._id} value={category}>
-                                                            {category.title}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Enter Category
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="imageSrc"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Images</FormLabel>
-                                        <FormControl>
-                                            <div>
-                                                <MultiFileDropzone
-                                                    value={fileStates}
-                                                    onChange={(files) => {
-                                                        setFileStates(files);
-                                                    }}
-                                                    onFilesAdded={async (addedFiles) => {
-                                                        setFileStates([...fileStates, ...addedFiles]);
-                                                    }}
+                            <motion.div className={cn('space-y-3', {
+                                hidden: formStep !== 0
+                            })}
+                                animate={{
+                                    translateX: formStep === 0 ? 0 : '-100%',
+                                    opacity: formStep === 0 ? 1 : 0,
+                                }}
+                                transition={{
+                                    ease: 'easeInOut',
+                                }}
+                            >
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Name</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="Name" {...field} />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Enter the product
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="description"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Description</FormLabel>
+                                            <FormControl>
+                                                <Textarea placeholder="description" {...field} />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Enter Description
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="price"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Price</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="price" {...field}
+                                                    type="number"
                                                 />
-                                            </div>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Upload Images
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="colors"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Colors</FormLabel>
-                                        <FormControl>
-                                            <div className="flex flex-col gap-6">
-                                                <div className="flex flex-wrap gap-3">
-
-                                                    {Array.isArray(colors) && colors.map((color: string, index: number) => (
-                                                        <div
-                                                            key={index}
-                                                            className="w-10 h-10 rounded-full"
-                                                            style={{ background: color }}
-                                                        />
-                                                    ))}
+                                            </FormControl>
+                                            <FormDescription>
+                                                Enter Price
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="category"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Category</FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    value={field.value.id}
+                                                    onValueChange={(value: any) => field.onChange(value.id)}
+                                                >
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="Category" />
+                                                    </SelectTrigger>
+                                                    <SelectContent {...field}>
+                                                        {categories.map((category: any) => (
+                                                            <SelectItem key={category._id} value={category}>
+                                                                {category.title}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormDescription>
+                                                Enter Category
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="imageSrc"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Images</FormLabel>
+                                            <FormControl>
+                                                <div>
+                                                    <MultiFileDropzone
+                                                        value={fileStates}
+                                                        onChange={(files) => {
+                                                            setFileStates(files);
+                                                        }}
+                                                        onFilesAdded={async (addedFiles) => {
+                                                            setFileStates([...fileStates, ...addedFiles]);
+                                                        }}
+                                                    />
                                                 </div>
-                                                <Input placeholder="color" {...field} value={newColor}
-                                                    onChange={handleColorChange}
-                                                    onKeyPress={handleKeyPress}
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Select a color and click &apos;Add Color&apos;
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="sizes"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Sizes</FormLabel>
-                                        <FormControl>
-                                            <div className="flex flex-col gap-6">
-                                                <div className="flex flex-wrap gap-3">
-                                                    {sizes.map((size, index) => (
-                                                        <div
-                                                            key={index}
-                                                            className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center"
-                                                        >
-                                                            {size}
-                                                        </div>
-                                                    ))}
+                                            </FormControl>
+                                            <FormDescription>
+                                                Upload Images
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="colors"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Colors</FormLabel>
+                                            <FormControl>
+                                                <div className="flex flex-col gap-6">
+                                                    <div className="flex flex-wrap gap-3">
+
+                                                        {Array.isArray(colors) && colors.map((color: string, index: number) => (
+                                                            <div
+                                                                key={index}
+                                                                className="w-10 h-10 rounded-full"
+                                                                style={{ background: color }}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                    <Input placeholder="color" {...field} value={newColor}
+                                                        onChange={handleColorChange}
+                                                        onKeyPress={handleKeyPress}
+                                                    />
                                                 </div>
-                                                <Input
-                                                    placeholder="size"
-                                                    {...field}
-                                                    value={newSize}
-                                                    onChange={handleSizeChange}
-                                                    onKeyPress={handleSizeKeyPress}
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormDescription>
-                                            Enter Size
-                                        </FormDescription>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                                            </FormControl>
+                                            <FormDescription>
+                                                Select a color and click &apos;Add Color&apos;
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="sizes"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Sizes</FormLabel>
+                                            <FormControl>
+                                                <div className="flex flex-col gap-6">
+                                                    <div className="flex flex-wrap gap-3">
+                                                        {sizes.map((size, index) => (
+                                                            <div
+                                                                key={index}
+                                                                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center"
+                                                            >
+                                                                {size}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <Input
+                                                        placeholder="size"
+                                                        {...field}
+                                                        value={newSize}
+                                                        onChange={handleSizeChange}
+                                                        onKeyPress={handleSizeKeyPress}
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormDescription>
+                                                Enter Size
+                                            </FormDescription>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
+                                <div className="px-8 pb-8">
+                                    <div className="mt-10 flex justify-between">
+                                        <Button
+                                            onClick={() => setFormStep(formStep < 2 ? formStep : formStep - 1)}
+                                            variant={formStep === 4 ? "disabled" : "secondary"}
+                                        >
+                                            Back
+                                        </Button>
+                                        <Button
+                                            onClick={() => setFormStep(formStep > 4 ? formStep : formStep + 1)}
+                                        >
+                                            Continue
+                                        </Button>
+                                    </div>
+                                </div>
 
-                            <Button type="submit">Submit</Button>
+                            </motion.div>
+                            <motion.div className={cn('space-y-3', {
+                                hidden: formStep !== 1
+                            })}
+                                animate={{
+                                    translateX: formStep === 1 ? 0 : '100%',
+                                    opacity: formStep === 1 ? 1 : 0,
+                                }}
+                                transition={{
+                                    ease: 'easeInOut',
+                                }}
+                            >
+                                <div className="px-8 pb-8">
+                                    {formStep}
+                                    <div className="mt-10 flex justify-between">
+                                        <Button
+                                            onClick={() => setFormStep(formStep - 1)}
+                                            variant={formStep === 4 ? "disabled" : "secondary"}
+                                        >
+                                            Back
+                                        </Button>
+                                        <Button
+                                            onClick={() => setFormStep(formStep > 4 ? formStep : formStep + 1)}
+                                        >
+                                            Continue
+                                        </Button>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            <motion.div className={cn('space-y-3', {
+                                hidden: formStep !== 2
+                            })}
+                                animate={{
+                                    translateX: formStep === 2 ? 0 : '100%',
+                                    opacity: formStep === 2 ? 1 : 0,
+                                }}
+                                transition={{
+                                    ease: 'easeInOut',
+                                }}
+                            >
+                                <div className="mt-10 flex justify-between">
+                                <Button
+                                    onClick={() => setFormStep(formStep < 2 ? formStep : formStep - 1)}
+                                    variant={formStep === 1 ? "disabled" : "secondary"}
+                                >
+                                    Back
+                                </Button>
+                                    <Button type="submit">Submit</Button>
+                                    </div>
+                            </motion.div>
+
                         </form>
                     </Form>
                 </CardContent>
@@ -372,6 +460,6 @@ export default function Page() {
                     {/* <p>Card Footer</p> */}
                 </CardFooter>
             </Card>
-        </div>
+        </div >
     )
 }

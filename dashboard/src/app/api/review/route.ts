@@ -1,22 +1,22 @@
 import prisma from '@/lib/prismadb';
 
 export const POST = async (request: Request) => {
-    console.log(request.json())
+    // console.log(request.json())
     const body = await request.json();
-    const { stars,title,comment,productId,userId } = body;
+    const { rating,title,comment,productId,userId } = body;
 
-   
+   console.log(body, 'body');
 
     const product = await prisma.review.create({
         data: {
-            rating:stars,
+            rating,
             title,
             comment,
             productId,
             userId,
         }
     });
-    console.log(product, 'sdsa');
+    // console.log(product, 'sdsa');
     return new Response(JSON.stringify(product), { status: 200 });
 }
 

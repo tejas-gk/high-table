@@ -1,9 +1,8 @@
 'use client'
-import LeftSide from '@/components/products/left-side'
 import { StarIcon } from 'lucide-react'
 import { AiFillHeart, AiFillStar } from 'react-icons/ai'
 import Image from 'next/image'
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import {
@@ -98,7 +97,7 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
         });
     }
 
- 
+
 
 
     const { addToCart, itemAlreadyInCart, removeFromCart } = useCartStore()
@@ -135,20 +134,17 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
         <div className="relative flex w-full items-center overflow-hidden bg-white dark:bg-black px-4 pb-8 pt-14  sm:px-6 sm:pt-8 md:p-6 lg:p-8">
 
             <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
-                <Suspense fallback={<p>Loading feed...</p>}>
-                    <div className="aspect-h-2 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-900 sm:col-span-4 lg:col-span-5">
-                        <Image
-                            width={500}
-                            height={500}
-                            onError={(e) => {
-                                e.target.src = {'https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg' || ''}
-                            }}
-                            src={product.imageSrc[0] || ''} alt={product.imageAlt} className="object-cover object-center w-full h-full"
-                        />
+                <div className="aspect-h-2 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-900 sm:col-span-4 lg:col-span-5">
+                    <Image
+                        width={500}
+                        height={500}
+                        onError={(e) => {
+                            e.target.src = 'https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg'
+                        }}
+                        src={product.imageSrc[0]} alt={product.imageAlt} className="object-cover object-center w-full h-full"
+                    />
 
-                    </div>
-                </Suspense>
-
+                </div>
 
                 <div className="sm:col-span-8 lg:col-span-7">
                     <span className=" text-[#a445ed] font-bold uppercase text-xs tracking-wider">
@@ -323,7 +319,7 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
                 <MoreInfo data={features} />
 
                 {/* review */}
-                <Reviews productId={product.id} userId={'1'}/>
+                <Reviews productId={product.id} userId={'1'} />
                 <div className="p-4 rounded  col-span-12">
                     <h2 className="text-2xl font-semibold mb-4">Customer Reviews</h2>
 

@@ -24,7 +24,7 @@ export const POST = async (request: Request) => {
             },
             colors: { createMany: { data: formattedColors } },
             sizes: { createMany: { data: formattedSizes } },
-            // productCode
+            productCode
         }
     });
     console.log(product, 'sdsa');

@@ -26,16 +26,17 @@ export default function Reviews({
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/review`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     productId,
                     rating: stars,
                     comment: reviewBody,
                     title: 'John Doe',
-                    userId
-                })
+                    userId,
+                }),
             });
+
 
             if (response.ok) {
                 console.log('Review created successfully');

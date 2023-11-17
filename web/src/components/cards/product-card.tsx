@@ -7,7 +7,7 @@ import Image from 'next/image'
 
 export default function ProductCard({
   product
-}: ) {
+}: any) {
   const { addToCart, itemAlreadyInCart, removeFromCart } = useCartStore()
   const [isLoading, setIsLoading] = useState(false);
 
