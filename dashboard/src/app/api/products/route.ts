@@ -18,7 +18,6 @@ export const POST = async (request: Request) => {
             price,
             description,
             categoryId: category,
-            // Category: { connect: { id: category } },
             imageSrc: {
                 set: images
             },

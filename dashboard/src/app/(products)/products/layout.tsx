@@ -4,11 +4,11 @@ export const metadata: Metadata = {
     description: "Check out some examples app built using the components.",
 }
 
-interface ExamplesLayoutProps {
+interface LayoutProps {
     children: React.ReactNode
 }
 
-export default function ExamplesLayout({ children }: ExamplesLayoutProps) {
+export default function ExamplesLayout({ children }: LayoutProps) {
     return (
         <>
             <div className="container relative">

@@ -319,7 +319,8 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
                 <MoreInfo data={features} />
 
                 {/* review */}
-                <Reviews productId={product.id} userId={'1'} />
+                {/* look here. the userId needs to be dynamic */}
+                <Reviews productId={product.id} userId={'17f8c030-4dde-49f3-a46a-eb2ba5f6bb18'} />
                 <div className="p-4 rounded  col-span-12">
                     <h2 className="text-2xl font-semibold mb-4">Customer Reviews</h2>
 

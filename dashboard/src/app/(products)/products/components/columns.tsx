@@ -46,11 +46,11 @@ export const columns: ColumnDef<Product>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "id",
+        accessorKey: "productCode",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Task" />
+            <DataTableColumnHeader column={column} title="Product Code" />
         ),
-        cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+        cell: ({ row }) => <div className="w-[80px]">{row.getValue("productCode")}</div>,
         enableSorting: false,
         enableHiding: false,
     },

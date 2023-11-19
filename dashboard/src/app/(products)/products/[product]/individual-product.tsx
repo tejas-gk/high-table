@@ -167,7 +167,7 @@ export default function IndividualProduct({ product }: { product: any }) {
                                         initialData={'0'}
                                     />
                                     <TitleForm
-                                        initialData={product.Category.title}
+                                        initialData={product?.Category?.title}
                                         />
                                         <FormField
                                             control={form.control}

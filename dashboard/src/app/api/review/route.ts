@@ -1,23 +1,26 @@
 import prisma from '@/lib/prismadb';
 
 export const POST = async (request: Request) => {
-    // console.log(request.json())
     const body = await request.json();
-    const { rating,title,comment,productId,userId } = body;
+    const { rating, title, comment, productId, userId } = body;
+    
+    console.log(body, 'body');
+    try {
+        const review = await prisma.review.create({
+            data: {
+                rating: parseFloat(rating),
+                title,
+                comment,
+                productId,
+                userId
+            }
+        });
 
-   console.log(body, 'body');
-
-    const product = await prisma.review.create({
-        data: {
-            rating,
-            title,
-            comment,
-            productId,
-            userId,
-        }
-    });
-    // console.log(product, 'sdsa');
-    return new Response(JSON.stringify(product), { status: 200 });
+        return new Response(JSON.stringify(review), { status: 200 });
+    } catch (err) {
+        console.log(err, 'err');
+        return new Response(JSON.stringify(err), { status: 500 });
+    }
 }
 
 export const PATCH = async (request: Request) => {
@@ -52,14 +55,11 @@ export const PATCH = async (request: Request) => {
 }
 
 export const GET = async (request: Request) => {
-    const product = await prisma.product.findMany({
+    const reviews = await prisma.review.findMany({
         include: {
-            colors: true,
-            sizes: true
+            user: true,
+            product: true,
         }
     });
-
-    console.log(product)
-
-    return new Response(JSON.stringify(product), { status: 200 });
+    return new Response(JSON.stringify(reviews), { status: 200 });
 }

@@ -32,7 +32,7 @@ export const statuses = [
     },
     {
         value: "NOT_SHIPPED",
-        label: "not shipped",
+        label: "notshipped",
         icon: CircleIcon,
     },
     {
