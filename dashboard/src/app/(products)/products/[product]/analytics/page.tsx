@@ -44,9 +44,9 @@ export default function CardsMetric() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Exercise Minutes</CardTitle>
+        <CardTitle>Working Minutes</CardTitle>
         <CardDescription>
-          Your excercise minutes are ahead of where you normally are.
+          Your Working minutes are ahead of where you normally are.
         </CardDescription>
       </CardHeader>
       <CardContent className="pb-4">

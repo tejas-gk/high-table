@@ -27,6 +27,17 @@ import { FileState, MultiFileDropzone } from "@/components/image-upload"
 import {Category} from '@prisma/client'
 import { Switch } from "@/components/ui/switch"
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 
 
@@ -136,14 +147,14 @@ export default  function AddNewCategory() {
 
 
     return (
-        <Dialog>
-            <DialogTrigger>
+        <AlertDialog>
+            <AlertDialogTrigger>
                 Add Category
-            </DialogTrigger>
-            <DialogContent className="max-w-3xl overflow-y-auto h-screen">
-                <DialogHeader>
-                    <DialogTitle>Create a new category</DialogTitle>
-                    <DialogDescription>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="max-w-3xl overflow-y-auto h-screen">
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Create a new category</AlertDialogTitle>
+                    <AlertDialogDescription>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                                 <FormField
@@ -222,16 +233,17 @@ export default  function AddNewCategory() {
                                         </FormItem>
                                     )}
                                 />
-                               
-                                
-
-
-                                <Button type="submit">Submit</Button>
                             </form>
                         </Form>
-                    </DialogDescription>
-                </DialogHeader>
-            </DialogContent>
-        </Dialog>
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                        onClick={onSubmit}
+                    >Create</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
     )
 }

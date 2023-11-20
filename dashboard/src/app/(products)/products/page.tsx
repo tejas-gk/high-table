@@ -6,6 +6,7 @@ import { z } from "zod"
 import prisma from "@/lib/prismadb"
 import { columns } from "./components/columns"
 import { DataTable } from "./components/data-table"
+import { CalendarDateRangePicker } from "@/components/date-range-picker"
 export const metadata: Metadata = {
     title: "Products",
     description: "Manage your prodcuts.",
@@ -38,6 +39,7 @@ export default async function TaskPage() {
                             Here&apos;s a list of your Products
                         </p>
                     </div>
+                    <CalendarDateRangePicker />
                 </div>
                 {/* @ts-ignore */}
                 <DataTable data={products} columns={columns} />

@@ -7,6 +7,7 @@ import SubNavbar from '@/components/sub-navbar';
 import ShiftingCountdown from '@/components/countdowns/countdown-hero';
 import ProductCardLoading from '@/components/loading/product-card-loading';
 import { Category } from '@prisma/client';
+import { CallOut } from '@/components/banners/alerts/call-out';
 async function getProducts() {
   const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { cache: 'no-store' })
   console.log(products)
@@ -39,14 +40,6 @@ const categories = [
     products: 50,
   },
 ]
-
-
-// type CategoryType = {
-//   title: string;
-//   imageSrc: string;
-//   products: number;
-// }
-
 type CategoryType=Pick<Category, 'id' | 'title' | 'imageSrc'>
 
 
@@ -55,7 +48,10 @@ export default async function Home() {
     <>
       <SubNavbar />
       <Hero />
-
+      <CallOut 
+        title='Free shipping on orders over $100'
+        description='Buy anything worth $100 or more and get free shipping anywhere in the world.'
+      />
       {/* categories */}
       <div className='mt-6'>
         <h1 className='text-5xl font-bold'>Categories</h1>

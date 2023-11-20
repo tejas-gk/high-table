@@ -10,6 +10,8 @@ Welcome to the Ecommerce Project built with Next.js and Tailwind CSS (ShadCn). T
   - [Features to Add](#features-to-add)
   - [Development](#development)
     - [Start by cloning the repository:](#start-by-cloning-the-repository)
+    - [Change .env](#change-env)
+    - [Install Prisma](#install-prisma)
     - [Install dependencies](#install-dependencies)
   - [Documentation](#documentation)
   - [Project Structure](#project-structure)
@@ -68,6 +70,20 @@ Welcome to the Ecommerce Project built with Next.js and Tailwind CSS (ShadCn). T
 
 ```
 git clone https://github.com/tejas-gk/carty-moron.git
+```
+
+### Change .env 
+  
+  ```bash
+  cp .env.example .env
+```
+
+### Install Prisma
+
+```bash
+```bash
+npx prisma generate
+npx prisma db push
 ```
 
 ### Install dependencies
