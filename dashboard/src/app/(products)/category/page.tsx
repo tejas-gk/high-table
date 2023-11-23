@@ -2,9 +2,13 @@ import { DataTable } from './data-table'
 
 
 const getCategory = async () => {
-  const res = await fetch('http://localhost:3001/api/category', { cache: 'no-cache'})
-  console.log(res)
-  return res.json()
+  try {
+    const res = await fetch('http://localhost:3001/api/category', { cache: 'no-cache' })
+    console.log(res)
+    return res.json()
+  } catch (error) {
+    console.log(error)
+  }
 }
 export default async function page() {
   const data = await getCategory()

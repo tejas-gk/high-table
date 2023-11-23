@@ -9,6 +9,8 @@ export async function POST(req: Request) {
     const body = await req.text()
     const signature = headers().get("Stripe-Signature") as string
 
+    console.log(body, 'body')
+
     let event: Stripe.Event
 
     try {
@@ -35,7 +37,9 @@ export async function POST(req: Request) {
 
     const addressString = addressComponents.filter((c) => c !== null).join(', ');
 
+  
 
+    console.log(event, 'event')
     if (event.type === "checkout.session.completed") {
         const order = await prismadb.order.update({
             where: {
@@ -43,9 +47,11 @@ export async function POST(req: Request) {
             },
             data: {
                 isPaid: true,
-                // address: addressString
+                address: addressString,
+                phone: session?.customer_details?.phone || '',
             }
         })
+        console.log(order, 'order')
     }
 
     return new NextResponse(null, { status: 200 });

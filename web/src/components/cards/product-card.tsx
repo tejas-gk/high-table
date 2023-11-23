@@ -4,6 +4,7 @@ import { Button } from '../ui/button'
 import useCartStore from '@/store/cart-store'
 import Link from 'next/link'
 import Image from 'next/image'
+import ImageCarousel from '../image-carousel'
 
 export default function ProductCard({
   product
@@ -38,17 +39,7 @@ export default function ProductCard({
       <div className='border group pb-4 rounded-md'>
         <Link href={`/products/category/${product?.id}`} passHref>
             <div className='relative overflow-hidden rounded-t-md aspect-square'>
-              <Image src={product?.imageSrc[0]}
-                alt={product.name}
-                width={300}
-                height={300}
-                onError={(e) => {
-                  // @ts-ignore
-                  e.target.src = 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg';
-                }}
-                className='object-cover w-full h-full transition-all duration-500 ease-in-out transform group-hover:scale-110
-          '
-              />
+              <ImageCarousel images={product?.imageSrc} />
             </div>
             <div className='px-2'>
               <h3 className='mt-2 text-lg font-semibold text-gray-500'>

@@ -20,76 +20,91 @@ export async function POST(request: Request) {
     const body = await request.json()
     const items = body;
     console.log(items, 'items')
-    try {
 
-        const userId = '5a30807c-5402-4aa7-ab9f-f1e26b6827ba'
-        
-        const user = await prisma.user.findUnique({
-            where: {
-                id: userId
+    const orderId = Math.floor(Math.random() * 1000000000).toString();
+
+    const products = await prisma.product.findMany({
+        where: {
+            id: {
+                in: items.items.map((item: any) => item.id)
             }
+        }
+    })
+
+    console.log(products, 'products')
+
+    const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+
+    products.forEach((product: any) => {
+        line_items.push({
+            price_data: {
+                currency: 'inr',
+                product_data: {
+                    name: product.name,
+                    images: [product.image],
+                    description: product.description,
+                },
+                unit_amount: product.price * 100,
+            },
+            quantity: product.quantity,
+            // custom: {
+            //     size: product.size,
+            // },
         })
-        let orderId= ''
-        try {
-            const order = await prisma.order.create({
-                data: {
-                    user: {
+    })
+
+    const userId = '17f8c030-4dde-49f3-a46a-eb2ba5f6bb18'
+    const order = await prisma.order.create({
+        data: {
+            id: orderId,  // Assigning the orderId
+            userId: userId,  // Assuming you have a userId variable
+            OrderItems: {
+                create: items.items.map((item: any) => ({
+                    product: {
                         connect: {
-                            id: userId
+                            id: item.id  // Connecting the order item to the product
                         }
                     },
-                    OrderItems: {
-                        create: items.items.map((item: any) => ({
-                            productId: item.id,
-                            quantity: item.quantity,
-                        }))
-                    }
-                }
-            })
-            console.log(order, 'order')
-            orderId = order.id
-        } catch (err) {
-            console.log(err, 'err')
+                    quantity: item.quantity,
+                    amount: item.price * item.quantity
+                }))
+            }
         }
+    })
+
+    
 
 
-        
 
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: 'payment',
-            billing_address_collection: 'required',
 
-            line_items: items.items.map((item:any) => ({
-                price_data: {
-                    currency: 'inr',
-                    product_data: {
-                        name: item.name,
-                        images: [item.image],
-                        description: item.description,
-                    },
-                    unit_amount: item.price * 100,
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        billing_address_collection: 'required',
+
+        line_items: items.items.map((item: any) => ({
+            price_data: {
+                currency: 'inr',
+                product_data: {
+                    name: item.name,
+                    images: [item.image],
+                    description: item.description,
                 },
-                quantity: item.quantity,
-                custom: {
-                    size: item.size,
-                },
-            })),
-            success_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/checkout/success`,
-            cancel_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`,
-            metadata: {
-               orderId: orderId
-           }
-        })
-
-        return NextResponse.json({ url: session.url }, {
-            headers: corsHeaders
-        });
-    } catch (error:any) {
-        console.log(error)
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: error.message }),
+                unit_amount: item.price * 100,
+            },
+            quantity: item.quantity,
+            custom: {
+                size: item.size,
+            },
+        })),
+        success_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/success`,
+        cancel_url: `${process.env.NEXT_PUBLIC_FRONTEND_URL}`,
+        metadata: {
+            orderId: orderId
         }
-    }
+    })
+
+    return NextResponse.json({ url: session.url }, {
+        headers: corsHeaders
+    });
 }

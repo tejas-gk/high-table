@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>{appConfig.name}</title>
-        <meta name="description" content="" /> 
+        <meta name="description" content="" />
       </head>
       <body className={inter.className}>
         <ThemeProvider
@@ -62,23 +62,27 @@ export default function RootLayout({
                 className="hidden dark:block"
               />
             </div>
-            <div className="hidden flex-col md:flex">
-              <div className="border-b">
-                <div className="flex h-16 items-center px-4">
-                  <TeamSwitcher />
-                  <MainNav className="mx-6" />
-                  <div className="ml-auto flex items-center space-x-4">
-                    <Search />
-                    <ModeToggle />
-                    <UserNav />
+            <div className='flex'>
+              <div className='w-[40%] h-full
+              '>hello</div>
+              <div className="hidden flex-col md:flex">
+                <div className="border-b">
+                  <div className="flex h-16 items-center px-4">
+                    <TeamSwitcher />
+                    <MainNav className="mx-6" />
+                    <div className="ml-auto flex items-center space-x-4">
+                      <Search />
+                      <ModeToggle />
+                      <UserNav />
+                    </div>
                   </div>
                 </div>
+                {children}
               </div>
-              {children}
             </div>
           </EdgeStoreProvider>
         </ThemeProvider>
       </body>
-    </html>
+    </html >
   )
 }

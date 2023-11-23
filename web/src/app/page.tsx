@@ -8,6 +8,7 @@ import ShiftingCountdown from '@/components/countdowns/countdown-hero';
 import ProductCardLoading from '@/components/loading/product-card-loading';
 import { Category } from '@prisma/client';
 import { CallOut } from '@/components/banners/alerts/call-out';
+import ImageCarousel from '../components/image-carousel';
 async function getProducts() {
   const products = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, { cache: 'no-store' })
   console.log(products)

@@ -33,7 +33,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-
+import ImageTray from '@/components/image-tray';
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(' ')
@@ -62,73 +62,73 @@ export default function IndividualProduct({ product }: { product: any }) {
             sizes: product.sizes,
         },
     })
-    
-   async  function onSubmit(values: z.infer<typeof productSchema>) {
+
+    async function onSubmit(values: z.infer<typeof productSchema>) {
         console.log(values)
-       const updateProducts = await fetch(`/api/products`, {
+        const updateProducts = await fetch(`/api/products`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-           body: JSON.stringify({
-               values,
+            body: JSON.stringify({
+                values,
                 id: product.id
-           }),
+            }),
         })
-       console.log(updateProducts)
-       
+        console.log(updateProducts)
+
     }
     return (
         <div className='px-8'>
             <Card>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <CardHeader>
+                        <CardHeader>
                             <CardTitle>
-                                    <FormField
-                                        control={form.control}
-                                        name="name"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                {/* <FormLabel>Username</FormLabel> */}
-                                                <FormControl>
-                                                    <div className="text-4xl font-bold">
-                                                        <TitleForm
-                                                            initialData={product.name}
-                                                            className='text-4xl font-bold'
-                                                            {...field}
-                                                        />
-                                                    </div>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                        </CardTitle>
-                        <CardDescription>
-                            <div className="flex items-start gap-x-2 flex-col">
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            {/* <FormLabel>Username</FormLabel> */}
+                                            <FormControl>
+                                                <div className="text-4xl font-bold">
+                                                    <TitleForm
+                                                        initialData={product.name}
+                                                        className='text-4xl font-bold'
+                                                        {...field}
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </CardTitle>
+                            <CardDescription>
+                                <div className="flex items-start gap-x-2 flex-col">
                                     <FormField
                                         control={form.control}
                                         name="description"
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormControl>
-                                                        <TitleForm
-                                                            initialData={product.description}
-                                                            {...field}
-                                                        />
+                                                    <TitleForm
+                                                        initialData={product.description}
+                                                        {...field}
+                                                    />
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
                                         )}
                                     />
-                            </div>
-                        </CardDescription>
-                    </CardHeader>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
-                        <div className='flex flex-col gap-8'>
-                            <CardContent>
-                                <div className="
+                                </div>
+                            </CardDescription>
+                        </CardHeader>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+                            <div className='flex flex-col gap-8'>
+                                <CardContent>
+                                    <div className="
                                 grid grid-cols-1 md:grid-cols-2 gap-6
                             ">
                                         <FormField
@@ -138,10 +138,10 @@ export default function IndividualProduct({ product }: { product: any }) {
                                                 <FormItem>
                                                     <FormLabel>Price</FormLabel>
                                                     <FormControl>
-                                                            <TitleForm
-                                                                initialData={product.price}
-                                                                {...field}
-                                                            />
+                                                        <TitleForm
+                                                            initialData={product.price}
+                                                            {...field}
+                                                        />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -154,20 +154,20 @@ export default function IndividualProduct({ product }: { product: any }) {
                                                 <FormItem>
                                                     <FormLabel>Quantity</FormLabel>
                                                     <FormControl>
-                                                            <TitleForm
-                                                                initialData={product.quantity}
-                                                                {...field}
-                                                            />
+                                                        <TitleForm
+                                                            initialData={product.quantity}
+                                                            {...field}
+                                                        />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
                                         />
-                                    <TitleForm
-                                        initialData={'0'}
-                                    />
-                                    <TitleForm
-                                        initialData={product?.Category?.title}
+                                        <TitleForm
+                                            initialData={'0'}
+                                        />
+                                        <TitleForm
+                                            initialData={product?.Category?.title}
                                         />
                                         <FormField
                                             control={form.control}
@@ -197,121 +197,122 @@ export default function IndividualProduct({ product }: { product: any }) {
                                                 </FormItem>
                                             )}
                                         />
-                                    <div className='flex flex-col gap-2'>
-                                        <Label htmlFor='in-stock'>In Stock</Label>
-                                        <Switch
-                                            checked={product.inStock}
-                                        />
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </div>
-                        <div className='flex flex-col '>
-                            <div className="flex items-start gap-x-2 flex-col">
-                                <Label htmlFor={`image`}>Images</Label>
-                                {
-                                    product.imageSrc.map((image: any, index: number) => (
-                                        <div key={index} className='flex flex-col gap-2'>
-                                            <Image
-                                                height={200}
-                                                width={200}
-                                                alt={`image-${index}`}
-                                                src={image}
-                                                className='w-full px-3 py-2'
+                                        <div className='flex flex-col gap-2'>
+                                            <Label htmlFor='in-stock'>In Stock</Label>
+                                            <Switch
+                                                checked={product.inStock}
                                             />
                                         </div>
-                                    ))
-                                }
-                            </div>
-                            <div className="flex items-start gap-x-2 mt-5">
-
-                                {product.colors.map((color: any) => (
-                                    <div
-                                        key={color.name}
-                                        onClick={() => setSelectedColor(color.name)}
-                                        className={classNames(
-                                            color.name,
-                                            'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
-                                        )}
-                                    >
-                                        <div className="flex items-center space-x-2">
-                                            <div id={`color-${color.name}`} />
-                                            <span
-                                                aria-hidden="true"
-                                                style={{ background: color.name }}
-                                                className={classNames(
-                                                    color.name || `bg-${color.name}-400`,
-                                                    'h-8 w-8 rounded-full border border-black border-opacity-10',
-                                                    selectedColor === color.name ? 'ring ring-offset-1' : '',
-                                                )}
-                                            />
-                                            <Label htmlFor={`color-${color.name}`}>
-                                                {color.name}
-                                            </Label>
-                                        </div>
                                     </div>
-                                ))}
-
+                                </CardContent>
                             </div>
-                            <div className="mt-10">
-                                <div className="flex items-center justify-between">
-                                    <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Size</h4>
-                                </div>
-
-                                <div className='grid grid-cols-4 gap-4 mt-4'>
+                            <div className='flex flex-col '>
+                                <div className="flex items-start gap-x-2 flex-col">
+                                    <Label htmlFor={`image`}>Images</Label>
                                     {
-                                        product.sizes.map((size: any) => (
-                                            <div key={size.name}
-                                                onClick={() => setSelectedSize(size.name)}
-                                                className={classNames(
-                                                    size.inStock
-                                                        ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
-                                                        : 'cursor-not-allowed bg-gray-50 text-gray-200',
-                                                    selectedSize === size.name ? 'ring-2 ring-indigo-500' : '',
-                                                    'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1'
-                                                )}
-                                            >
-                                                <Label>{size.name}</Label>
-                                                {size.inStock ? (
-                                                    <span
-                                                        className={classNames(
-                                                            selectedSize === size.name ? 'border' : 'border-2',
-                                                            selectedSize === size.name ? 'border-indigo-500' : 'border-transparent',
-                                                            'pointer-events-none absolute -inset-px rounded-md'
-                                                        )}
-                                                        aria-hidden="true"
-                                                    />
-                                                ) : (
-                                                    <span
-                                                        aria-hidden="true"
-                                                        className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
-                                                    >
-                                                        <svg
-                                                            className="absolute inset-0 h-full w-full stroke-2 text-gray-200"
-                                                            viewBox="0 0 100 100"
-                                                            preserveAspectRatio="none"
-                                                            stroke="currentColor"
-                                                        >
-                                                            <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
-                                                        </svg>
-                                                    </span>
-                                                )}
+                                        product.imageSrc.map((image: any, index: number) => (
+                                            <div key={index} className='flex flex-col gap-2'>
+                                                <Image
+                                                    height={200}
+                                                    width={200}
+                                                    alt={`image-${index}`}
+                                                    src={image}
+                                                    className='w-full px-3 py-2'
+                                                />
                                             </div>
                                         ))
                                     }
                                 </div>
+                                <ImageTray />
+                                <div className="flex items-start gap-x-2 mt-5">
+
+                                    {product.colors.map((color: any) => (
+                                        <div
+                                            key={color.name}
+                                            onClick={() => setSelectedColor(color.name)}
+                                            className={classNames(
+                                                color.name,
+                                                'relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none'
+                                            )}
+                                        >
+                                            <div className="flex items-center space-x-2">
+                                                <div id={`color-${color.name}`} />
+                                                <span
+                                                    aria-hidden="true"
+                                                    style={{ background: color.name }}
+                                                    className={classNames(
+                                                        color.name || `bg-${color.name}-400`,
+                                                        'h-8 w-8 rounded-full border border-black border-opacity-10',
+                                                        selectedColor === color.name ? 'ring ring-offset-1' : '',
+                                                    )}
+                                                />
+                                                <Label htmlFor={`color-${color.name}`}>
+                                                    {color.name}
+                                                </Label>
+                                            </div>
+                                        </div>
+                                    ))}
+
+                                </div>
+                                <div className="mt-10">
+                                    <div className="flex items-center justify-between">
+                                        <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Size</h4>
+                                    </div>
+
+                                    <div className='grid grid-cols-4 gap-4 mt-4'>
+                                        {
+                                            product.sizes.map((size: any) => (
+                                                <div key={size.name}
+                                                    onClick={() => setSelectedSize(size.name)}
+                                                    className={classNames(
+                                                        size.inStock
+                                                            ? 'cursor-pointer bg-white text-gray-900 shadow-sm'
+                                                            : 'cursor-not-allowed bg-gray-50 text-gray-200',
+                                                        selectedSize === size.name ? 'ring-2 ring-indigo-500' : '',
+                                                        'group relative flex items-center justify-center rounded-md border py-3 px-4 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1'
+                                                    )}
+                                                >
+                                                    <Label>{size.name}</Label>
+                                                    {size.inStock ? (
+                                                        <span
+                                                            className={classNames(
+                                                                selectedSize === size.name ? 'border' : 'border-2',
+                                                                selectedSize === size.name ? 'border-indigo-500' : 'border-transparent',
+                                                                'pointer-events-none absolute -inset-px rounded-md'
+                                                            )}
+                                                            aria-hidden="true"
+                                                        />
+                                                    ) : (
+                                                        <span
+                                                            aria-hidden="true"
+                                                            className="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200"
+                                                        >
+                                                            <svg
+                                                                className="absolute inset-0 h-full w-full stroke-2 text-gray-200"
+                                                                viewBox="0 0 100 100"
+                                                                preserveAspectRatio="none"
+                                                                stroke="currentColor"
+                                                            >
+                                                                <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
+                                                            </svg>
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
                             </div>
+                            <CardFooter>
+                                <Button type="submit">
+                                    Update
+                                </Button>
+                            </CardFooter>
                         </div>
-                        <CardFooter>
-                            <Button type="submit">
-                                Update
-                            </Button>
-                        </CardFooter>
-                    </div>
-                    {/* <Button type="submit">Savw</Button> */}
-                </form>
-            </Form>
-        </Card>
+                        {/* <Button type="submit">Savw</Button> */}
+                    </form>
+                </Form>
+            </Card>
         </div >
     )
 }
@@ -341,7 +342,7 @@ const TitleForm: React.FC<TitleFormProps> = ({ initialData, className, ...inputP
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, []); 
+    }, []);
 
     return (
         <div className='flex flex-col gap-2'>

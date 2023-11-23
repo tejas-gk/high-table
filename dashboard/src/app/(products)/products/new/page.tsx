@@ -39,7 +39,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import Step from "@/components/multi-step";
 import { motion } from 'framer-motion'
 import { cn } from "@/lib/utils"
-
+import { redirect } from "next/navigation"
 const productSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters long'),
     description: z.string().min(5, 'Description must be at least 5 characters long'),
@@ -166,10 +166,12 @@ export default function Page() {
                 }
             })
             const data = await response.json()
-            if (response.ok)
+            if (response.ok) {
                 toast({
                     title: "Product added successfully",
                 })
+                redirect('/products')
+            }
             else {
                 toast({
                     title: "Something went wrong",
@@ -192,7 +194,6 @@ export default function Page() {
                 <Step step={0} currentStep={formStep} />
                 <Step step={1} currentStep={formStep} />
                 <Step step={2} currentStep={formStep} />
-                <Step step={3} currentStep={formStep} />
             </div>
             <Card>
                 <CardHeader>

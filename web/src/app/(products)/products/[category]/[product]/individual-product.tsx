@@ -26,6 +26,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { getSession } from 'next-auth/react'
 import Reviews from '@/components/reviews'
 import { Product } from '@/types/products'
+import ImageCarousel from '@/components/image-carousel'
 const features = [
     { name: 'Origin', description: 'Designed by Good Goods, Inc.' },
     { name: 'Material', description: 'Solid walnut base with rare earth magnets and powder coated steel card cover' },
@@ -135,15 +136,7 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
 
             <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
                 <div className="aspect-h-2 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-900 sm:col-span-4 lg:col-span-5">
-                    <Image
-                        width={500}
-                        height={500}
-                        onError={(e) => {
-                            e.target.src = 'https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg'
-                        }}
-                        src={product.imageSrc[0]} alt={product.imageAlt} className="object-cover object-center w-full h-full"
-                    />
-
+                    <ImageCarousel images={product.imageSrc} />
                 </div>
 
                 <div className="sm:col-span-8 lg:col-span-7">

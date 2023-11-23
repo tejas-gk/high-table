@@ -11,6 +11,7 @@ import Footer from '@/components/footer'
 import OfferBanner from '@/components/banners/offer-banner'
 import RegisterBanner from '@/components/banners/register-banner'
 import usePageVisibility from '@/hooks/use-page-active'
+import SwiperBanner from '../components/banners/swiper-banner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,7 +32,8 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <SessionProvider>
           {/* <OfferBanner /> */}
-          <RegisterBanner />
+          {/* <RegisterBanner /> */}
+          {/* <SwiperBanner/> */}
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"

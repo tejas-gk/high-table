@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { Resend } from 'resend';
 import { EmailTemplate } from '@/components/emails/welcome-email';
 import { NextResponse } from 'next/server';
-
+import { KoalaWelcomeEmail } from '@/email/welcome-email';
 const resend = new Resend(process.env.RESEND_EMAIL_API_KEY);
 
 export async function POST(request: Request) {
@@ -22,11 +22,13 @@ export async function POST(request: Request) {
     });
     const sendWelcomeEmail = await resend.emails.send({
         from: 'onboarding@resend.dev',
-        to: ['tejasgk250@gmail.com'],
+        to: ['tejgankri@outlook.com'],
         subject: 'Hello world',
-        react: EmailTemplate({ firstName: 'John' }),
+        react: KoalaWelcomeEmail({ userFirstname: 'John' }),
         text: 'hello',
     });
+
+    console.log(sendWelcomeEmail);
 
     return new Response(JSON.stringify({user,sendWelcomeEmail}), {
         headers: { 'Content-Type': 'application/json' },

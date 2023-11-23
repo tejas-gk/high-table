@@ -142,13 +142,17 @@ model Order {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   OrderItems OrderItem[]
+  isPaid     Boolean     @default(false)
+  phone      String      @default("")
+  address    String      @default("")
+  status     OrderStatus @default(NOT_SHIPPED)
 }
 
 model OrderItem {
   id        String   @id @default(uuid()) @map("_id")
   orderId   String
   productId String
-  quantity  Int
+  quantity  Int     @default(1)
   amount    Float
   order     Order    @relation(fields: [orderId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])
