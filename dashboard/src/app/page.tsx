@@ -63,27 +63,27 @@ export default async function DashboardPage() {
     maximumSignificantDigits: 3,
   }).format(totalRevenue);
 
-  const calculateRevenueIncrease = (revenueData, numberOfMonths, timeUnit) => {
-    // Assuming revenueData is an array of objects with a createdAt field
+  // const calculateRevenueIncrease = (revenueData, numberOfMonths, timeUnit) => {
+  //   // Assuming revenueData is an array of objects with a createdAt field
 
-    // Sort the revenue data by createdAt in ascending order
-    const sortedData = revenueData.sort((a, b) => a.createdAt - b.createdAt);
+  //   // Sort the revenue data by createdAt in ascending order
+  //   const sortedData = revenueData.sort((a, b) => a.createdAt - b.createdAt);
 
-    // Get the revenue for the current time period
-    const currentTimestampRevenue = sortedData[sortedData.length - 1]?.revenue || 0;
+  //   // Get the revenue for the current time period
+  //   const currentTimestampRevenue = sortedData[sortedData.length - 1]?.revenue || 0;
 
-    // Get the revenue for the previous time period
-    const previousTimestampRevenue =
-      sortedData[sortedData.length - 1 - numberOfMonths]?.revenue || 0;
+  //   // Get the revenue for the previous time period
+  //   const previousTimestampRevenue =
+  //     sortedData[sortedData.length - 1 - numberOfMonths]?.revenue || 0;
 
-    // Calculate the percentage increase
-    const percentageIncrease =
-      ((currentTimestampRevenue - previousTimestampRevenue) / previousTimestampRevenue) * 100;
+  //   // Calculate the percentage increase
+  //   const percentageIncrease =
+  //     ((currentTimestampRevenue - previousTimestampRevenue) / previousTimestampRevenue) * 100;
 
-    return percentageIncrease;
-  };
+  //   return percentageIncrease;
+  // };
 
-  console.log('orders', calculateRevenueIncrease(orders, 1, 'month'))
+  // console.log('orders', calculateRevenueIncrease(orders, 1, 'month'))
 
   
   return (
@@ -131,10 +131,10 @@ export default async function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    ₹ {formattedRevenue}
+                    {formattedRevenue}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    +{calculateRevenueIncrease(orders,1,'month')}% 
+                    +10% 
                     from last month
                   </p>
                 </CardContent>
