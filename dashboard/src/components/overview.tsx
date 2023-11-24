@@ -4,11 +4,11 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
 export function Overview({
     data
-}) {
+}:any) {
     console.log(data)
-    const userData = data.map((order) => ({
+    const userData = data.map((order:any) => ({
         name: order.user.name,
-        total: order.OrderItems.reduce((acc, item) => acc + item.amount, 0),
+        total: order.OrderItems.reduce((acc:any, item:any) => acc + item.amount, 0),
     }));
     return (
         <ResponsiveContainer width="100%" height={350}>
@@ -27,7 +27,7 @@ export function Overview({
                     axisLine={false}
                     tickFormatter={(value) => `$${value}`}
                 />
-                <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="total" fill="bg-white" radius={[4, 4, 0, 0]} />
             </BarChart>
         </ResponsiveContainer>
     )

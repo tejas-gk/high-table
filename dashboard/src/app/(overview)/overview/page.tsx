@@ -163,7 +163,7 @@ export default function DashboardPage() {
                                     <CardTitle>Overview</CardTitle>
                                 </CardHeader>
                                 <CardContent className="pl-2">
-                                    <Overview />
+                                    {/* <Overview /> */}
                                 </CardContent>
                             </Card>
                             <Card className="col-span-3">
@@ -174,7 +174,7 @@ export default function DashboardPage() {
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <RecentSales />
+                                    {/* <RecentSales /> */}
                                 </CardContent>
                             </Card>
                         </div>
