@@ -6,9 +6,10 @@ import {
 
 export function RecentSales({
     data
-}) {
+}:any) {
     console.log(data)
-    const userSpent = data.reduce((acc, item) => {
+    const userSpent = data.reduce((acc: any, item: any) => {
+        // @ts-ignore
         return acc + item.OrderItems.reduce((acc, item) => {
             return acc + item.amount
         }, 0)
@@ -16,7 +17,7 @@ export function RecentSales({
     return (
         <div className="space-y-8">
             {
-                data.slice(0, 5).map((item) => {
+                data.slice(0, 5).map((item:any) => {
                     return (
                         <div className="flex items-center" key={item.id}>
                             <Avatar className="h-9 w-9">
