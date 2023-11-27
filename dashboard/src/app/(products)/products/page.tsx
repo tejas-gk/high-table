@@ -1,15 +1,15 @@
 import { promises as fs } from "fs"
 import path from "path"
-import { Metadata } from "next"
 import Image from "next/image"
 import { z } from "zod"
 import prisma from "@/lib/prismadb"
 import { columns } from "./components/columns"
 import { DataTable } from "./components/data-table"
 import { CalendarDateRangePicker } from "@/components/date-range-picker"
+import { Metadata } from "next"
 export const metadata: Metadata = {
     title: "Products",
-    description: "Manage your prodcuts.",
+    description: "Check out some examples app built using the components.",
 }
 
 const getAllProducts = async () => {
@@ -19,7 +19,7 @@ const getAllProducts = async () => {
                 colors: true,
                 sizes: true,
                 Category: true,
-            }
+            },
         });
         return products
     } catch (err) {
@@ -29,6 +29,7 @@ const getAllProducts = async () => {
 
 export default async function TaskPage() {
     const products = await getAllProducts()
+    console.log(products)
     return (
         <>
             <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">

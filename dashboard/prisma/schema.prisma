@@ -29,6 +29,8 @@ model User {
   Order          Order[]
   Wishlist       Wishlist[]
   Review         Review[]
+  Coupon         Coupon?    @relation(fields: [couponId], references: [id])
+  couponId       String?
 }
 
 model Account {
@@ -88,7 +90,7 @@ model Product {
   description String?
   rating      Float           @default(0)
   imageSrc    String[]
-  inStock     Boolean         @default(true)
+  Quantity    Int             @default(1)
   colors      Color[]
   sizes       Size[]
   Category    Category?       @relation(fields: [categoryId], references: [id])
@@ -99,6 +101,19 @@ model Product {
   OrderItems  OrderItem[]
   Wishlist    Wishlist[]
   Review      Review[]
+  coupons     Coupon[]
+}
+
+model Coupon {
+  id        String  @id @default(uuid()) @map("_id")
+  code      String
+  discount  Float
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  isGeneral Boolean @default(false)
+  isExpired Boolean @default(false)
+  appliedBy User[]
+  type      String
 }
 
 model Color {
@@ -152,7 +167,7 @@ model OrderItem {
   id        String   @id @default(uuid()) @map("_id")
   orderId   String
   productId String
-  quantity  Int     @default(1)
+  quantity  Int      @default(1)
   amount    Float
   order     Order    @relation(fields: [orderId], references: [id])
   product   Product  @relation(fields: [productId], references: [id])

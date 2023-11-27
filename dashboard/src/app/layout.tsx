@@ -13,6 +13,9 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { EdgeStoreProvider } from '../lib/edgestore';
 import { appConfig } from '@/config/app'
+import { SidebarNav } from '@/components/sidebar'
+import { Separator } from '@/components/ui/separator'
+import Navbar from '@/components/navbar'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -25,6 +28,38 @@ export const metadata: Metadata = {
   applicationName: 'High Table',
   creator: 'Vercel',
 }
+const items = [
+  {
+    title: "Overview",
+    icon: "home",
+    href: "/",
+  },
+  {
+    title: "Customers",
+    icon: "users",
+    href: "/customers",
+  },
+  {
+    title: "Products",
+    icon: "home",
+    href: "/products",
+  },
+  {
+    title: "Orders",
+    icon: "home",
+    href: "/orders",
+  },
+  {
+    title: "Documentation",
+    icon: "home",
+    href: "/documentation",
+  },
+  {
+    title: "Marketing",
+    icon: "home",
+    href: "/marketing",
+  },
+]
 
 export default function RootLayout({
   children,
@@ -47,39 +82,21 @@ export default function RootLayout({
           <EdgeStoreProvider>
             <Toaster />
             <div className="md:hidden">
-              <Image
-                src="/examples/dashboard-light.png"
-                width={1280}
-                height={866}
-                alt="Dashboard"
-                className="block dark:hidden"
-              />
-              <Image
-                src="/examples/dashboard-dark.png"
-                width={1280}
-                height={866}
-                alt="Dashboard"
-                className="hidden dark:block"
-              />
+
             </div>
-            <div className='flex'>
-              <div className='w-[40%] h-full
-              '>hello</div>
-              <div className="hidden flex-col md:flex">
-                <div className="border-b">
-                  <div className="flex h-16 items-center px-4">
-                    <TeamSwitcher />
-                    <MainNav className="mx-6" />
-                    <div className="ml-auto flex items-center space-x-4">
-                      <Search />
-                      <ModeToggle />
-                      <UserNav />
-                    </div>
-                  </div>
-                </div>
-                {children}
+            {/* <div className="hidden space-y-6 md:block"> */}
+              {/* <div className="space-y-0.5">
+                <Navbar />
+              </div> */}
+              {/* <Separator className="my-6" /> */}
+              <div className="flex flex-col space-y-8">
+                {/* <aside className="lg:w-[10%]">
+                  <SidebarNav items={items} />
+                </aside> */}
+                <Navbar/>
+                <div className="flex-1">{children}</div>
               </div>
-            </div>
+            {/* </div> */}
           </EdgeStoreProvider>
         </ThemeProvider>
       </body>

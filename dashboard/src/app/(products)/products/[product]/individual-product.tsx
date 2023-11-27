@@ -46,8 +46,10 @@ const productSchema = z.object({
     imageSrc: z.array(z.string()).min(1, 'At least one image is required'),
     colors: z.array(z.string()).min(1, 'At least one color is required'),
     sizes: z.array(z.string()).min(1, 'At least one size is required'),
+    quantity: z.number().positive('Quantity must be a positive number'),
 });
 export default function IndividualProduct({ product }: { product: any }) {
+    console.log(product)
     const [selectedColor, setSelectedColor] = useState('')
     const [selectedSize, setSelectedSize] = useState('')
     const form = useForm<z.infer<typeof productSchema>>({
@@ -60,6 +62,7 @@ export default function IndividualProduct({ product }: { product: any }) {
             imageSrc: product.imageSrc,
             colors: product.colors,
             sizes: product.sizes,
+            quantity: product.quantity,
         },
     })
 
@@ -149,7 +152,7 @@ export default function IndividualProduct({ product }: { product: any }) {
                                         />
                                         <FormField
                                             control={form.control}
-                                            name="price"
+                                            name="category"
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Quantity</FormLabel>
@@ -163,35 +166,25 @@ export default function IndividualProduct({ product }: { product: any }) {
                                                 </FormItem>
                                             )}
                                         />
-                                        <TitleForm
-                                            initialData={'0'}
-                                        />
-                                        <TitleForm
-                                            initialData={product?.Category?.title}
-                                        />
                                         <FormField
                                             control={form.control}
                                             name="category"
                                             render={({ field }) => (
                                                 <FormItem className="w-full">
-                                                    <FormLabel>Subcategory</FormLabel>
+                                                    <FormLabel>Category</FormLabel>
                                                     <FormControl>
-                                                        <Select
-                                                            value={field.value?.toString()}
-                                                            onValueChange={field.onChange}
-                                                        >
-                                                            <SelectTrigger className="capitalize">
-                                                                <SelectValue placeholder={field.value} />
+                                                        <Select>
+                                                            <SelectTrigger className="w-[180px]">
+                                                                <SelectValue placeholder="Theme" />
                                                             </SelectTrigger>
                                                             <SelectContent>
-                                                                <SelectGroup>
-                                                                    <SelectItem value="1">Tops</SelectItem>
-                                                                    <SelectItem value="2">Shirts</SelectItem>
-                                                                    <SelectItem value="3">Pants</SelectItem>
-                                                                    <SelectItem value="4">Traditional</SelectItem>
-                                                                </SelectGroup>
+                                    
+                                                                <SelectItem value="light">Light</SelectItem>
+                                                                <SelectItem value="dark">Dark</SelectItem>
+                                                                <SelectItem value="system">System</SelectItem>
                                                             </SelectContent>
                                                         </Select>
+
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -349,9 +342,8 @@ const TitleForm: React.FC<TitleFormProps> = ({ initialData, className, ...inputP
             {clickedBox ? (
                 <div>
                     <Input
-                        id={`email`}
+                        id={initialData}
                         name="email"
-                        // defaultValue={initialData}
                         ref={inputRef}
                         className={className}
                         {...inputProps}

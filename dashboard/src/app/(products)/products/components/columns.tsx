@@ -33,10 +33,8 @@ export const columns: ColumnDef<Product>[] = [
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => {
                     row.toggleSelected(!!value)
-                    console.log(row.id)
                     const selectedIdsStore = useSelectedIdsStore();
                     selectedIdsStore.toggleSelectedId(row.id)
-                    console.log(selectedIdsStore.selectedIds)
                 }}
                 aria-label="Select row"
                 className="translate-y-[2px]"
@@ -61,7 +59,6 @@ export const columns: ColumnDef<Product>[] = [
         ),
         cell: ({ row }) => {
             const label = labels.find((label) => label.value === row.original.name)
-            console.log(row.original)
             return (
                 <div className="flex space-x-2">
                     <Badge variant="outline">

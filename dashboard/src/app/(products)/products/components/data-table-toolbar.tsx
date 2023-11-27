@@ -1,5 +1,3 @@
-"use client"
-
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
@@ -9,7 +7,7 @@ import { DataTableViewOptions } from "./data-table-view-options"
 
 import { priorities, statuses } from "../data/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
-import React,{useEffect} from "react"
+import React, { useEffect } from "react"
 import { MixerHorizontalIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
 import { Download, PlusIcon, Trash } from "lucide-react"
@@ -20,13 +18,18 @@ interface DataTableToolbarProps<TData> {
     table: Table<TData>
 }
 
+
+
 export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0;
     const cat = getAllCategories()
-    const [categories, setCategories] = React.useState([])
-    console.log(isFiltered,'he')
+    console.log(isFiltered, 'he', cat)
+    const selectedRows = table.getState().rowSelection;
+    const handleBulkDelete = async (id: string[]) => {
+       console.log(id)
+    }
     return (
         <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center space-x-2">
@@ -77,13 +80,18 @@ export function DataTableToolbar<TData>({
                     <Download className="mr-2 h-4 w-4" />
                     Download
                 </Button>
-                <Button variant='destructive'
-                    className="ml-auto hidden h-8 lg:flex"
-                    size="sm"
-                >
-                    <Trash className="mr-2 h-4 w-4" />
-                    Delete
-                </Button>
+                {
+                    Object.keys(selectedRows).length > 0 && (
+                        <Button variant='destructive'
+                            className="ml-auto hidden h-8 lg:flex"
+                            size="sm"
+                            onClick={() => handleBulkDelete(Object.keys(selectedRows))}
+                        >
+                            <Trash className="mr-2 h-4 w-4" />
+                            Delete
+                        </Button>
+                    )
+                }
                 <Link href="/products/new">
                     <Button
                         variant="secondary"
