@@ -24,7 +24,8 @@ export const ProductSchema = z.object({
     description: z.string().nullable(),
     rating: z.number(),
     imageSrc: z.array(z.string()),
-    inStock: z.boolean(),
+    // inStock: z.boolean(),
+    quantity:z.number().optional(),
     colors: z.array(ColorSchema),
     sizes: z.array(SizeSchema),
     Category: z.object({

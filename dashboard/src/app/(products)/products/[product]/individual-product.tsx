@@ -190,12 +190,12 @@ export default function IndividualProduct({ product }: { product: any }) {
                                                 </FormItem>
                                             )}
                                         />
-                                        <div className='flex flex-col gap-2'>
+                                        {/* <div className='flex flex-col gap-2'>
                                             <Label htmlFor='in-stock'>In Stock</Label>
                                             <Switch
                                                 checked={product.inStock}
                                             />
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </CardContent>
                             </div>
