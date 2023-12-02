@@ -44,11 +44,11 @@ export const columns: ColumnDef<Product>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "productCode",
+        accessorKey: "email",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Product Code" />
+            <DataTableColumnHeader column={column} title="Email" />
         ),
-        cell: ({ row }) => <div className="w-[80px]">{row.getValue("productCode")}</div>,
+        cell: ({ row }) => <div className="w-[90px] truncate">{row.getValue("email")}</div>,
         enableSorting: false,
         enableHiding: false,
     },
@@ -58,13 +58,9 @@ export const columns: ColumnDef<Product>[] = [
             <DataTableColumnHeader column={column} title="Name" />
         ),
         cell: ({ row }) => {
-            const label = labels.find((label) => label.value === row.original.name)
             return (
                 <div className="flex space-x-2">
-                    <Badge variant="outline">
-                        {row?.original?.Category?.title}
-                    </Badge>
-                    <span className="max-w-[500px] truncate font-medium cursor-pointer">
+                    <span className="max-w-[200px] truncate font-medium cursor-pointer">
                         <HoverCard>
                             <HoverCardTrigger>
                                 {row.getValue("name")}
@@ -73,56 +69,44 @@ export const columns: ColumnDef<Product>[] = [
                                 <Image
                                     height={500}
                                     width={500}
-                                    src={row.original.imageSrc[0]}
-                                    alt={row.original.name}
+                                    src={row.original?.image ?? ""}
+                                    alt={row.original?.name ?? ""}
                                 />
                             </HoverCardContent>
                         </HoverCard>
                     </span>
+                    <Badge variant="outline">
+                        {row?.original?.role}
+                    </Badge>
                 </div>
             )
         },
     },
     {
-        accessorKey: "price",
+        accessorKey: "points",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Price" />
+            <DataTableColumnHeader column={column} title="Points" />
         ),
         cell: ({ row }) => {
             return (
                 <div className="flex space-x-2">
                     <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("price")}
+                        {row.getValue("points")}
                     </span>
                 </div>
             )
         },
     },
     {
-        accessorKey: "rating",
+        accessorKey: "username",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Rating" />
+            <DataTableColumnHeader column={column} title="Username" />
         ),
         cell: ({ row }) => {
             return (
                 <div className="flex space-x-2">
                     <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("rating")}
-                    </span>
-                </div>
-            )
-        },
-    },
-    {
-        accessorKey: "inStock",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="In stock" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("inStock") ? "Yes" : "No"}
+                        {row.getValue("username")}
                     </span>
                 </div>
             )

@@ -262,9 +262,9 @@ export default function NewProduct({
                                         <FormItem>
                                             <FormLabel>Category</FormLabel>
                                             <FormControl>
-                                                <Select>
+                                                <Select onValueChange={field.onChange}>
                                                     <SelectTrigger className="w-full">
-                                                        <SelectValue placeholder="Select a category" />
+                                                        <SelectValue placeholder="Select a category"  />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         {

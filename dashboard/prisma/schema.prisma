@@ -102,6 +102,8 @@ model Product {
   Wishlist    Wishlist[]
   Review      Review[]
   coupons     Coupon[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model Coupon {
@@ -114,6 +116,8 @@ model Coupon {
   isExpired Boolean @default(false)
   appliedBy User[]
   type      String
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model Color {
@@ -139,6 +143,8 @@ model Category {
   imageSrc   String
   isFeatured Boolean   @default(false)
   products   Product[]
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model Cart {
@@ -148,6 +154,8 @@ model Cart {
   quantity  Int
   user      User    @relation(fields: [userId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model Order {
@@ -181,6 +189,8 @@ model Wishlist {
   productId String
   user      User    @relation(fields: [userId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model Review {

@@ -1,39 +1,33 @@
-import { DataTable } from "./data-table"
+import { columns } from "./components/columns";
+import { DataTable } from "./components/data-table"
 import prisma from '@/lib/prismadb';
 
 const getOrders = async () => {
-  const orders = await prisma.orderItem.findMany({
+  const orders = await prisma.order.findMany({
     include: {
-      product: {
+      user: {
         select: {
           name: true,
-          price: true,
+          email: true,
         },
       },
-      order: {
-        select: {
-          user: {
-            select: {
-              name: true,
-              email: true,
-              username: true,
-            },
-          }
-        }
+      OrderItems: {
+        include: {
+          product: true,
+        },
       },
-    }
-  });
+    },
+  })
   return orders;
 }
 
 export default async function customers() {
   const orders = await getOrders()
-
   console.log(orders)
-
   return (
     <div className="container py-10 mx-auto">
-      <DataTable data={orders} />
+      {/* @ts-ignore */}
+      <DataTable data={orders} columns={columns} />
     </div>
   )
 }

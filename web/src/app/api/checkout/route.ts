@@ -22,6 +22,7 @@ export async function POST(request: Request) {
     console.log(items, 'items')
 
     const orderId = Math.floor(Math.random() * 1000000000).toString();
+    const userId =items.userId;
 
     const products = await prisma.product.findMany({
         where: {
@@ -47,13 +48,10 @@ export async function POST(request: Request) {
                 unit_amount: product.price * 100,
             },
             quantity: product.quantity,
-            // custom: {
-            //     size: product.size,
-            // },
         })
     })
 
-    const userId = '17f8c030-4dde-49f3-a46a-eb2ba5f6bb18'
+    // const userId = '17f8c030-4dde-49f3-a46a-eb2ba5f6bb18'
     const order = await prisma.order.create({
         data: {
             id: orderId,  // Assigning the orderId

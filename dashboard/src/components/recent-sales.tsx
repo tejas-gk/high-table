@@ -26,10 +26,10 @@ export function RecentSales({
                             </Avatar>
                             <div className="ml-4 space-y-1">
                                 <p className="text-sm font-medium leading-none">
-                                    {item.user.name}
+                                    {item?.user?.name}
                                 </p>
                                 <p className="text-sm text-muted-foreground">
-                                    {item.user.email}
+                                    {item?.user?.email}
                                 </p>
                             </div>
                             <div className="ml-auto font-medium">+₹{userSpent}</div>

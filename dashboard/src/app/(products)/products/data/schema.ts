@@ -28,6 +28,8 @@ export const ProductSchema = z.object({
     quantity:z.number().optional(),
     colors: z.array(ColorSchema),
     sizes: z.array(SizeSchema),
+    createdAt: z.date(),
+    updatedAt: z.date(),
     Category: z.object({
         id: z.string(),
         title: z.string(),

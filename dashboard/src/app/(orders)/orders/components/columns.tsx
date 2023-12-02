@@ -44,11 +44,15 @@ export const columns: ColumnDef<Product>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "productCode",
+        accessorKey: "email",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Product Code" />
+            <DataTableColumnHeader column={column} title="Email" />
         ),
-        cell: ({ row }) => <div className="w-[80px]">{row.getValue("productCode")}</div>,
+        cell: ({ row }) => <div className="w-[90px] truncate">
+            {
+                row.original.user.email
+            }
+        </div>,
         enableSorting: false,
         enableHiding: false,
     },
@@ -58,74 +62,50 @@ export const columns: ColumnDef<Product>[] = [
             <DataTableColumnHeader column={column} title="Name" />
         ),
         cell: ({ row }) => {
-            const label = labels.find((label) => label.value === row.original.name)
             return (
                 <div className="flex space-x-2">
-                    <Badge variant="outline">
-                        {row?.original?.Category?.title}
-                    </Badge>
-                    <span className="max-w-[500px] truncate font-medium cursor-pointer">
-                        <HoverCard>
-                            <HoverCardTrigger>
-                                {row.getValue("name")}
-                            </HoverCardTrigger>
-                            <HoverCardContent>
-                                <Image
-                                    height={500}
-                                    width={500}
-                                    src={row.original.imageSrc[0]}
-                                    alt={row.original.name}
-                                />
-                            </HoverCardContent>
-                        </HoverCard>
+                    <span className="max-w-[200px] truncate font-medium cursor-pointer">
+                        {
+                            row.original.user.name
+                        }
                     </span>
                 </div>
             )
         },
     },
     {
-        accessorKey: "price",
+        accessorKey: "isPaid",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Price" />
+            <DataTableColumnHeader column={column} title="is Paid" />
         ),
         cell: ({ row }) => {
             return (
                 <div className="flex space-x-2">
                     <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("price")}
+                        {row.getValue("isPaid") ? "Paid" : "Not Paid"}
                     </span>
                 </div>
             )
         },
     },
     {
-        accessorKey: "rating",
+        accessorKey: "amount",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Rating" />
+            <DataTableColumnHeader column={column} title="Amount" />
         ),
         cell: ({ row }) => {
+            const totalAmount = row.original.OrderItems.reduce(
+                (acc, item) => acc + item.product.price * item.quantity,
+                0
+            );
+
             return (
                 <div className="flex space-x-2">
                     <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("rating")}
+                        {totalAmount.toFixed(2)} {/* Assuming you want to display the total amount with two decimal places */}
                     </span>
                 </div>
-            )
-        },
-    },
-    {
-        accessorKey: "inStock",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="In stock" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium">
-                        {row.getValue("inStock") ? "Yes" : "No"}
-                    </span>
-                </div>
-            )
+            );
         },
     },
     {

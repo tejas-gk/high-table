@@ -21,33 +21,24 @@ const getAllProducts = async () => {
                 Category: true,
             },
         });
-        return products;
+        return products
     } catch (err) {
-        console.log(err);
-        return []; // Handle the error gracefully, returning an empty array for simplicity.
+        console.log(err)
     }
-};
-
-export async function getServerSideProps() {
-    const products = await getAllProducts();
-
-    return {
-        props: {
-            products,
-        },
-    };
 }
 
-const Page = ({ products }: { products: any[] }) => {
-    console.log(products);
-
+export default async function TaskPage() {
+    const products = await getAllProducts()
+    console.log(products)
     return (
         <>
             <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
                 <div className="flex items-center justify-between space-y-2">
                     <div>
                         <h2 className="text-2xl font-bold tracking-tight">Welcome back!</h2>
-                        <p className="text-muted-foreground">Here&apos;s a list of your Products</p>
+                        <p className="text-muted-foreground">
+                            Here&apos;s a list of your Products
+                        </p>
                     </div>
                     <CalendarDateRangePicker />
                 </div>
@@ -55,6 +46,5 @@ const Page = ({ products }: { products: any[] }) => {
                 <DataTable data={products} columns={columns} />
             </div>
         </>
-    );
+    )
 }
-export default Page

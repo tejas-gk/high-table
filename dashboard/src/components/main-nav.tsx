@@ -23,10 +23,6 @@ const navItems = [
         href: "/orders",
     },
     {
-        name: "Documentation",
-        href: "/documentation",
-    },
-    {
         name:"Marketing",
         href:"/marketing"
     }

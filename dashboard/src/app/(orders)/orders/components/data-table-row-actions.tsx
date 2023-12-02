@@ -26,7 +26,6 @@ import { useState } from "react"
 import { toast } from "@/components/ui/use-toast"
 import { AlertModal } from "@/components/modal/alert-modal"
 import Link from "next/link"
-import { revalidateTag } from "next/cache"
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>
 }
@@ -87,19 +86,6 @@ export function DataTableRowActions<TData>({
                     </DropdownMenuItem>
                     <DropdownMenuItem>Make a copy</DropdownMenuItem>
                     <DropdownMenuItem>Favorite</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-                        <DropdownMenuSubContent>
-                            <DropdownMenuRadioGroup value={task?.Category?.title}>
-                                {labels?.map((label) => (
-                                    <DropdownMenuRadioItem key={label.value} value={label.value}>
-                                        {label.label}
-                                    </DropdownMenuRadioItem>
-                                ))}
-                            </DropdownMenuRadioGroup>
-                        </DropdownMenuSubContent>
-                    </DropdownMenuSub>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
                         <DropdownMenuItem

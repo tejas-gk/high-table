@@ -3,27 +3,23 @@ import { Table } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { DataTableViewOptions } from "@/components/table/data-table-view-options"
+import { DataTableViewOptions } from "../../../../components/table/data-table-view-options"
+
 import { priorities, statuses } from "../data/data"
-import { DataTableFacetedFilter } from "@/components/table/data-table-faceted-filter"
-import React from "react"
-import Link from "next/link"
-import { Download, PlusIcon, Trash } from "lucide-react"
+import { DataTableFacetedFilter } from "../../../../components/table/data-table-faceted-filter"
+import React, { useEffect } from "react"
+import { Download, Trash } from "lucide-react"
 import { downloadToExcel } from "@/lib/xlsx"
-import { DataTableCategory } from "./data-table-category"
 import { getAllCategories } from "@/actions/products"
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
 }
-
-
 
 export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0;
     const cat = getAllCategories()
-    console.log(isFiltered, 'he', cat)
     const selectedRows = table.getState().rowSelection;
     const handleBulkDelete = async (id: string[]) => {
         console.log(id)
@@ -65,11 +61,6 @@ export function DataTableToolbar<TData>({
                 )}
             </div>
             <div className="flex space-x-2">
-                <DataTableCategory
-                    column={table.getColumn("Category.title")}
-                    title="Category"
-                    options={priorities}
-                />
                 <Button variant='outline'
                     className="ml-auto hidden h-8 lg:flex"
                     size="sm"
@@ -90,16 +81,6 @@ export function DataTableToolbar<TData>({
                         </Button>
                     )
                 }
-                <Link href="/products/new">
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        className="ml-auto hidden h-8 lg:flex"
-                    >
-                        <PlusIcon className="mr-2 h-4 w-4" />
-                        New Product
-                    </Button>
-                </Link>
                 <DataTableViewOptions table={table} />
             </div>
         </div>

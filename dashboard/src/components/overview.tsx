@@ -1,13 +1,13 @@
 "use client"
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 export function Overview({
     data
 }:any) {
     console.log(data)
     const userData = data.map((order:any) => ({
-        name: order.user.name,
+        name: order.user?.name,
         total: order.OrderItems.reduce((acc:any, item:any) => acc + item.amount, 0),
     }));
     return (
@@ -27,6 +27,7 @@ export function Overview({
                     axisLine={false}
                     tickFormatter={(value) => `$${value}`}
                 />
+                <Tooltip formatter={(value) => `$${value}`} />
                 <Bar dataKey="total" fill="white" radius={[4, 4, 0, 0]} />
             </BarChart>
         </ResponsiveContainer>
