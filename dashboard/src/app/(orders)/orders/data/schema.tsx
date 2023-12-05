@@ -5,10 +5,10 @@ export const ProductSchema = z.object({
     phone: z.string().default(""),
     address: z.string().default(""),
     status: z.string().default("NOT_SHIPPED"),
-    // user: z.object({
-    //     name: z.string(),
-    //     email: z.string(),
-    // }),
+    user: z.object({
+        name: z.string(),
+        email: z.string(),
+    }),
     OrderItems: z.array(z.object({
         id: z.string(),
         orderId: z.string(),

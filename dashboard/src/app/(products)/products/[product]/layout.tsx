@@ -85,7 +85,7 @@ export function StoreTabs({ storeId }: StoreTabsProps) {
 
 export default function layout({ children }: any) {
     return (
-        <div className="space-y-8 overflow-auto px-16">
+        <div className="space-y-8 overflow-auto px-16 py-8">
             <StoreTabs storeId={'3d9dac21-bc2f-4ac7-a379-4b7452296e08'} />
             {children}
         </div>

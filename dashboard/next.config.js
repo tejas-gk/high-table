@@ -4,7 +4,7 @@ const nextConfig = {
         serverActions:true
     },
     images: {
-        domains: ['files.edgestore.dev']
+        domains: ['files.edgestore.dev','picsum.photos']
     },
     async headers() {
         return [{

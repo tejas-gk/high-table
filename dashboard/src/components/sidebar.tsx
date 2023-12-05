@@ -22,42 +22,11 @@ export interface SidebarNavProps extends React.HTMLAttributes<HTMLDivElement> {
     items: SidebarNavItem[]
 }
 
-// const items: SidebarNavItem[] = [
-//     {
-//         title: "Overview",
-//         icon: "home",
-//         href: "/",
-//     },
-//     {
-//         title: "Customers",
-//         icon: "users",
-//         href: "/customers",
-//     },
-//     {
-//         title: "Products",
-//         icon: "home",
-//         href: "/products",
-//     },
-//     {
-//         title: "Orders",
-//         icon: "home",
-//         href: "/orders",
-//     },
-//     {
-//         title: "Documentation",
-//         icon: "home",
-//         href: "/documentation",
-//     },
-//     {
-//         title: "Marketing",
-//         icon: "home",
-//         href: "/marketing",
-//     },
-// ]
+
 
 export function SidebarNav({ items = [], className, ...props }: SidebarNavProps) {
     const segment = useSelectedLayoutSegment()
-    console.log(Icons["home"])
+    console.log(Icons["twitter"])
 
     const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -89,7 +58,7 @@ export function SidebarNav({ items = [], className, ...props }: SidebarNavProps)
                                 item.disabled && "pointer-events-none opacity-60"
                             )}
                         >
-                            <HomeIcon className="mr-2 h-4 w-4" aria-hidden="true" />
+                            <Icon className="mr-2 h-4 w-4" aria-hidden="true" />
                             <span>{item.title}</span>
                         </span>
                     </Link>

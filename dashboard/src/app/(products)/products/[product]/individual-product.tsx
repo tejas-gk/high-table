@@ -62,7 +62,7 @@ export default function IndividualProduct({ product }: { product: any }) {
             imageSrc: product.imageSrc,
             colors: product.colors,
             sizes: product.sizes,
-            quantity: product.quantity,
+            quantity: product.Quantity,
         },
     })
 
@@ -152,13 +152,13 @@ export default function IndividualProduct({ product }: { product: any }) {
                                         />
                                         <FormField
                                             control={form.control}
-                                            name="category"
+                                            name="quantity"
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>Quantity</FormLabel>
                                                     <FormControl>
                                                         <TitleForm
-                                                            initialData={product.quantity}
+                                                            initialData={product.Quantity}
                                                             {...field}
                                                         />
                                                     </FormControl>
@@ -178,10 +178,17 @@ export default function IndividualProduct({ product }: { product: any }) {
                                                                 <SelectValue placeholder="Theme" />
                                                             </SelectTrigger>
                                                             <SelectContent>
-                                    
-                                                                <SelectItem value="light">Light</SelectItem>
-                                                                <SelectItem value="dark">Dark</SelectItem>
-                                                                <SelectItem value="system">System</SelectItem>
+                                                                {
+                                                                    product?.categories?.map((category: any) => (
+                                                                        <SelectItem
+                                                                            key={category.id}
+                                                                            value={category.id}
+                                                                            className="text-sm"
+                                                                        >
+                                                                            {category.name}
+                                                                        </SelectItem>
+                                                                    ))
+                                                                }
                                                             </SelectContent>
                                                         </Select>
 
@@ -190,12 +197,6 @@ export default function IndividualProduct({ product }: { product: any }) {
                                                 </FormItem>
                                             )}
                                         />
-                                        {/* <div className='flex flex-col gap-2'>
-                                            <Label htmlFor='in-stock'>In Stock</Label>
-                                            <Switch
-                                                checked={product.inStock}
-                                            />
-                                        </div> */}
                                     </div>
                                 </CardContent>
                             </div>
