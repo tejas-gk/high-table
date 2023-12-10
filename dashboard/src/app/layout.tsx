@@ -13,7 +13,7 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { EdgeStoreProvider } from '../lib/edgestore';
 import { appConfig } from '@/config/app'
-import { SidebarNav } from '@/components/sidebar'
+import Sidebar from '@/components/sidebar'
 import { Separator } from '@/components/ui/separator'
 import Navbar from '@/components/navbar'
 const inter = Inter({ subsets: ['latin'] })
@@ -84,19 +84,15 @@ export default function RootLayout({
             <div className="md:hidden">
 
             </div>
-            {/* <div className="hidden space-y-6 md:block"> */}
-              {/* <div className="space-y-0.5">
-                <Navbar />
-              </div> */}
-              {/* <Separator className="my-6" /> */}
-              <div className="flex flex-col space-y-8">
-                {/* <aside className="lg:w-[10%]">
-                  <SidebarNav items={items} />
-                </aside> */}
-                <Navbar/>
+            <div className="hidden space-y-6 md:block">
+              <Navbar />
+              <div className="flex  space-y-8">
+                {/* <aside className="-translat-y-28"> */}
+                  <Sidebar />
+                {/* </aside> */}
                 <div className="flex-1">{children}</div>
               </div>
-            {/* </div> */}
+            </div>
           </EdgeStoreProvider>
         </ThemeProvider>
       </body>

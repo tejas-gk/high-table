@@ -43,6 +43,14 @@ function classNames(...classes: string[]) {
 interface IndividualProductProps {
     product: Product;
 }
+
+const getProduct = async (productId: String) => {
+    'use server'
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${productId}`, { cache: 'no-store' })
+    return response.json()
+}
+
+
 const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
     const [selectedColor, setSelectedColor] = useState(product.colors[0].name)
     const [selectedSize, setSelectedSize] = useState(product.sizes[0].name)

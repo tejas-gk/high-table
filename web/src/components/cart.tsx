@@ -21,7 +21,7 @@ import { getSession } from 'next-auth/react'
 export default function Cart() {
     const { items } = useCartStore()
     const router = useRouter()
-    const userId = '"f004754b-ab2e-4421-a31e-66f7d52d039d'
+    const userId = 'f004754b-ab2e-4421-a31e-66f7d52d039d'
 
     const calculateTotal = () => {
         let total = 0
