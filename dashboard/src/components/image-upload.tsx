@@ -201,6 +201,7 @@ const MultiFileDropzone = React.forwardRef<HTMLInputElement, InputProps>(
                                 <div className="flex w-12 justify-end text-xs">
                                     {progress === 'PENDING' ? (
                                         <button
+                                        title='progress'
                                             className="rounded-md p-1 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                                             onClick={() => {
                                                 void onChange?.(

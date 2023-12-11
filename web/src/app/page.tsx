@@ -58,7 +58,7 @@ export default async function Home() {
         <h1 className='text-5xl font-bold'>Categories</h1>
         <div className='grid grid-cols-4 gap-4 mt-4 '>
           {
-            categories.map((category: CategoryType,index:number) => (
+            categories.map((category: any,index:number) => (
               <CategoryCard key={index} category={category} />
             ))
           }

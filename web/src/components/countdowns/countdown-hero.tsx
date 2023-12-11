@@ -21,6 +21,7 @@ const ShiftingCountdown = () => {
     });
 
     useEffect(() => {
+        // @ts-ignore
         intervalRef.current = setInterval(handleCountdown, 1000);
 
         return () => clearInterval(intervalRef.current || undefined);

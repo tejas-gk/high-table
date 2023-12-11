@@ -66,8 +66,9 @@ export function Search() {
         const searchResult = async () => {
             try {
                 const result = await searchProducts(query)
-                console.log(result, 'rick and morty',query)
-                setResults(result)
+                console.log(result, 'rick and morty', query)
+                // @ts-ignore
+                setResults(result as { id: string; name: string; }[])
 
             } catch (error) {
                 console.log(error)
@@ -96,7 +97,9 @@ export function Search() {
                         {
                             results.map((res, i) => (
                                 <CommandItem key={i}>
+                                    {/*  @ts-ignore */}
                                     <img src={res.imageSrc} className="mr-2 h-4 w-4" alt="" />
+                                    {/* @ts-ignore */}
                                     <span>{res.name}</span>
                                 </CommandItem>
                             ))

@@ -8,7 +8,7 @@ async function getProducts() {
 }
 
 export default async function page() {
-    const products=getProducts()
+    const products=await getProducts()
   return (
       <div>
           <div className='grid grid-cols-4 gap-6 my-6 '>

@@ -95,6 +95,7 @@ export const columns: ColumnDef<Product>[] = [
         ),
         cell: ({ row }) => {
             const totalAmount = row.original.OrderItems.reduce(
+            // @ts-ignore
                 (acc, item) => acc + item.product.price * item.quantity,
                 0
             );
@@ -102,7 +103,7 @@ export const columns: ColumnDef<Product>[] = [
             return (
                 <div className="flex space-x-2">
                     <span className="max-w-[500px] truncate font-medium">
-                        {totalAmount.toFixed(2)} {/* Assuming you want to display the total amount with two decimal places */}
+                        {totalAmount.toFixed(2)} 
                     </span>
                 </div>
             );

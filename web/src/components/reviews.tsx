@@ -6,17 +6,17 @@ import { Button } from './ui/button';
 export default function Reviews({
     productId,
     userId
-}) {
+}:any) {
     const [reviewText, setReviewText] = useState('');
     const [reviewBody, setReviewBody] = useState('');
     const [stars, setStars] = useState(0);
     const [hoveredStars, setHoveredStars] = useState(0);
 
-    const handleStarClick = (star) => {
+    const handleStarClick = (star: React.SetStateAction<number>) => {
         setStars(star);
     };
 
-    const handleStarHover = (star) => {
+    const handleStarHover = (star: React.SetStateAction<number>) => {
         setHoveredStars(star);
     };
 
