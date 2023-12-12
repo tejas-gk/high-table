@@ -45,15 +45,15 @@ interface IndividualProductProps {
 }
 
 const getProduct = async (productId: String) => {
-    'use server'
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${productId}`, { cache: 'no-store' })
     return response.json()
 }
 
 
 const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
-    const [selectedColor, setSelectedColor] = useState(product.colors[0].name)
-    const [selectedSize, setSelectedSize] = useState(product.sizes[0].name)
+    const [selectedColor, setSelectedColor] = useState((product.colors && product.colors[0]?.name) || '')
+    const [selectedSize, setSelectedSize] = useState(product.sizes[0]?.name ?? '');
 
     const [reviews, setReviews] = useState([
         {
@@ -294,7 +294,7 @@ const IndividualProduct: React.FC<IndividualProductProps> = ({ product }) => {
                             <div className='
               flex gap-4 mt-10 items-center
               '>
-                                {itemAlreadyInCart(product as Product) ? (
+                                {itemAlreadyInCart(product as any) ? (
                                     <Button className="mt-2 flex justify-between w-1/2" variant='secondary'>
                                         <span onClick={handleDecrement}>-</span>
                                         <span>{useCartStore.getState().items.find(item => item.id === product.id)?.quantity}</span>

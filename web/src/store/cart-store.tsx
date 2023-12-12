@@ -30,6 +30,7 @@ const useCartStore = create(persist<CartState>((set, get) => ({
         if (existingItemIndex !== -1) {
             // Item already exists, increment quantity
             const newItems = [...currentItems];
+            // @ts-ignore
             newItems[existingItemIndex].quantity += 1;
             set({ items: newItems });
         } else {
@@ -44,7 +45,9 @@ const useCartStore = create(persist<CartState>((set, get) => ({
         if (existingItemIndex !== -1) {
             // Item exists, decrement quantity
             const newItems = [...currentItems];
+            // @ts-ignore
             newItems[existingItemIndex].quantity -= 1;
+            // @ts-ignore
             if (newItems[existingItemIndex].quantity === 0) {
                 // Remove item from cart
                 newItems.splice(existingItemIndex, 1);

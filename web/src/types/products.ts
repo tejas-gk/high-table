@@ -6,7 +6,7 @@ export interface Product {
     rating: number;
     reviewCount: number;
     href: string;
-    imageSrc: string;
+    imageSrc: string[];
     imageAlt: string;
     colors: Array<{ name: string; class: string; }>;
     sizes: Array<{ name: string; inStock: boolean }>;

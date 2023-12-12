@@ -19,7 +19,7 @@ export default function Promo() {
                             Summer styles are finally here
                         </h1>
                         <p className="mt-4 text-xl text-gray-500">
-                            This year, our new summer collection will shelter you from the harsh elements of a world that doesn't care
+                            This year, our new summer collection will shelter you from the harsh elements of a world that doesn&apos;t care
                             if you live or die.
                         </p>
                     </div>
