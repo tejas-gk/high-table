@@ -27,8 +27,8 @@ export function Overview({
                     axisLine={false}
                     tickFormatter={(value) => `$${value}`}
                 />
-                <Tooltip formatter={(value) => `$${value}`} />
-                <Bar dataKey="total" fill="white" radius={[4, 4, 0, 0]} />
+                <Tooltip formatter={(value) => `₹${value}`} />
+                <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} />
             </BarChart>
         </ResponsiveContainer>
     )

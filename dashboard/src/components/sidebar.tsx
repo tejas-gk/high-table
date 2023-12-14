@@ -16,7 +16,7 @@ const SidebarContext = createContext({})
 const sidebarItems = [
     {
         title: "Overview",
-        icon: <Icons.home/>,
+        icon: <Icons.home />,
         href: "/",
     },
     {
@@ -34,13 +34,13 @@ const sidebarItems = [
         icon: <Icons.circleDollarSign />,
         href: "/orders",
     },
-    // {
-    //     title: "Documentation",
-    //     icon: <Icons.settings />,
-    //     href: "/documentation",
-    // },
     {
         title: "Marketing",
+        icon: <Icons.marketing />,
+        href: "/marketing",
+    },
+    {
+        title: "Broadcast",
         icon: <Icons.marketing />,
         href: "/marketing",
     },
@@ -57,12 +57,13 @@ export default function Sidebar() {
     const path = usePathname()
     return (
         <aside className="h-screen">
-            <nav className="h-full flex flex-col bg-white dark:bg-black border-r shadow-sm">
+            <nav className="h-full flex flex-col bg-background border-r shadow-sm">
                 <div className="p-4 pb-2 flex justify-between items-center">
 
                     <button
                         onClick={() => setExpanded((curr) => !curr)}
-                        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 text-black "
+                        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 text-primary-foreground dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors dark:text-white
+                        "
                     >
                         {expanded ? <ChevronFirst /> : <ChevronLast />}
                     </button>
@@ -77,7 +78,7 @@ export default function Sidebar() {
                                 text={item.title}
                                 link={item.href}
                                 active={item.href === path}
-                                // subItems={item.subItems ? item.subItems.map(subItem => ({ ...subItem, text: subItem.title, link: subItem.href })) : null}
+                            // subItems={item.subItems ? item.subItems.map(subItem => ({ ...subItem, text: subItem.title, link: subItem.href })) : null}
                             />
                         ))}
                     </ul>
@@ -95,7 +96,7 @@ export default function Sidebar() {
               overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}
           `}
                     >
-                        <div className="leading-4 text-black dark:text-white">
+                        <div className="leading-4 text-primary-foreground">
                             <h4 className="font-semibold dark:text-white">John Doe</h4>
                             <span className="text-xs text-gray-600">johndoe@gmail.com</span>
                         </div>
@@ -144,7 +145,7 @@ export function SidebarItem({ icon, text, active, alert, link, subItems }: Sideb
         transition-colors group z-[100]
         ${active
                             ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
-                            : "hover:bg-indigo-50 text-gray-600 dark:text-gray-200"
+                            : "hover:bg-indigo-50 text-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
                         }
     `}
                 >
