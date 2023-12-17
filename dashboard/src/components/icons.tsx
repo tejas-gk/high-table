@@ -1,10 +1,10 @@
 import { GithubIcon, TwitterIcon, Volume2 } from "lucide-react"
 import { AiFillGoogleCircle } from "react-icons/ai"
+import { PiBroadcastLight } from "react-icons/pi";
 import { MoreVertical, ChevronLast, ChevronFirst, HomeIcon, BarChart, UserIcon, ShoppingBag, CircleDollarSign, Settings } from "lucide-react"
 type IconProps = React.HTMLAttributes<SVGElement>
 
 export const Icons = {
-    // @ts-ignore
     logo: (props: IconProps) => (<img src='https://img.logoipsum.com/323.svg' {...props} />),
     totalRevenue: (props: IconProps) => (
         <svg
@@ -20,6 +20,7 @@ export const Icons = {
             <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
         </svg>
     ),
+    broadcast:(props:IconProps)=>(<PiBroadcastLight/>),
     subscriptions: (props: IconProps) => (
         <svg
                     xmlns="http://www.w3.org/2000/svg"

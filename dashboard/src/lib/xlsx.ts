@@ -2,7 +2,7 @@ import xlsx, { IJsonSheet } from "json-as-xlsx";
 import { data } from "@/config/products";
 
 export function downloadToExcel() {
-    let columns: IJsonSheet[] = [
+    let columns: IJsonSheet[] = [       
         {
             sheet: "Product",
             columns: [

@@ -13,7 +13,13 @@ const getProduct = async (productId: String) => {
 
 export default async function Page({
   params
-}:any) {
+}:
+  {
+    params: {
+      product: String
+    }
+  }
+) {
   const product = await getProduct(params.product)
   console.log(product)
   return (

@@ -41,7 +41,7 @@ const sidebarItems = [
     },
     {
         title: "Broadcast",
-        icon: <Icons.marketing />,
+        icon: <Icons.broadcast />,
         href: "/marketing",
     },
     {

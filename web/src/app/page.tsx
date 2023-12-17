@@ -41,7 +41,7 @@ const categories = [
     products: 50,
   },
 ]
-type CategoryType=Pick<Category, 'id' | 'title' | 'imageSrc'>
+type CategoryType = Pick<Category, 'id' | 'title' | 'imageSrc'>
 
 
 export default async function Home() {
@@ -49,7 +49,7 @@ export default async function Home() {
     <>
       <SubNavbar />
       <Hero />
-      <CallOut 
+      <CallOut
         title='Free shipping on orders over $100'
         description='Buy anything worth $100 or more and get free shipping anywhere in the world.'
       />
@@ -58,7 +58,7 @@ export default async function Home() {
         <h1 className='text-5xl font-bold'>Categories</h1>
         <div className='grid grid-cols-4 gap-4 mt-4 '>
           {
-            categories.map((category: any,index:number) => (
+            categories.map((category: any, index: number) => (
               <CategoryCard key={index} category={category} />
             ))
           }
@@ -89,11 +89,11 @@ async function ProductFeed() {
   console.log(products)
   return (
     <>
-        {
-          products?.map((product: any) => (
-            <ProductCard product={product} key={product.id} />
-          ))
-        }
+      {
+        products?.map((product: any) => (
+          <ProductCard product={product} key={product.id} />
+        ))
+      }
     </>
   )
 }

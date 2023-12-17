@@ -1,4 +1,6 @@
 import { z } from 'zod';
+
+
 export const ProductSchema = z.object({
     id: z.string(),
     isPaid: z.boolean().default(false),
@@ -15,6 +17,15 @@ export const ProductSchema = z.object({
         productId: z.string(),
         quantity: z.number().default(1),
         amount: z.number(),
+        createdAt: z.date(),
+        updatedAt: z.date(),
+    })),
+    products: z.array(z.object({
+        id: z.string(),
+        name: z.string(),
+        description: z.string(),
+        price: z.number(),
+        imageSrc: z.array(z.string()),
         createdAt: z.date(),
         updatedAt: z.date(),
     })),

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
-
+type ReviewProps = Record<string, unknown>;
 export default function Reviews({
     productId,
     userId
-}:any) {
+}: ReviewProps) {
     const [reviewText, setReviewText] = useState('');
     const [reviewBody, setReviewBody] = useState('');
     const [stars, setStars] = useState(0);

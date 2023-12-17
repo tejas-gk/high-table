@@ -28,6 +28,7 @@ export default function RootLayout({
         <title>
            {isVisible ? 'Carty Moron' : 'This Tab is all alone :('}
         </title>
+        <script defer src="https://unpkg.com/@tinybirdco/flock.js" data-host="https://api.tinybird.co" data-token="p.eyJ1IjogIjcwMDI3NGFmLTA0YTEtNGViYS05ODM4LWQ3NDNmMWI4ZGJhYSIsICJpZCI6ICI1NmQ4NjJiZC1mYmZhLTRkZDctOGE3ZC0zYzExMDI2ODk5MTYiLCAiaG9zdCI6ICJldV9zaGFyZWQifQ.nVfbLDqBvSTGq07c9RAR_XZ2aKMZA71jn9ejG0BAKt0"></script>
       </head>
       <body className={`${inter.className}`}>
         <SessionProvider>

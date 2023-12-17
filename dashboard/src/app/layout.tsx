@@ -23,43 +23,15 @@ export const metadata: Metadata = {
     default: "High Table",
     template: "%s | High Table",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   description: 'Manage your E-commerce store with ease',
   keywords: ['E-commerce', 'Store', 'Dashboard', 'Admin'],
   applicationName: 'High Table',
   creator: 'Vercel',
 }
-const items = [
-  {
-    title: "Overview",
-    icon: "home",
-    href: "/",
-  },
-  {
-    title: "Customers",
-    icon: "users",
-    href: "/customers",
-  },
-  {
-    title: "Products",
-    icon: "home",
-    href: "/products",
-  },
-  {
-    title: "Orders",
-    icon: "home",
-    href: "/orders",
-  },
-  {
-    title: "Documentation",
-    icon: "home",
-    href: "/documentation",
-  },
-  {
-    title: "Marketing",
-    icon: "home",
-    href: "/marketing",
-  },
-]
 
 export default function RootLayout({
   children,
@@ -69,7 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>{appConfig.name}</title>
+        {/* <title>{appConfig.name}</title> */}
         <meta name="description" content="" />
       </head>
       <body className={inter.className}>

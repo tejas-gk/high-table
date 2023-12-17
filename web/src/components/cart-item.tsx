@@ -1,8 +1,17 @@
 import React from 'react'
 import useCartItems from '@/store/cart-store'
+import { Product } from '@prisma/client'
+
+type ProductProps = {
+    product: Product & {
+        quantity: number
+    }
+}
+
+
 export default function CartItem({
     product
-}:any) {
+}: ProductProps) {
     const {removeFromCart} = useCartItems()
   return (
       <li className="flex py-6">

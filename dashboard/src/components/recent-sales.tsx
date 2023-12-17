@@ -3,10 +3,24 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
+import { Order } from "@prisma/client"
+type OrderItem = {
+    amount: number;
+};
 
+type OrderProps = Order & {
+    OrderItems: OrderItem[];
+    user: {
+        name: string;
+    };
+};
+type RecentSalesProps = {
+    data: OrderProps[];
+};
 export function RecentSales({
     data
-}:any) {
+}: RecentSalesProps
+) {
     console.log(data)
     const userSpent = data.reduce((acc: any, item: any) => {
         // @ts-ignore
@@ -17,7 +31,7 @@ export function RecentSales({
     return (
         <div className="space-y-8">
             {
-                data.slice(0, 5).map((item:any) => {
+                data.slice(0, 5).map((item) => {
                     return (
                         <div className="flex items-center" key={item.id}>
                             <Avatar className="h-9 w-9">

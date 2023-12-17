@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: '*',
             disallow: ['/api/*'],
         },
-        // sitemap: 'https://typehero.dev/sitemap.xml',
+        // sitemap: 'https://high-table.xyz/sitemap.xml',
     };
 }
