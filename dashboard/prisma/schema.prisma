@@ -82,6 +82,16 @@ enum ProductPriority {
   HIGH
 }
 
+model Store {
+  id          String    @id @default(uuid()) @map("_id")
+  name        String
+  description String?
+  imageSrc    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Products    Product[]
+}
+
 model Product {
   id          String          @id @default(uuid()) @map("_id")
   name        String
@@ -102,22 +112,24 @@ model Product {
   Wishlist    Wishlist[]
   Review      Review[]
   coupons     Coupon[]
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  Store       Store?          @relation(fields: [storeId], references: [id])
+  storeId     String?
 }
 
 model Coupon {
-  id        String  @id @default(uuid()) @map("_id")
+  id        String   @id @default(uuid()) @map("_id")
   code      String
   discount  Float
   productId String
-  product   Product @relation(fields: [productId], references: [id])
-  isGeneral Boolean @default(false)
-  isExpired Boolean @default(false)
+  product   Product  @relation(fields: [productId], references: [id])
+  isGeneral Boolean  @default(false)
+  isExpired Boolean  @default(false)
   appliedBy User[]
   type      String
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Color {
@@ -143,19 +155,19 @@ model Category {
   imageSrc   String
   isFeatured Boolean   @default(false)
   products   Product[]
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Cart {
-  id        String  @id @default(uuid()) @map("_id")
+  id        String   @id @default(uuid()) @map("_id")
   userId    String
   productId String
   quantity  Int
-  user      User    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Order {
@@ -184,13 +196,13 @@ model OrderItem {
 }
 
 model Wishlist {
-  id        String  @id @default(uuid()) @map("_id")
+  id        String   @id @default(uuid()) @map("_id")
   userId    String
   productId String
-  user      User    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Review {

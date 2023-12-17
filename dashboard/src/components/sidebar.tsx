@@ -53,7 +53,6 @@ const sidebarItems = [
 
 export default function Sidebar() {
     const [expanded, setExpanded] = useState(true)
-    console.log(Icons, 'icons')
     const path = usePathname()
     return (
         <aside className="h-screen">

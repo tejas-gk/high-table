@@ -25,6 +25,7 @@ import { UserNav } from "@/components/user-nav"
 import { ModeToggle } from "@/components/mode-toggle"
 import prisma from "@/lib/prismadb"
 import { Icons } from "@/components/icons"
+import StoreCard from "../components/cards/store-card"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -178,7 +179,7 @@ export default async function DashboardPage() {
                   <CardTitle>Overview</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2">
-                  <Overview data={orders} />
+                  <Overview data={orders.map(order => ({ ...order, user: { ...order.user, name: order.user.name || '' } }))} />
                 </CardContent>
               </Card>
               <Card className="col-span-3">
@@ -189,12 +190,21 @@ export default async function DashboardPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <RecentSales data={orders} />
+                  <RecentSales data={orders.map(order => ({ ...order, user: { ...order.user, name: order.user.name || '' } }))} />
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
           <TabsContent value="analytics" className="space-y-4">
+            <div className="grid grid-cols-3 gap-4
+            ">
+            <StoreCard/>
+            <StoreCard/>
+            <StoreCard/>
+            <StoreCard/>
+            <StoreCard/>
+            <StoreCard/>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
