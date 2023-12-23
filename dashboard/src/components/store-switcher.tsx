@@ -6,7 +6,7 @@ import {
     CheckIcon,
     PlusCircledIcon,
 } from "@radix-ui/react-icons"
-
+import useStore from "@/store/current-store"
 import { cn } from "@/lib/utils"
 import {
     Avatar,
@@ -47,43 +47,23 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-const groups = [
-    {
-        label: "Personal Account",
-        teams: [
-            {
-                label: "Alicia Koch",
-                value: "personal",
-            },
-        ],
-    },
-    {
-        label: "Teams",
-        teams: [
-            {
-                label: "Acme Inc.",
-                value: "acme-inc",
-            },
-            {
-                label: "Monsters Inc.",
-                value: "monsters",
-            },
-        ],
-    },
-]
-
-type Team = (typeof groups)[number]["teams"][number]
-
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
 
-interface TeamSwitcherProps extends PopoverTriggerProps { }
+interface StoreSwitcherProps extends PopoverTriggerProps {
+    items: Record<string, any>[];
+}
 
-export default function TeamSwitcher({ className }: TeamSwitcherProps) {
+export default function StoreSwitcher({ className, items = [] }: StoreSwitcherProps) {
     const [open, setOpen] = React.useState(false)
     const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false)
-    const [selectedTeam, setSelectedTeam] = React.useState<Team>(
-        groups[0].teams[0]
+    const { currentStore,setCurrentStore } = useStore()
+    const [selectedTeam, setSelectedTeam] = React.useState(
+        currentStore || items[1].name[0]
     )
+    const formattedItems = items.map((item) => ({
+        label: item.name,
+        value: item.id
+    }));
 
     return (
         <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
@@ -112,38 +92,39 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                         <CommandList>
                             <CommandInput placeholder="Search team..." />
                             <CommandEmpty>No team found.</CommandEmpty>
-                            {groups.map((group) => (
-                                <CommandGroup key={group.label} heading={group.label}>
-                                    {group.teams.map((team) => (
-                                        <CommandItem
-                                            key={team.value}
-                                            onSelect={() => {
-                                                setSelectedTeam(team)
-                                                setOpen(false)
-                                            }}
-                                            className="text-sm"
-                                        >
-                                            <Avatar className="mr-2 h-5 w-5">
-                                                <AvatarImage
-                                                    src={`https://avatar.vercel.sh/${team.value}.png`}
-                                                    alt={team.label}
-                                                    className="grayscale"
-                                                />
-                                                <AvatarFallback>SC</AvatarFallback>
-                                            </Avatar>
-                                            {team.label}
-                                            <CheckIcon
-                                                className={cn(
-                                                    "ml-auto h-4 w-4",
-                                                    selectedTeam.value === team.value
-                                                        ? "opacity-100"
-                                                        : "opacity-0"
-                                                )}
+                            {
+                                formattedItems.map((item, index) => (
+                                    <CommandItem
+                                        key={index}
+                                        onSelect={() => {
+                                            setSelectedTeam(item)
+                                            setCurrentStore(item.value)
+                                            console.log(currentStore)
+                                            
+                                            setOpen(false)
+                                        }}
+                                        className="text-sm"
+                                    >
+                                        <Avatar className="mr-2 h-5 w-5">
+                                            <AvatarImage
+                                                src={`https://avatar.vercel.sh/${item.value}.png`}
+                                                alt={item.label}
+                                                className="grayscale"
                                             />
-                                        </CommandItem>
-                                    ))}
-                                </CommandGroup>
-                            ))}
+                                            <AvatarFallback>SC</AvatarFallback>
+                                        </Avatar>
+                                        {item.label}
+                                        <CheckIcon
+                                            className={cn(
+                                                "ml-auto h-4 w-4",
+                                                selectedTeam.value === item.value
+                                                    ? "opacity-100"
+                                                    : "opacity-0"
+                                            )}
+                                        />
+                                    </CommandItem>
+                                ))
+                            }
                         </CommandList>
                         <CommandSeparator />
                         <CommandList>
@@ -156,7 +137,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                                         }}
                                     >
                                         <PlusCircledIcon className="mr-2 h-5 w-5" />
-                                        Create Team
+                                        Create Store
                                     </CommandItem>
                                 </DialogTrigger>
                             </CommandGroup>
@@ -166,7 +147,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             </Popover>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Create team</DialogTitle>
+                    <DialogTitle>Create Store</DialogTitle>
                     <DialogDescription>
                         Add a new team to manage products and customers.
                     </DialogDescription>
@@ -174,7 +155,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                 <div>
                     <div className="space-y-4 py-2 pb-4">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Team name</Label>
+                            <Label htmlFor="name">Store name</Label>
                             <Input id="name" placeholder="Acme Inc." />
                         </div>
                         <div className="space-y-2">

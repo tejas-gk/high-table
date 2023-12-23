@@ -12,3 +12,8 @@ export const POST = async (request: Request) => {
     });
     return new Response(JSON.stringify(store), { status: 200 });
 }
+
+export const GET = async (request: Request) => {
+    const stores = await prisma.store.findMany();
+    return new Response(JSON.stringify(stores), { status: 200 });
+}

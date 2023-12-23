@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useForm } from "react-hook-form"
 import { useToast } from "@/components/ui/use-toast"
+import useStore from "@/store/current-store"
 import {
     Form,
     FormControl,
@@ -56,6 +57,7 @@ export default function NewProduct({
     categories
 }: any) {
     console.log(categories)
+    const { currentStore } = useStore()
     const form = useForm({
         // resolver: zodResolver(productSchema),
         defaultValues: {
@@ -151,7 +153,7 @@ export default function NewProduct({
             setUploading(false);
             const response = await fetch('/api/products', {
                 method: 'POST',
-                body: JSON.stringify({ ...form.getValues(), images: imageArray, colors, sizes }),
+                body: JSON.stringify({ ...form.getValues(), images: imageArray, colors, sizes,currentStore }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -264,7 +266,7 @@ export default function NewProduct({
                                             <FormControl>
                                                 <Select onValueChange={field.onChange}>
                                                     <SelectTrigger className="w-full">
-                                                        <SelectValue placeholder="Select a category"  />
+                                                        <SelectValue placeholder="Select a category" />
                                                     </SelectTrigger>
                                                     <SelectContent>
                                                         {

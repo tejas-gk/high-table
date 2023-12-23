@@ -4,7 +4,7 @@ import { Button } from '../ui/button'
 import useCartStore from '@/store/cart-store'
 import Link from 'next/link'
 import { motion, AnimatePresence } from "framer-motion";
-import ImageCarousel from '../image-carousel'
+import -caImageCarousel from '../image-carousel'
 import { Heart } from 'lucide-react';
 
 export default function ProductCard({

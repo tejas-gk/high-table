@@ -23,7 +23,6 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0;
     const cat = getAllCategories()
-    console.log(isFiltered, 'he', cat)
     const selectedRows = table.getState().rowSelection;
     const handleBulkDelete = async (id: string[]) => {
         console.log(id)

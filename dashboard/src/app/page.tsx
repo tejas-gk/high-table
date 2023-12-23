@@ -20,12 +20,13 @@ import { MainNav } from "@/components/main-nav"
 import { Overview } from "@/components/overview"
 import { RecentSales } from "@/components/recent-sales"
 import { Search } from "@/components/search"
-import TeamSwitcher from "@/components/team-switcher"
+import TeamSwitcher from "@/components/store-switcher"
 import { UserNav } from "@/components/user-nav"
 import { ModeToggle } from "@/components/mode-toggle"
 import prisma from "@/lib/prismadb"
 import { Icons } from "@/components/icons"
 import StoreCard from "../components/cards/store-card"
+import Store from "./store"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -161,7 +162,7 @@ export default async function DashboardPage() {
                   <CardTitle className="text-sm font-medium">
                     Users
                   </CardTitle>
-                  <Icons.manyUsers  />
+                  <Icons.manyUsers />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
@@ -196,15 +197,7 @@ export default async function DashboardPage() {
             </div>
           </TabsContent>
           <TabsContent value="analytics" className="space-y-4">
-            <div className="grid grid-cols-3 gap-4
-            ">
-            <StoreCard/>
-            <StoreCard/>
-            <StoreCard/>
-            <StoreCard/>
-            <StoreCard/>
-            <StoreCard/>
-            </div>
+            <Store />
           </TabsContent>
         </Tabs>
       </div>

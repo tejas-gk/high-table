@@ -1,6 +1,6 @@
 "use client"
 
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import { Order } from "@prisma/client"
 type OrderItem = {
     amount: number;
@@ -27,25 +27,27 @@ export function Overview({
         total: order.OrderItems.reduce((acc, item) => acc + item.amount, 0),
     }));
     return (
-        <ResponsiveContainer width="100%" height={350}>
-            <BarChart data={userData}>
-                <XAxis
-                    dataKey="z"
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                />
-                <YAxis
-                    stroke="#888888"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(value) => `$${value}`}
-                />
-                <Tooltip formatter={(value) => `₹${value}`} />
-                <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} />
-            </BarChart>
-        </ResponsiveContainer>
+        <>
+            <ResponsiveContainer width="100%" height={350}>
+                <BarChart data={userData}>
+                    <XAxis
+                        dataKey="z"
+                        stroke="#888888"
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                    />
+                    <YAxis
+                        stroke="#888888"
+                        fontSize={12}
+                        tickLine={false}
+                        axisLine={false}
+                        tickFormatter={(value) => `$${value}`}
+                    />
+                    <Tooltip formatter={(value) => `₹${value}`} />
+                    <Bar dataKey="total" fill="#8884d8" radius={[4, 4, 0, 0]} />
+                </BarChart>
+            </ResponsiveContainer>
+        </>
     )
 }

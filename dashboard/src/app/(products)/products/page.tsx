@@ -7,6 +7,8 @@ import { columns } from "./components/columns"
 import { DataTable } from "./components/data-table"
 import { CalendarDateRangePicker } from "@/components/date-range-picker"
 import { Metadata } from "next"
+import useStore from "@/store/current-store"
+
 export const metadata: Metadata = {
     title: "Products",
     description: "Check out some examples app built using the components.",
@@ -20,6 +22,9 @@ const getAllProducts = async () => {
                 sizes: true,
                 Category: true,
             },
+            // where: {
+            //     storeId
+            // },
         });
         return products
     } catch (err) {
@@ -28,8 +33,7 @@ const getAllProducts = async () => {
 }
 
 export default async function TaskPage() {
-    const products = await getAllProducts()
-    console.log(products)
+    const products = await getAllProducts();
     return (
         <>
             <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
